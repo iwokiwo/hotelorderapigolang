@@ -1,7 +1,6 @@
 package product
 
 import (
-	"iwogo/Models"
 	"iwogo/category"
 	"iwogo/helper"
 
@@ -628,7 +627,7 @@ func (r *repository) DelDiscount(id int) (bool, error) {
 // PAGINATION
 
 func (r *repository) ProductPagination(pagination *helper.Pagination) (RepositoryResult, int) {
-	var products []Models.Product
+	var products []Product
 
 	var totalRows int64
 

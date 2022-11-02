@@ -11,15 +11,13 @@ import (
 	"github.com/joho/godotenv"
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
-
-	"github.com/streadway/amqp"
 )
 
-func errorWrapper(err error, msg string) {
-	if err != nil {
-		log.Fatalf("%s: %s", msg, err)
-	}
-}
+// func errorWrapper(err error, msg string) {
+// 	if err != nil {
+// 		log.Fatalf("%s: %s", msg, err)
+// 	}
+// }
 
 func main() {
 	err := godotenv.Load()
@@ -30,13 +28,13 @@ func main() {
 	db, err := gorm.Open(postgres.Open(Config.DbURL(Config.BuildDBConfig())), &gorm.Config{})
 
 	//----------------rabitmq-----------------
-	conn, errs := amqp.Dial(os.Getenv("RABBITMQ_HOST"))
-	errorWrapper(errs, "Failed to connect rabbitmq")
-	defer conn.Close()
+	// conn, errs := amqp.Dial(os.Getenv("RABBITMQ_HOST"))
+	// errorWrapper(errs, "Failed to connect rabbitmq")
+	// defer conn.Close()
 
-	ch, errs := conn.Channel()
-	errorWrapper(errs, "Failed to open a channel")
-	defer ch.Close()
+	// ch, errs := conn.Channel()
+	// errorWrapper(errs, "Failed to open a channel")
+	// defer ch.Close()
 
 	//---------------------------------------------
 
@@ -54,7 +52,7 @@ func main() {
 		&Models.CategoryRelation{},
 		&Models.Setting{})
 
-	Routes.SubscribeMessage(ch, "go-queue_order")
+	//Routes.SubscribeMessage(ch, "go-queue_order")
 	router := Routes.SetupRouter(db)
 	router.Run(":" + os.Getenv("APP_PORT"))
 
