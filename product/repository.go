@@ -208,25 +208,25 @@ func (r *repository) FindAll(input PaginationInput) ([]Product, int64) {
 	if input.Active == 1 {
 		if input.Stock == 1 {
 			find = find.Where("active = ?", 1).
-				Where("stock > ?", 0).
+				Where("stock > ?", 0).Preload("CategoryRelation").Preload("Category").
 				Find(&products)
 		}
 
 		if input.Stock == 0 {
 			find = find.Where("active = ?", 1).
-				Where("stock = ?", 0).
+				Where("stock = ?", 0).Preload("CategoryRelation").Preload("Category").
 				Find(&products)
 		}
 
 	}
 	if input.Active == 0 {
-		find = find.Find(&products)
+		find = find.Preload("CategoryRelation").Preload("Category").Find(&products)
 	}
 	err := find.Error
 	if err != nil {
 		return products, total
 	}
-
+	//fmt.Println("Hello World!", products)
 	data := products
 
 	// count all data

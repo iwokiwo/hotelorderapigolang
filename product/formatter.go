@@ -3,42 +3,48 @@ package product
 import "time"
 
 type ProductFormatter struct {
-	ID             int    `json:"id"`
-	Name           string `json:"name"`
-	Slug           string `json:"slug"`
-	Bahan          string `json:"bahan"`
-	Thumbnail      string `json:"thumbnail"`
-	Dimensi        string `json:"dimensi"`
-	Hpp            int    `json:"hpp"`
-	Price          int    `json:"price"`
-	AvailableColor int    `json:"available_color"`
-	AvailableSize  int    `json:"available_size"`
-	Color          string `json:"color"`
-	Size           string `json:"size"`
-	Stock          int    `json:"stock"`
-	Active         int    `json:"active"`
-	Views          int    `json:"views"`
-	Description    string `json:"description"`
+	ID               int              `json:"id"`
+	Name             string           `json:"name"`
+	Slug             string           `json:"slug"`
+	Bahan            string           `json:"bahan"`
+	Thumbnail        string           `json:"thumbnail"`
+	Dimensi          string           `json:"dimensi"`
+	Hpp              int              `json:"hpp"`
+	Price            int              `json:"price"`
+	AvailableColor   int              `json:"available_color"`
+	AvailableSize    int              `json:"available_size"`
+	Color            string           `json:"color"`
+	Size             string           `json:"size"`
+	Stock            int              `json:"stock"`
+	Active           int              `json:"active"`
+	Views            int              `json:"views"`
+	Description      string           `json:"description"`
+	CategoryId       int              `json:"category_id"`
+	Category         Category         `json:'category'`
+	CategoryRelation CategoryRelation `json:'CategoryRelation'`
 }
 
 func FormatProduct(product Product) ProductFormatter {
 	formatter := ProductFormatter{
-		ID:             product.ID,
-		Name:           product.Name,
-		Slug:           product.Slug,
-		Bahan:          product.Bahan,
-		Thumbnail:      product.Thumbnail,
-		Dimensi:        product.Dimensi,
-		Hpp:            product.Hpp,
-		Price:          product.Price,
-		AvailableColor: product.AvailableColor,
-		AvailableSize:  product.AvailableSize,
-		Color:          product.Color,
-		Size:           product.Size,
-		Stock:          product.Stock,
-		Active:         product.Active,
-		Views:          product.Views,
-		Description:    product.Description,
+		ID:               product.ID,
+		Name:             product.Name,
+		Slug:             product.Slug,
+		Bahan:            product.Bahan,
+		Thumbnail:        product.Thumbnail,
+		Dimensi:          product.Dimensi,
+		Hpp:              product.Hpp,
+		Price:            product.Price,
+		AvailableColor:   product.AvailableColor,
+		AvailableSize:    product.AvailableSize,
+		Color:            product.Color,
+		Size:             product.Size,
+		Stock:            product.Stock,
+		Active:           product.Active,
+		Views:            product.Views,
+		Description:      product.Description,
+		Category:         product.Category,
+		CategoryId:       product.CategoryId,
+		CategoryRelation: product.CategoryRelation,
 	}
 	return formatter
 }
@@ -104,6 +110,31 @@ func FormatSliderRelations(sliderRelations []SliderRelation) []SliderRelationFor
 		SliderRelationFormatter = append(SliderRelationFormatter, formatter)
 	}
 	return SliderRelationFormatter
+}
+
+// CATEGORY
+
+type CategoryFormatter struct {
+	ID   int    `json:"id"`
+	Name string `json:"name"`
+}
+
+func FormatCategory(category Category) CategoryFormatter {
+	formater := CategoryFormatter{
+		ID:   category.ID,
+		Name: category.Name,
+	}
+
+	return formater
+}
+
+func FormatCategorys(categorys []Category) []CategoryFormatter {
+	CategoryFormatter := []CategoryFormatter{}
+	for _, category := range categorys {
+		formatter := FormatCategory(category)
+		CategoryFormatter = append(CategoryFormatter, formatter)
+	}
+	return CategoryFormatter
 }
 
 // CATEGORY RELATION
