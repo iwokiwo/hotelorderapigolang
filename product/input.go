@@ -35,19 +35,20 @@ type PaginationInput struct {
 	Size      int    `json:"size"`
 	Sort      string `json:"sort"`
 	Direction string `json:"direction"`
-	Active 	int `json:"active"`
-	Stock int `json:"stock"`
+	Active    int    `json:"active"`
+	Stock     int    `json:"stock"`
 }
 
 type SearchInput struct {
-	Page      int    `json:"page"`
-	Size      int    `json:"size"`
-	Sort      string `json:"sort"`
-	Direction string `json:"direction"`
-	Active 	int `json:"active"`
-	Stock int `json:"stock"`
-	Id int `json:"id"`
-	Search string `json:"search"`
+	Page       int    `json:"page"`
+	Size       int    `json:"size"`
+	Sort       string `json:"sort"`
+	Direction  string `json:"direction"`
+	Active     int    `json:"active"`
+	Stock      int    `json:"stock"`
+	Id         int    `json:"id"`
+	CategoryID int    `json:"category_id"`
+	Search     string `json:"search"`
 }
 
 type PaginationProductCategInput struct {
@@ -55,12 +56,20 @@ type PaginationProductCategInput struct {
 	Size      int    `json:"size"`
 	Sort      string `json:"sort"`
 	Direction string `json:"direction"`
-	Slug string `json:"slug"`
-	Stock int `json:"stock"`
+	Slug      string `json:"slug"`
+	Stock     int    `json:"stock"`
+}
+
+type PaginationProductByCategoryID struct {
+	Page       int    `json:"page"`
+	Size       int    `json:"size"`
+	Sort       string `json:"sort"`
+	Direction  string `json:"direction"`
+	CategoryID string `json:"category_id"`
 }
 
 type UpdateThumbProductInput struct {
-	ID int `json:"id"`
+	ID        int    `json:"id"`
 	Thumbnail string `json:"thumbnail"`
 }
 
@@ -108,7 +117,7 @@ type FindBySlugInput struct {
 }
 
 type UpdateViewsInput struct {
-	ID int `json:"id" binding:"required"`
+	ID    int `json:"id" binding:"required"`
 	Views int `json:"views" binding:"required"`
 }
 

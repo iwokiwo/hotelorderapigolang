@@ -127,6 +127,25 @@ func (r *repository) FindByActive(active int) (Product, error) {
 	return product, nil
 }
 
+// func (r *repository) FrontFindProductByCategoryID(input PaginationProductByCategoryID) ([]Product, error) {
+// 	var products []Product
+
+// 	totalRows := 0
+// 	total := int64(totalRows)
+
+// 	page := input.Page
+
+// 	if page == 0 {
+// 		page = 1
+// 	}
+
+// 	//query
+// 	offset := (page - 1) * input.Size
+// 	find := r.db.Limit(input.Size).Offset(offset).Order(input.Sort + " " + input.Direction)
+
+// 	return products, nil
+// }
+
 func (r *repository) FrontFindProductByCateg(input PaginationProductCategInput) ([]Product, int64) {
 	var products []Product
 	totalRows := 0
@@ -274,31 +293,29 @@ func (r *repository) SearchAll(input SearchInput) ([]Product, int64, error) {
 			Where("id = ?", input.Id).
 			Preload("Category").
 			Find(&products)
-		err := find.Error
-
-		if err != nil {
-			return products, total, err
-		}
-
-		for i := range products {
-			total = total + 1
-			i++
-		}
-
-		data := products
-		return data, total, nil
 	}
 
-	fmt.Println("leawt")
-	find = find.Where("active = ?", input.Active).
-		Where("stock > ?", 0).
-		Where("name LIKE ?", "%"+input.Search+"%").
-		Or("slug LIKE ?", "%"+input.Search+"%").
-		Or("description LIKE ?", "%"+input.Search+"%").
-		Preload("Category").
-		Find(&products)
+	if input.CategoryID > 0 {
+		fmt.Println("lewat", input.CategoryID)
+		find = find.Where("active = ?", input.Active).
+			Where("category_id = ?", input.CategoryID).
+			Where("stock > ?", 0).
+			Where("name LIKE ?", "%"+input.Search+"%").
+			Preload("Category").
+			Find(&products)
+	}
+	if input.CategoryID == 0 {
 
-	// total = len(products)
+		find = find.Where("active = ?", input.Active).
+			Where("stock > ?", 0).
+			Where("name LIKE ?", "%"+input.Search+"%").
+			Or("slug LIKE ?", "%"+input.Search+"%").
+			Or("description LIKE ?", "%"+input.Search+"%").
+			Preload("Category").
+			Find(&products)
+
+	}
+
 	err := find.Error
 	if err != nil {
 		return products, total, err
