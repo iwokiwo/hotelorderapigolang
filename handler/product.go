@@ -228,7 +228,13 @@ func (h *productHandler) SearchProductHanlder(c *gin.Context) {
 		return
 	}
 
-	products, total := h.productService.SearchProductService(input)
+	products, total, err := h.productService.SearchProductService(input)
+
+	if err != nil {
+		response := helper.APIResponse("Search All Products failed", http.StatusBadRequest, "error", err)
+		c.JSON(http.StatusBadRequest, response)
+		return
+	}
 
 	formatter := product.FormatProducts(products)
 	response := helper.APIPagination("Search All Products", http.StatusOK, "success", total, formatter)

@@ -18,7 +18,7 @@ type Repository interface {
 	// FindByName(name string) (Product, error)
 	FindByActive(active int) (Product, error)
 	FindAll(input PaginationInput) ([]Product, int64)
-	SearchAll(input SearchInput) ([]Product, int64)
+	SearchAll(input SearchInput) ([]Product, int64, error)
 	FindAllBest() ([]Product, error)
 	FindProductByCategory(slug string) (Product, error)
 	DelProduct(id int, product Product) (bool, error)
@@ -192,7 +192,7 @@ func (r *repository) FrontFindProductByCateg(input PaginationProductCategInput) 
 
 func (r *repository) FindAll(input PaginationInput) ([]Product, int64) {
 	var products []Product
-	totalRows := 0
+	totalRows := 1
 	total := int64(totalRows)
 
 	page := input.Page
@@ -253,7 +253,7 @@ func (r *repository) FindAll(input PaginationInput) ([]Product, int64) {
 	return data, total
 }
 
-func (r *repository) SearchAll(input SearchInput) ([]Product, int64) {
+func (r *repository) SearchAll(input SearchInput) ([]Product, int64, error) {
 	var products []Product
 	totalRows := 0
 	total := int64(totalRows)
@@ -269,59 +269,49 @@ func (r *repository) SearchAll(input SearchInput) ([]Product, int64) {
 	find := r.db.Limit(input.Size).Offset(offset).Order(input.Sort + " " + input.Direction)
 
 	if input.Id > 0 {
-		find = find.Where("active = ?", 1).
+		find = find.Where("active = ?", input.Active).
 			Where("stock > ?", 0).
 			Where("id = ?", input.Id).
 			Preload("Category").
 			Find(&products)
+		err := find.Error
+
+		if err != nil {
+			return products, total, err
+		}
+
+		for i := range products {
+			total = total + 1
+			i++
+		}
+
+		data := products
+		return data, total, nil
 	}
 
-	if input.Search != "" {
-		fmt.Println("leawt")
-		find = find.Where("active = ?", 1).
-			Where("stock > ?", 0).
-			Where("name LIKE ?", "%"+input.Search+"%").
-			Or("slug LIKE ?", "%"+input.Search+"%").
-			Or("description LIKE ?", "%"+input.Search+"%").
-			Preload("Category").
-			Find(&products)
-	}
+	fmt.Println("leawt")
+	find = find.Where("active = ?", input.Active).
+		Where("stock > ?", 0).
+		Where("name LIKE ?", "%"+input.Search+"%").
+		Or("slug LIKE ?", "%"+input.Search+"%").
+		Or("description LIKE ?", "%"+input.Search+"%").
+		Preload("Category").
+		Find(&products)
 
-	if input.Active == 0 {
-		find = find.Preload("Category").Find(&products)
-	}
+	// total = len(products)
 	err := find.Error
 	if err != nil {
-		return products, total
+		return products, total, err
+	}
+
+	for i := range products {
+		total = total + 1
+		i++
 	}
 
 	data := products
 
-	// count all data
-	if input.Id > 0 {
-		err = r.db.Where("active = ?", 1).
-			Where("stock > ?", 0).
-			Where("id = ?", input.Id).
-			Find(&products).Count(&total).Error
-	}
-
-	if input.Search != "" {
-		err = r.db.Where("active = ?", 1).
-			Where("stock > ?", 0).
-			Where("name LIKE ?", "%"+input.Search+"%").
-			Or("slug LIKE ?", "%"+input.Search+"%").
-			//Or("description LIKE ?", "%"+input.Search+"%").
-			Find(&products).Count(&total).Error
-	}
-
-	if input.Active == 0 {
-		err = r.db.Find(&products).Count(&total).Error
-	}
-	if err != nil {
-		return data, total
-	}
-
-	return data, total
+	return data, total, nil
 }
 
 func (r *repository) FindAllBest() ([]Product, error) {

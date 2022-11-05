@@ -16,7 +16,7 @@ type Service interface {
 
 	// PRODUCT
 	FindAllProductService(input PaginationInput) ([]Product, int64)
-	SearchProductService(input SearchInput) ([]Product, int64)
+	SearchProductService(input SearchInput) ([]Product, int64, error)
 	FindAllProductBestService() ([]Product, error)
 	FindProductById(id int) (Product, error)
 	FindProductBySlug(slug string) (bool, error)
@@ -258,12 +258,15 @@ func (s *service) FindAllProductService(input PaginationInput) ([]Product, int64
 	return products, total
 }
 
-func (s *service) SearchProductService(input SearchInput) ([]Product, int64) {
-	products, total := s.repository.SearchAll(input)
-	if total != 0 {
-		return products, total
+func (s *service) SearchProductService(input SearchInput) ([]Product, int64, error) {
+	products, total, err := s.repository.SearchAll(input)
+	if err != nil {
+		return products, total, err
 	}
-	return products, total
+	if total != 0 {
+		return products, total, nil
+	}
+	return products, total, nil
 }
 
 func (s *service) FindProductByCategService(input PaginationProductCategInput) ([]Product, int64) {
