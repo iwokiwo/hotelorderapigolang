@@ -272,20 +272,23 @@ func (r *repository) SearchAll(input SearchInput) ([]Product, int64) {
 		find = find.Where("active = ?", 1).
 			Where("stock > ?", 0).
 			Where("id = ?", input.Id).
+			Preload("Category").
 			Find(&products)
 	}
 
 	if input.Search != "" {
+		fmt.Println("leawt")
 		find = find.Where("active = ?", 1).
 			Where("stock > ?", 0).
 			Where("name LIKE ?", "%"+input.Search+"%").
 			Or("slug LIKE ?", "%"+input.Search+"%").
 			Or("description LIKE ?", "%"+input.Search+"%").
+			Preload("Category").
 			Find(&products)
 	}
 
 	if input.Active == 0 {
-		find = find.Find(&products)
+		find = find.Preload("Category").Find(&products)
 	}
 	err := find.Error
 	if err != nil {
@@ -307,7 +310,7 @@ func (r *repository) SearchAll(input SearchInput) ([]Product, int64) {
 			Where("stock > ?", 0).
 			Where("name LIKE ?", "%"+input.Search+"%").
 			Or("slug LIKE ?", "%"+input.Search+"%").
-			Or("description LIKE ?", "%"+input.Search+"%").
+			//Or("description LIKE ?", "%"+input.Search+"%").
 			Find(&products).Count(&total).Error
 	}
 

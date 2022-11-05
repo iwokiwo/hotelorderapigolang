@@ -6,6 +6,279 @@
 	},
 	"item": [
 		{
+			"name": "Product",
+			"item": [
+				{
+					"name": "FrontEnd",
+					"item": [
+						{
+							"name": "Serach Priduct",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"Page\":1,\r\n    \"Size\":10,\r\n    \"Sort\":\"created_at desc\",\r\n    \"Direction\":\"\",\r\n    \"Active\":1,\r\n    \"Stock \":0,\r\n    \"Id\": 0,\r\n    \"Search\":\"k\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{url}}/api/v1/front/search",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"api",
+										"v1",
+										"front",
+										"search"
+									]
+								}
+							},
+							"response": [
+								{
+									"name": "Priduct",
+									"originalRequest": {
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\r\n    \"Page\":1,\r\n    \"Size\":10,\r\n    \"Sort\":\"created_at desc\",\r\n    \"Direction\":\"\",\r\n    \"Active\":0,\r\n    \"Stock \":0\r\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{url}}/api/v1/product",
+											"host": [
+												"{{url}}"
+											],
+											"path": [
+												"api",
+												"v1",
+												"product"
+											]
+										}
+									},
+									"status": "OK",
+									"code": 200,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "application/json; charset=utf-8"
+										},
+										{
+											"key": "Date",
+											"value": "Wed, 02 Nov 2022 02:26:26 GMT"
+										},
+										{
+											"key": "Content-Length",
+											"value": "222"
+										}
+									],
+									"cookie": [],
+									"body": "{\n    \"meta\": {\n        \"message\": \"Get All Products\",\n        \"code\": 200,\n        \"status\": \"success\",\n        \"total\": 1\n    },\n    \"data\": [\n        {\n            \"id\": 1,\n            \"name\": \"Makanan\",\n            \"slug\": \"1\",\n            \"bahan\": \"\",\n            \"thumbnail\": \"\",\n            \"dimensi\": \"\",\n            \"price\": 0,\n            \"stock\": 0,\n            \"active\": 0,\n            \"views\": 0,\n            \"description\": \"\"\n        }\n    ]\n}"
+								}
+							]
+						}
+					]
+				},
+				{
+					"name": "Dasboard",
+					"item": [
+						{
+							"name": "Create Product",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"name\":\"Makanan\",\r\n    \"slug\":\"1\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{url}}/api/v1/product/create",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"api",
+										"v1",
+										"product",
+										"create"
+									]
+								}
+							},
+							"response": [
+								{
+									"name": "Create Product",
+									"originalRequest": {
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\r\n    \"name\":\"kamu\",\r\n    \"slug\":\"3\"\r\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{url}}/api/v1/product/create",
+											"host": [
+												"{{url}}"
+											],
+											"path": [
+												"api",
+												"v1",
+												"product",
+												"create"
+											]
+										}
+									},
+									"status": "OK",
+									"code": 200,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "application/json; charset=utf-8"
+										},
+										{
+											"key": "Date",
+											"value": "Wed, 02 Nov 2022 02:27:46 GMT"
+										},
+										{
+											"key": "Content-Length",
+											"value": "206"
+										}
+									],
+									"cookie": [],
+									"body": "{\n    \"meta\": {\n        \"message\": \"Create Products\",\n        \"code\": 200,\n        \"status\": \"success\"\n    },\n    \"data\": {\n        \"id\": 3,\n        \"name\": \"kamu\",\n        \"slug\": \"3\",\n        \"bahan\": \"\",\n        \"thumbnail\": \"\",\n        \"dimensi\": \"\",\n        \"price\": 0,\n        \"stock\": 0,\n        \"active\": 0,\n        \"views\": 0,\n        \"description\": \"\"\n    }\n}"
+								}
+							]
+						},
+						{
+							"name": "List Priduct",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"Page\":1,\r\n    \"Size\":10,\r\n    \"Sort\":\"created_at desc\",\r\n    \"Direction\":\"\",\r\n    \"Active\":0,\r\n    \"Stock \":0\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{url}}/api/v1/product",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"api",
+										"v1",
+										"product"
+									]
+								}
+							},
+							"response": [
+								{
+									"name": "Priduct",
+									"originalRequest": {
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\r\n    \"Page\":1,\r\n    \"Size\":10,\r\n    \"Sort\":\"created_at desc\",\r\n    \"Direction\":\"\",\r\n    \"Active\":0,\r\n    \"Stock \":0\r\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{url}}/api/v1/product",
+											"host": [
+												"{{url}}"
+											],
+											"path": [
+												"api",
+												"v1",
+												"product"
+											]
+										}
+									},
+									"status": "OK",
+									"code": 200,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "application/json; charset=utf-8"
+										},
+										{
+											"key": "Date",
+											"value": "Wed, 02 Nov 2022 02:26:26 GMT"
+										},
+										{
+											"key": "Content-Length",
+											"value": "222"
+										}
+									],
+									"cookie": [],
+									"body": "{\n    \"meta\": {\n        \"message\": \"Get All Products\",\n        \"code\": 200,\n        \"status\": \"success\",\n        \"total\": 1\n    },\n    \"data\": [\n        {\n            \"id\": 1,\n            \"name\": \"Makanan\",\n            \"slug\": \"1\",\n            \"bahan\": \"\",\n            \"thumbnail\": \"\",\n            \"dimensi\": \"\",\n            \"price\": 0,\n            \"stock\": 0,\n            \"active\": 0,\n            \"views\": 0,\n            \"description\": \"\"\n        }\n    ]\n}"
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
 			"name": "Register",
 			"request": {
 				"method": "POST",
@@ -50,12 +323,10 @@
 					}
 				},
 				"url": {
-					"raw": "http://localhost:8090/api/v1/sessions",
-					"protocol": "http",
+					"raw": "{{url}}/api/v1/sessions",
 					"host": [
-						"localhost"
+						"{{url}}"
 					],
-					"port": "8090",
 					"path": [
 						"api",
 						"v1",
@@ -64,6 +335,46 @@
 				}
 			},
 			"response": []
+		}
+	],
+	"auth": {
+		"type": "bearer",
+		"bearer": [
+			{
+				"key": "token",
+				"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoxfQ.c9iF8378Wy9uU_8_tJS_iDgrw2UUF3W7KSoYRYotRVI",
+				"type": "string"
+			}
+		]
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "url",
+			"value": "http://localhost:8090"
+		},
+		{
+			"key": "token",
+			"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoxfQ.c9iF8378Wy9uU_8_tJS_iDgrw2UUF3W7KSoYRYotRVI"
 		}
 	]
 }
