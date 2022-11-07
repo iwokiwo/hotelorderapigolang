@@ -17,14 +17,14 @@ type Meta struct {
 
 type WebResponsePagination struct {
 	Meta PaginationMeta `json:"meta"`
-	Data interface{} `json:"data"`
+	Data interface{}    `json:"data"`
 }
 
 type PaginationMeta struct {
 	Message string `json:"message"`
 	Code    int    `json:"code"`
 	Status  string `json:"status"`
-	Total  int64 `json:"total"`
+	Total   int64  `json:"total"`
 }
 
 func APIPagination(message string, code int, status string, total int64, data interface{}) WebResponsePagination {
@@ -32,7 +32,7 @@ func APIPagination(message string, code int, status string, total int64, data in
 		Message: message,
 		Code:    code,
 		Status:  status,
-		Total: total,
+		Total:   total,
 	}
 
 	jsonResponsePagination := WebResponsePagination{

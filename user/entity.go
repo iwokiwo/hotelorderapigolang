@@ -10,6 +10,7 @@ type User struct {
 	PasswordTemp string `json:"password_temp"`
 	Code         string `json:"code"`
 	Active       int    `json:"active"`
+	Role         string `json:"role"`
 	CreatedAt    time.Time
 	UpdatedAt    time.Time
 }

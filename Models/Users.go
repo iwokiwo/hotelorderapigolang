@@ -13,6 +13,7 @@ type User struct {
 	Password     string `json:"password" gorm:"size:100;not null"`
 	PasswordTemp string `json:"password_temp"`
 	Code         string `json:"code"`
+	Role         string `json:"role"`
 	Active       int    `json:"active"`
 	CreatedAt    time.Time
 	UpdatedAt    time.Time
