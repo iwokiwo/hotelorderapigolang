@@ -18,6 +18,32 @@ func NewUnitHandler(unitService unit.Service, authService auth.Service) *unitHan
 	return &unitHandler{unitService, authService}
 }
 
+func (h *unitHandler) CreateUnit(c *gin.Context) {
+
+	var input unit.RegisterUnitInput
+
+	err := c.ShouldBindJSON(&input)
+	if err != nil {
+		errors := helper.FormatValidationError(err)
+		errorMessage := gin.H{"errors": errors}
+		response := helper.APIResponse("Register category failed", http.StatusUnprocessableEntity, "error", errorMessage)
+		c.JSON(http.StatusUnprocessableEntity, response)
+
+		return
+	}
+
+	_, err = h.unitService.RegisterUnit(input)
+
+	if err != nil {
+		response := helper.APIResponse("Create unit failed", http.StatusBadRequest, "error", err)
+		c.JSON(http.StatusBadRequest, response)
+		return
+	}
+
+	response := helper.APIResponse("Unit has been registered", http.StatusOK, "success", nil)
+	c.JSON(http.StatusOK, response)
+}
+
 func (h *unitHandler) GetAllUnit(c *gin.Context) {
 	unit, err := h.unitService.FindAllUnit()
 

@@ -130,7 +130,9 @@ func SetupRouter(db *gorm.DB) *gin.Engine {
 	api.POST("/front/settings", settingHandler.FindByid)
 	// api.GET("/pagination", productHandler.Pagination)
 
+	//----------------------unit api Dasboard----------------------------
 	api.POST("/front/unit", unitHandler.GetAllUnit)
+	api.POST("/unit/create", unitHandler.CreateUnit)
 
 	return router
 }
