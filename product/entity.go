@@ -20,11 +20,13 @@ type Product struct {
 	Stock            int              `json:"stock"`
 	Active           int              `json:"active"`
 	CategoryId       int              `json:"category_id"`
+	UnitId           int              `json:"unit_id"`
 	Views            int              `json:"views"`
 	Description      string           `json:"description"`
 	CategoryRelation CategoryRelation `gorm:"foreignKey:ProductID"`
 	// SliderRelation   []SliderRelation   `gorm:"foreignKey:ProductID"`
 	Category  Category `gorm:"foreignkey:CategoryId"`
+	Unit      Unit     `gorm:"foreignkey:UnitId"`
 	CreatedAt time.Time
 	UpdatedAt time.Time
 }
@@ -59,6 +61,12 @@ type CategoryRelation struct {
 	UpdatedAt  time.Time
 }
 
+type Unit struct {
+	ID        int
+	Name      string
+	CreatedAt time.Time
+	UpdatedAt time.Time
+}
 type Category struct {
 	ID        int
 	Name      string

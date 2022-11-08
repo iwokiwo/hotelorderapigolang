@@ -211,7 +211,7 @@ func (r *repository) FrontFindProductByCateg(input PaginationProductCategInput) 
 
 func (r *repository) FindAll(input PaginationInput) ([]Product, int64) {
 	var products []Product
-	totalRows := 1
+	totalRows := 0
 	total := int64(totalRows)
 
 	page := input.Page
@@ -225,49 +225,19 @@ func (r *repository) FindAll(input PaginationInput) ([]Product, int64) {
 	find := r.db.Limit(input.Size).Offset(offset).Order(input.Sort + " " + input.Direction)
 
 	if input.Active == 1 {
-		if input.Stock == 1 {
-			find = find.Where("active = ?", 1).
-				Where("stock > ?", 0).Preload("CategoryRelation").Preload("Category").
-				Find(&products)
-		}
-
-		if input.Stock == 0 {
-			find = find.Where("active = ?", 1).
-				Where("stock = ?", 0).Preload("CategoryRelation").Preload("Category").
-				Find(&products)
-		}
-
-	}
-	if input.Active == 0 {
-		find = find.Preload("CategoryRelation").Preload("Category").Find(&products)
+		find = find.Preload("Unit").Preload("Category").Find(&products)
 	}
 	err := find.Error
 	if err != nil {
 		return products, total
 	}
-	//fmt.Println("Hello World!", products)
+
+	for i := range products {
+		total = total + 1
+		i++
+	}
+
 	data := products
-
-	// count all data
-	if input.Active == 1 {
-		if input.Stock == 1 {
-			err = r.db.Where("active = ?", 1).
-				Where("stock > ?", 0).
-				Find(&products).Count(&total).Error
-		}
-
-		if input.Stock == 0 {
-			err = r.db.Where("active = ?", 1).
-				Where("stock = ?", 0).
-				Find(&products).Count(&total).Error
-		}
-	}
-	if input.Active == 0 {
-		err = r.db.Find(&products).Count(&total).Error
-	}
-	if err != nil {
-		return data, total
-	}
 
 	return data, total
 }
@@ -292,6 +262,7 @@ func (r *repository) SearchAll(input SearchInput) ([]Product, int64, error) {
 			Where("stock > ?", 0).
 			Where("id = ?", input.Id).
 			Preload("Category").
+			Preload("Unit").
 			Find(&products)
 	}
 
@@ -302,6 +273,7 @@ func (r *repository) SearchAll(input SearchInput) ([]Product, int64, error) {
 			Where("stock > ?", 0).
 			Where("name LIKE ?", "%"+input.Search+"%").
 			Preload("Category").
+			Preload("Unit").
 			Find(&products)
 	}
 	if input.CategoryID == 0 {
@@ -312,6 +284,7 @@ func (r *repository) SearchAll(input SearchInput) ([]Product, int64, error) {
 			Or("slug LIKE ?", "%"+input.Search+"%").
 			Or("description LIKE ?", "%"+input.Search+"%").
 			Preload("Category").
+			Preload("Unit").
 			Find(&products)
 
 	}

@@ -8,6 +8,7 @@ import (
 	"iwogo/pages"
 	"iwogo/product"
 	"iwogo/settings"
+	"iwogo/unit"
 	"iwogo/user"
 
 	"github.com/gin-contrib/cors"
@@ -22,6 +23,7 @@ func SetupRouter(db *gorm.DB) *gin.Engine {
 	productRepository := product.NewRepository(db)
 	pageRepository := pages.NewRepository(db)
 	settingRepository := settings.NewRepository(db)
+	unitRepository := unit.NewRepository(db)
 
 	// SERVICE
 	userService := user.NewService(userRepository)
@@ -29,6 +31,7 @@ func SetupRouter(db *gorm.DB) *gin.Engine {
 	productService := product.NewService(productRepository)
 	pageService := pages.NewService(pageRepository)
 	settingService := settings.NewService(settingRepository)
+	unitService := unit.NewService(unitRepository)
 
 	authService := auth.NewService()
 
@@ -37,6 +40,7 @@ func SetupRouter(db *gorm.DB) *gin.Engine {
 	productHandler := handler.NewProductHandler(productService)
 	pageHandler := handler.NewPageHandler(pageService)
 	settingHandler := handler.NewSettingHandler(settingService)
+	unitHandler := handler.NewUnitHandler(unitService, authService)
 
 	router := gin.Default()
 
@@ -125,6 +129,8 @@ func SetupRouter(db *gorm.DB) *gin.Engine {
 	api.POST("/front/categories", categoryHandler.GetAllCategory)
 	api.POST("/front/settings", settingHandler.FindByid)
 	// api.GET("/pagination", productHandler.Pagination)
+
+	api.POST("/front/unit", unitHandler.GetAllUnit)
 
 	return router
 }

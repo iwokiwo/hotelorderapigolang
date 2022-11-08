@@ -23,7 +23,8 @@ type Product struct {
 	Stock          int    `json:"stock"`
 	Active         int    `json:"active"`
 	Inventory      int    `json:"inventory"`
-	CategoryId     int    `json:"category_id"`
+	UnitId         int    `json:"unit_id"`
+	CategoryId     int    `json:"_id"`
 	Views          int    `json:"views"`
 	Description    string `json:"description"`
 	// CategoryRelation []CategoryRelation `gorm:"foreignKey:ProductID"`

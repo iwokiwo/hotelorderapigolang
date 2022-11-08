@@ -21,6 +21,7 @@ type ProductFormatter struct {
 	Description    string   `json:"description"`
 	CategoryId     int      `json:"category_id"`
 	Category       Category `json:"category"`
+	Unit           Unit     `json:"unit"`
 	//CategoryRelation CategoryRelation `json:"CategoryRelation"`
 }
 
@@ -44,6 +45,8 @@ func FormatProduct(product Product) ProductFormatter {
 		Description:    product.Description,
 		Category:       product.Category,
 		CategoryId:     product.CategoryId,
+		Unit:           product.Unit,
+
 		//CategoryRelation: product.CategoryRelation,
 	}
 	return formatter

@@ -46,6 +46,7 @@ func main() {
 		&Models.User{},
 		&Models.Category{},
 		&Models.Product{},
+		&Models.Unit{},
 		&Models.Page{},
 		&Models.Slider{},
 		&Models.SliderRelation{},

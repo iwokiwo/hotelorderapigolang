@@ -9,12 +9,26 @@ type Response struct {
 	Data interface{} `json:"data"`
 }
 
+type ResponseV2 struct {
+	Message string      `json:"message"`
+	Code    int         `json:"code"`
+	Status  string      `json:"status"`
+	Data    interface{} `json:"data"`
+}
+
 type Meta struct {
 	Message string `json:"message"`
 	Code    int    `json:"code"`
 	Status  string `json:"status"`
 }
 
+type WebResponsePaginationV2 struct {
+	Message string      `json:"message"`
+	Code    int         `json:"code"`
+	Status  string      `json:"status"`
+	Total   int64       `json:"total"`
+	Data    interface{} `json:"data"`
+}
 type WebResponsePagination struct {
 	Meta PaginationMeta `json:"meta"`
 	Data interface{}    `json:"data"`
@@ -27,32 +41,39 @@ type PaginationMeta struct {
 	Total   int64  `json:"total"`
 }
 
-func APIPagination(message string, code int, status string, total int64, data interface{}) WebResponsePagination {
-	meta := PaginationMeta{
+func APIPagination(message string, code int, status string, total int64, data interface{}) WebResponsePaginationV2 {
+	// meta := PaginationMeta{
+	// 	Message: message,
+	// 	Code:    code,
+	// 	Status:  status,
+	// 	Total:   total,
+	// }
+
+	jsonResponsePagination := WebResponsePaginationV2{
+		//Meta: meta,
 		Message: message,
 		Code:    code,
 		Status:  status,
 		Total:   total,
-	}
-
-	jsonResponsePagination := WebResponsePagination{
-		Meta: meta,
-		Data: data,
+		Data:    data,
 	}
 
 	return jsonResponsePagination
 }
 
-func APIResponse(message string, code int, status string, data interface{}) Response {
-	meta := Meta{
+func APIResponse(message string, code int, status string, data interface{}) ResponseV2 {
+	// meta := Meta{
+	// 	Message: message,
+	// 	Code:    code,
+	// 	Status:  status,
+	// }
+
+	jsonResponse := ResponseV2{
+		//Meta: meta,
 		Message: message,
 		Code:    code,
 		Status:  status,
-	}
-
-	jsonResponse := Response{
-		Meta: meta,
-		Data: data,
+		Data:    data,
 	}
 
 	return jsonResponse
