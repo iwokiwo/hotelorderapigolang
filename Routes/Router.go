@@ -131,8 +131,9 @@ func SetupRouter(db *gorm.DB) *gin.Engine {
 	// api.GET("/pagination", productHandler.Pagination)
 
 	//----------------------unit api Dasboard----------------------------
-	api.POST("/front/unit", unitHandler.GetAllUnit)
-	api.POST("/unit/create", unitHandler.CreateUnit)
+	api.POST("/front/unit", middleware.AuthMiddleware(authService, userService), unitHandler.GetAllUnit)
+	api.POST("/unit/create", middleware.AuthMiddleware(authService, userService), unitHandler.CreateUnit)
+	api.POST("/unit/update", middleware.AuthMiddleware(authService, userService), unitHandler.UpdateUnit)
 
 	return router
 }
