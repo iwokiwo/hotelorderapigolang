@@ -79,3 +79,32 @@ func (h *unitHandler) UpdateUnit(c *gin.Context) {
 	c.JSON(http.StatusOK, response)
 
 }
+
+func (h *unitHandler) DeleteUnit(c *gin.Context) {
+	var input unit.DeleteUnitInput
+	err := c.ShouldBindJSON(&input)
+	if err != nil {
+		errors := helper.FormatValidationError(err)
+		errorMessage := gin.H{"errors": errors}
+		response := helper.APIResponse("Delete unit failed", http.StatusUnprocessableEntity, "error", errorMessage)
+		c.JSON(http.StatusUnprocessableEntity, response)
+	}
+
+	del, err := h.unitService.DeleteUnit(input)
+	if err != nil {
+		errorMessage := gin.H{"error": err.Error()}
+		response := helper.APIResponse("Please try again", http.StatusUnprocessableEntity, "error", errorMessage)
+		c.JSON(http.StatusUnprocessableEntity, response)
+		return
+	}
+
+	if del != true {
+		errorMessage := gin.H{"error": err.Error()}
+		response := helper.APIResponse("Please try again", http.StatusUnprocessableEntity, "error", errorMessage)
+		c.JSON(http.StatusUnprocessableEntity, response)
+		return
+	}
+
+	response := helper.APIResponse("Delete unit", http.StatusOK, "success", nil)
+	c.JSON(http.StatusOK, response)
+}
