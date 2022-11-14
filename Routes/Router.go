@@ -69,11 +69,11 @@ func SetupRouter(db *gorm.DB) *gin.Engine {
 	api.POST("/user/change", middleware.AuthMiddleware(authService, userService), userHandler.ChangeDetailHandler)
 
 	// CATEGORY
-	api.GET("/category", categoryHandler.GetAllCategory)
+	api.GET("/category", middleware.AuthMiddleware(authService, userService), categoryHandler.GetAllCategory)
 	api.GET("/category/:id", categoryHandler.GetCategoryById)
 	api.GET("/category/by/:slug", categoryHandler.GetCategoryBySlug)
 	api.POST("/category/register", middleware.AuthMiddleware(authService, userService), categoryHandler.RegisterCategory)
-	api.POST("/category/update", middleware.AuthMiddleware(authService, userService), categoryHandler.UpdateCategory)
+	api.PUT("/category/update", middleware.AuthMiddleware(authService, userService), categoryHandler.UpdateCategory)
 	api.POST("/category/delete", middleware.AuthMiddleware(authService, userService), categoryHandler.DeleteCategory)
 
 	// PRODUCT
