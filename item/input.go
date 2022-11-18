@@ -20,3 +20,19 @@ type SearchInput struct {
 	CategoryID int    `json:"category_id"`
 	Search     string `json:"search"`
 }
+
+type CreateItem struct {
+	Name           string `json:"name" binding:"required"`
+	Dimensi        string `json:"dimensi"`
+	Hpp            int    `json:"hpp"`
+	Price          int    `json:"price"`
+	AvailableColor int    `json:"available_color"`
+	AvailableSize  int    `json:"available_size"`
+	Color          string `json:"color"`
+	Size           string `json:"size"`
+	Stock          int    `json:"stock"`
+	Active         int    `json:"active"`
+	CategoryId     int    `json:"category_id"`
+	UnitId         int    `json:"unit_id"`
+	Description    string `json:"description"`
+}

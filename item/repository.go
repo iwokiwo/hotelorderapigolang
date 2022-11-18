@@ -1,13 +1,11 @@
 package item
 
 import (
-	"fmt"
-
 	"gorm.io/gorm"
 )
 
 type Repository interface {
-	// Save(item Item) (Item, error)
+	CreateItem(item Product) (Product, error)
 	// Update(item Item) (Item, error)
 	SearchAll(input SearchInput) ([]Product, int64, error)
 }
@@ -18,6 +16,16 @@ type repository struct {
 
 func NewRepository(db *gorm.DB) *repository {
 	return &repository{db}
+}
+
+func (r *repository) CreateItem(item Product) (Product, error) {
+	err := r.db.Create(&item).Error
+
+	if err != nil {
+		return item, err
+	}
+
+	return item, nil
 }
 
 func (r *repository) SearchAll(input SearchInput) ([]Product, int64, error) {
@@ -47,7 +55,7 @@ func (r *repository) SearchAll(input SearchInput) ([]Product, int64, error) {
 	}
 
 	if input.CategoryID > 0 {
-		fmt.Println("lewat", input.CategoryID)
+
 		find = find.Where("active = ?", input.Active).
 			Where("category_id = ?", input.CategoryID).
 			Where("stock > ?", 0).
@@ -82,7 +90,7 @@ func (r *repository) SearchAll(input SearchInput) ([]Product, int64, error) {
 	}
 
 	data := items
-	fmt.Println("data", data)
+
 	return data, total, nil
 
 }

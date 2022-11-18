@@ -1,6 +1,7 @@
 package item
 
 type Service interface {
+	CreateItem(input CreateItem) (Product, error)
 	SearchAll(input SearchInput) ([]Product, int64, error)
 }
 
@@ -10,6 +11,18 @@ type service struct {
 
 func NewService(repository Repository) *service {
 	return &service{repository}
+}
+
+func (s *service) CreateItem(input CreateItem) (Product, error) {
+	item := Product{}
+	item.Name = input.Name
+
+	newItem, err := s.repository.CreateItem(item)
+	if err != nil {
+		return newItem, err
+	}
+
+	return newItem, nil
 }
 
 func (s *service) SearchAll(input SearchInput) ([]Product, int64, error) {
