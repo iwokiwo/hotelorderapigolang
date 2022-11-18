@@ -20,7 +20,7 @@ type ItemFormatter struct {
 	CategoryId     int      `json:"category_id"`
 	Category       Category `json:"category"`
 	Unit           Unit     `json:"unit"`
-	Img            Img      `json:"img"`
+	Img            []Img    `json:"img"`
 }
 
 func FormatItem(product Product) ItemFormatter {

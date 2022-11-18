@@ -25,7 +25,6 @@ type Product struct {
 	Inventory      int    `json:"inventory"`
 	UnitId         int    `json:"unit_id"`
 	CategoryId     int    `json:"category_id"`
-	ImgId          int    `json:"img_id"`
 	Views          int    `json:"views"`
 	Description    string `json:"description"`
 	CreatedAt      time.Time

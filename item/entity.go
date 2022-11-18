@@ -26,7 +26,7 @@ type Product struct {
 	Description    string   `json:"description"`
 	Category       Category `gorm:"foreignkey:CategoryId"`
 	Unit           Unit     `gorm:"foreignkey:UnitId"`
-	Img            Img      `gorm:"foreignkey:ImgId"`
+	Img            []Img    `gorm:"foreignkey:ProductId"`
 	CreatedAt      time.Time
 	UpdatedAt      time.Time
 }
@@ -45,6 +45,7 @@ type Category struct {
 }
 
 type Img struct {
-	ID       int
-	Filename string
+	ID        int
+	Filename  string
+	ProductId int
 }

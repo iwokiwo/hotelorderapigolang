@@ -82,7 +82,7 @@ func (r *repository) SearchAll(input SearchInput) ([]Product, int64, error) {
 	}
 
 	data := items
-
+	fmt.Println("data", data)
 	return data, total, nil
 
 }
