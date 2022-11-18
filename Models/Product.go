@@ -24,14 +24,13 @@ type Product struct {
 	Active         int    `json:"active"`
 	Inventory      int    `json:"inventory"`
 	UnitId         int    `json:"unit_id"`
-	CategoryId     int    `json:"_id"`
+	CategoryId     int    `json:"category_id"`
+	ImgId          int    `json:"img_id"`
 	Views          int    `json:"views"`
 	Description    string `json:"description"`
-	// CategoryRelation []CategoryRelation `gorm:"foreignKey:ProductID"`
-	// SliderRelation   []SliderRelation   `gorm:"foreignKey:ProductID"`
-	CreatedAt time.Time
-	UpdatedAt time.Time
-	DeletedAt gorm.DeletedAt
+	CreatedAt      time.Time
+	UpdatedAt      time.Time
+	DeletedAt      gorm.DeletedAt
 }
 
 func (b *Product) TableName() string {

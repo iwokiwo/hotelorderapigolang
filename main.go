@@ -51,7 +51,8 @@ func main() {
 		&Models.Slider{},
 		&Models.SliderRelation{},
 		&Models.CategoryRelation{},
-		&Models.Setting{})
+		&Models.Setting{},
+		&Models.Img{})
 
 	//Routes.SubscribeMessage(ch, "go-queue_order")
 	router := Routes.SetupRouter(db)

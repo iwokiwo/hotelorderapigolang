@@ -1,0 +1,24 @@
+package item
+
+type Service interface {
+	SearchAll(input SearchInput) ([]Product, int64, error)
+}
+
+type service struct {
+	repository Repository
+}
+
+func NewService(repository Repository) *service {
+	return &service{repository}
+}
+
+func (s *service) SearchAll(input SearchInput) ([]Product, int64, error) {
+	items, total, err := s.repository.SearchAll(input)
+	if err != nil {
+		return items, total, err
+	}
+	if total != 0 {
+		return items, total, nil
+	}
+	return items, total, nil
+}

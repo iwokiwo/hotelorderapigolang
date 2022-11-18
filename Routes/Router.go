@@ -4,6 +4,7 @@ import (
 	"iwogo/auth"
 	"iwogo/category"
 	"iwogo/handler"
+	"iwogo/item"
 	"iwogo/middleware"
 	"iwogo/pages"
 	"iwogo/product"
@@ -24,6 +25,7 @@ func SetupRouter(db *gorm.DB) *gin.Engine {
 	pageRepository := pages.NewRepository(db)
 	settingRepository := settings.NewRepository(db)
 	unitRepository := unit.NewRepository(db)
+	itemRepository := item.NewRepository(db)
 
 	// SERVICE
 	userService := user.NewService(userRepository)
@@ -32,6 +34,7 @@ func SetupRouter(db *gorm.DB) *gin.Engine {
 	pageService := pages.NewService(pageRepository)
 	settingService := settings.NewService(settingRepository)
 	unitService := unit.NewService(unitRepository)
+	itemService := item.NewService(itemRepository)
 
 	authService := auth.NewService()
 
@@ -41,6 +44,7 @@ func SetupRouter(db *gorm.DB) *gin.Engine {
 	pageHandler := handler.NewPageHandler(pageService)
 	settingHandler := handler.NewSettingHandler(settingService)
 	unitHandler := handler.NewUnitHandler(unitService, authService)
+	itemHandler := handler.NewItemHandler(itemService, authService)
 
 	router := gin.Default()
 
@@ -135,6 +139,9 @@ func SetupRouter(db *gorm.DB) *gin.Engine {
 	api.POST("/unit/create", middleware.AuthMiddleware(authService, userService), unitHandler.CreateUnit)
 	api.PUT("/unit/update", middleware.AuthMiddleware(authService, userService), unitHandler.UpdateUnit)
 	api.POST("/unit/delete", middleware.AuthMiddleware(authService, userService), unitHandler.DeleteUnit)
+
+	//----------------------item api Dasboard-----------------------------
+	api.GET("/item/searchAll", middleware.AuthMiddleware(authService, userService), itemHandler.SeachAll)
 
 	return router
 }
