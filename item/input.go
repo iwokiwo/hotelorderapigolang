@@ -1,5 +1,7 @@
 package item
 
+import "time"
+
 type PaginationInput struct {
 	Page      int    `json:"page"`
 	Size      int    `json:"size"`
@@ -35,4 +37,20 @@ type CreateItem struct {
 	CategoryId     int    `json:"category_id"`
 	UnitId         int    `json:"unit_id"`
 	Description    string `json:"description"`
+	CreatedAt      time.Time
+	UpdatedAt      time.Time
+}
+
+type UpdateItem struct {
+	ID int `json:"id" binding:"required"`
+	CreateItem
+}
+
+type DeleteItem struct {
+	ID int `json:"id" binding:"required"`
+}
+
+type Imgs struct {
+	Filename  string
+	ProductId int
 }

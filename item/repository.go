@@ -6,7 +6,8 @@ import (
 
 type Repository interface {
 	CreateItem(item Product) (Product, error)
-	// Update(item Item) (Item, error)
+	UpdateItem(item Product) (Product, error)
+	DeleteItem(item Product) (Product, error)
 	SearchAll(input SearchInput) ([]Product, int64, error)
 }
 
@@ -25,6 +26,24 @@ func (r *repository) CreateItem(item Product) (Product, error) {
 		return item, err
 	}
 
+	return item, nil
+}
+
+func (r *repository) UpdateItem(item Product) (Product, error) {
+	err := r.db.Save(&item).Error
+
+	if err != nil {
+		return item, err
+	}
+
+	return item, nil
+}
+
+func (r *repository) DeleteItem(item Product) (Product, error) {
+	err := r.db.Where("id = ?", item.ID).Delete(&item).Error
+	if err != nil {
+		return item, err
+	}
 	return item, nil
 }
 

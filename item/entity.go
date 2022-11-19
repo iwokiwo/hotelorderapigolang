@@ -21,12 +21,11 @@ type Product struct {
 	Active         int      `json:"active"`
 	CategoryId     int      `json:"category_id"`
 	UnitId         int      `json:"unit_id"`
-	ImgId          int      `json:"img_id"`
 	Views          int      `json:"views"`
 	Description    string   `json:"description"`
-	Category       Category `gorm:"foreignkey:CategoryId"`
-	Unit           Unit     `gorm:"foreignkey:UnitId"`
-	Img            []Img    `gorm:"foreignkey:ProductId"`
+	Category       Category `gorm:"foreignkey:CategoryId;constraint:OnDelete:CASCADE"`
+	Unit           Unit     `gorm:"foreignkey:UnitId;constraint:OnDelete:CASCADE"`
+	Img            []Img    `gorm:"foreignkey:ProductId;constraint:OnDelete:CASCADE"`
 	CreatedAt      time.Time
 	UpdatedAt      time.Time
 }

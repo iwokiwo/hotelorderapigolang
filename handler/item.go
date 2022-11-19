@@ -1,6 +1,7 @@
 package handler
 
 import (
+	"fmt"
 	"iwogo/auth"
 	"iwogo/helper"
 	"iwogo/item"
@@ -43,31 +44,80 @@ func (h *itemHandler) SeachAll(c *gin.Context) {
 	c.JSON(http.StatusOK, response)
 }
 
-// func (h *unitHandler) CreateUnit(c *gin.Context) {
+func (h *itemHandler) CreateItem(c *gin.Context) {
+	var input item.CreateItem
+	err := c.ShouldBindJSON(&input)
+	fmt.Println("err", err)
+	if err != nil {
+		errors := helper.FormatValidationError(err)
+		errorMessage := gin.H{"errors": errors}
+		response := helper.APIResponse("Create item failed", http.StatusUnprocessableEntity, "error", errorMessage)
+		c.JSON(http.StatusUnprocessableEntity, response)
 
-// 	var input unit.RegisterUnitInput
+		return
+	}
 
-// 	err := c.ShouldBindJSON(&input)
-// 	if err != nil {
-// 		errors := helper.FormatValidationError(err)
-// 		errorMessage := gin.H{"errors": errors}
-// 		response := helper.APIResponse("Register category failed", http.StatusUnprocessableEntity, "error", errorMessage)
-// 		c.JSON(http.StatusUnprocessableEntity, response)
+	_, err = h.itemService.CreateItem(input)
 
-// 		return
-// 	}
+	if err != nil {
+		response := helper.APIResponse("Create item failed", http.StatusBadRequest, "error", err)
+		c.JSON(http.StatusBadRequest, response)
+		return
+	}
 
-// 	_, err = h.unitService.RegisterUnit(input)
+	response := helper.APIResponse("Item has been Create", http.StatusOK, "success", input)
+	c.JSON(http.StatusOK, response)
+}
 
-// 	if err != nil {
-// 		response := helper.APIResponse("Create unit failed", http.StatusBadRequest, "error", err)
-// 		c.JSON(http.StatusBadRequest, response)
-// 		return
-// 	}
+func (h *itemHandler) UpdateItem(c *gin.Context) {
+	var input item.UpdateItem
+	err := c.ShouldBindJSON(&input)
 
-// 	response := helper.APIResponse("Unit has been registered", http.StatusOK, "success", nil)
-// 	c.JSON(http.StatusOK, response)
-// }
+	if err != nil {
+		errors := helper.FormatValidationError(err)
+		errorMessage := gin.H{"errors": errors}
+		response := helper.APIResponse("Update item failed", http.StatusUnprocessableEntity, "error", errorMessage)
+		c.JSON(http.StatusUnprocessableEntity, response)
+
+		return
+	}
+
+	_, err = h.itemService.UpdateItem(input)
+
+	if err != nil {
+		response := helper.APIResponse("Update item failed", http.StatusBadRequest, "error", err)
+		c.JSON(http.StatusBadRequest, response)
+		return
+	}
+
+	response := helper.APIResponse("Item has been Update", http.StatusOK, "success", input)
+	c.JSON(http.StatusOK, response)
+}
+
+func (h *itemHandler) DeleteItem(c *gin.Context) {
+	var input item.DeleteItem
+	err := c.ShouldBindJSON(&input)
+
+	if err != nil {
+		errors := helper.FormatValidationError(err)
+		errorMessage := gin.H{"errors": errors}
+		response := helper.APIResponse("Delete item failed", http.StatusUnprocessableEntity, "error", errorMessage)
+		c.JSON(http.StatusUnprocessableEntity, response)
+
+		return
+	}
+
+	responseServer, err := h.itemService.DeleteItem(input)
+
+	if err != nil {
+		response := helper.APIResponse("Delete item failed", http.StatusBadRequest, "error", err)
+		c.JSON(http.StatusBadRequest, response)
+		return
+	}
+
+	response := helper.APIResponse("Item has been Delete", http.StatusOK, "success", responseServer)
+	c.JSON(http.StatusOK, response)
+}
 
 // func (h *unitHandler) GetAllUnit(c *gin.Context) {
 // 	unit, err := h.unitService.FindAllUnit()
