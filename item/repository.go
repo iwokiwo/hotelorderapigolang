@@ -8,7 +8,7 @@ type Repository interface {
 	CreateItem(item Product) (Product, error)
 	UpdateItem(item Product) (Product, error)
 	DeleteItem(item Product) (Product, error)
-	SearchAll(input SearchInput) ([]Product, int64, error)
+	SearchAll(input SearchInput, userId int) ([]Product, int64, error)
 }
 
 type repository struct {
@@ -48,8 +48,9 @@ func (r *repository) DeleteItem(item Product) (Product, error) {
 	return item, nil
 }
 
-func (r *repository) SearchAll(input SearchInput) ([]Product, int64, error) {
+func (r *repository) SearchAll(input SearchInput, userId int) ([]Product, int64, error) {
 
+	//fmt.Println("userId", userId)
 	var items []Product
 	totalRows := 0
 	total := int64(totalRows)
@@ -68,6 +69,7 @@ func (r *repository) SearchAll(input SearchInput) ([]Product, int64, error) {
 		find = find.Where("active = ?", input.Active).
 			Where("stock > ?", 0).
 			Where("id = ?", input.Id).
+			Where("user_id = ?", userId).
 			Preload("Category").
 			Preload("Unit").
 			Preload("Img").
@@ -80,6 +82,7 @@ func (r *repository) SearchAll(input SearchInput) ([]Product, int64, error) {
 			Where("category_id = ?", input.CategoryID).
 			Where("stock > ?", 0).
 			Where("name LIKE ?", "%"+input.Search+"%").
+			Where("user_id = ?", userId).
 			Preload("Category").
 			Preload("Unit").
 			Preload("Img").
@@ -88,10 +91,9 @@ func (r *repository) SearchAll(input SearchInput) ([]Product, int64, error) {
 	if input.CategoryID == 0 {
 
 		find = find.Where("active = ?", input.Active).
+			Where("user_id = ?", userId).
 			Where("stock > ?", 0).
 			Where("name LIKE ?", "%"+input.Search+"%").
-			Or("slug LIKE ?", "%"+input.Search+"%").
-			Or("description LIKE ?", "%"+input.Search+"%").
 			Preload("Category").
 			Preload("Unit").
 			Preload("Img").

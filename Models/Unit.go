@@ -11,6 +11,8 @@ type Unit struct {
 	Name        string `json:"name"`
 	Description string `json:"description"`
 	Slug        string `json:"slug"`
+	UserId      int    `json:"user_id"`
+	BranchId    int    `json:"branch_id"`
 	CreatedAt   time.Time
 	UpdatedAt   time.Time
 	DeletedAt   gorm.DeletedAt

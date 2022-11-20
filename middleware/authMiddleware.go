@@ -50,7 +50,7 @@ func AuthMiddleware(authService auth.Service, userService user.Service) gin.Hand
 			c.AbortWithStatusJSON(http.StatusUnauthorized, response)
 			return
 		}
-
+		//c.Set("currentUserId", userId)
 		c.Set("currentUser", user)
 	}
 }

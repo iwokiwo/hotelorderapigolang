@@ -5,6 +5,7 @@ import (
 	"iwogo/auth"
 	"iwogo/helper"
 	"iwogo/item"
+	"iwogo/user"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
@@ -20,7 +21,8 @@ func NewItemHandler(itemService item.Service, authService auth.Service) *itemHan
 }
 
 func (h *itemHandler) SeachAll(c *gin.Context) {
-
+	userID := c.MustGet("currentUser").(user.User)
+	fmt.Println("get user", userID.ID)
 	var input item.SearchInput
 	err := c.ShouldBindJSON(&input)
 	if err != nil {
@@ -31,7 +33,7 @@ func (h *itemHandler) SeachAll(c *gin.Context) {
 		return
 	}
 
-	items, total, err := h.itemService.SearchAll(input)
+	items, total, err := h.itemService.SearchAll(input, c.MustGet("currentUser").(user.User).ID)
 
 	if err != nil {
 		response := helper.APIResponse("Search All Products failed", http.StatusBadRequest, "error", err)
@@ -57,7 +59,7 @@ func (h *itemHandler) CreateItem(c *gin.Context) {
 		return
 	}
 
-	_, err = h.itemService.CreateItem(input)
+	_, err = h.itemService.CreateItem(input, c.MustGet("currentUser").(user.User).ID)
 
 	if err != nil {
 		response := helper.APIResponse("Create item failed", http.StatusBadRequest, "error", err)

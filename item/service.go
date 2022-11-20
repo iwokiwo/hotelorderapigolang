@@ -1,10 +1,10 @@
 package item
 
 type Service interface {
-	CreateItem(input CreateItem) (Product, error)
+	CreateItem(input CreateItem, userId int) (Product, error)
 	UpdateItem(input UpdateItem) (Product, error)
 	DeleteItem(input DeleteItem) (Product, error)
-	SearchAll(input SearchInput) ([]Product, int64, error)
+	SearchAll(input SearchInput, userId int) ([]Product, int64, error)
 }
 
 type service struct {
@@ -15,7 +15,7 @@ func NewService(repository Repository) *service {
 	return &service{repository}
 }
 
-func (s *service) CreateItem(input CreateItem) (Product, error) {
+func (s *service) CreateItem(input CreateItem, UserId int) (Product, error) {
 	item := Product{}
 	item.Name = input.Name
 	item.Hpp = input.Hpp
@@ -25,6 +25,7 @@ func (s *service) CreateItem(input CreateItem) (Product, error) {
 	item.CategoryId = input.CategoryId
 	item.UnitId = input.UnitId
 	item.Description = input.Description
+	item.UserId = UserId
 
 	newItem, err := s.repository.CreateItem(item)
 	if err != nil {
@@ -66,8 +67,8 @@ func (s *service) DeleteItem(input DeleteItem) (Product, error) {
 	return newItem, nil
 }
 
-func (s *service) SearchAll(input SearchInput) ([]Product, int64, error) {
-	items, total, err := s.repository.SearchAll(input)
+func (s *service) SearchAll(input SearchInput, userId int) ([]Product, int64, error) {
+	items, total, err := s.repository.SearchAll(input, userId)
 	if err != nil {
 		return items, total, err
 	}
