@@ -40,7 +40,8 @@ func (r *repository) UpdateItem(item Product) (Product, error) {
 }
 
 func (r *repository) DeleteItem(item Product) (Product, error) {
-	err := r.db.Where("id = ?", item.ID).Delete(&item).Error
+	//err := r.db.Where("id = ?", item.ID).Delete(&item).Error
+	err := r.db.Delete(&item, item.ID).Error
 	if err != nil {
 		return item, err
 	}

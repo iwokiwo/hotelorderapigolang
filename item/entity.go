@@ -2,6 +2,8 @@ package item
 
 import (
 	"time"
+
+	"gorm.io/gorm"
 )
 
 type Product struct {
@@ -23,11 +25,12 @@ type Product struct {
 	UnitId         int      `json:"unit_id"`
 	Views          int      `json:"views"`
 	Description    string   `json:"description"`
-	Category       Category `gorm:"foreignkey:CategoryId;constraint:OnDelete:CASCADE"`
-	Unit           Unit     `gorm:"foreignkey:UnitId;constraint:OnDelete:CASCADE"`
-	Img            []Img    `gorm:"foreignkey:ProductId;constraint:OnDelete:CASCADE"`
+	Category       Category `gorm:"foreignkey:CategoryId"`
+	Unit           Unit     `gorm:"foreignkey:UnitId"`
+	Img            []Img    `gorm:"foreignkey:ProductId"`
 	CreatedAt      time.Time
 	UpdatedAt      time.Time
+	DeletedAt      gorm.DeletedAt
 }
 
 type Unit struct {
