@@ -52,6 +52,8 @@ func main() {
 		&Models.SliderRelation{},
 		&Models.CategoryRelation{},
 		&Models.Setting{},
+		&Models.Branch{},
+		&Models.Store{},
 		&Models.Img{})
 
 	//Routes.SubscribeMessage(ch, "go-queue_order")
