@@ -3,17 +3,16 @@ package storebranch
 import "time"
 
 type CreateStore struct {
-	Name        string `json:"name" binding:"required"`
-	Description string `json:"description"`
-	Address     string `json:"address"`
-	UserId      int    `json:"user_id"`
-	Logo        string `json:"logo"`
+	Name        string `form:"name" binding:"required"`
+	Description string `form:"description"`
+	Address     string `form:"address"`
+	UserId      int    `form:"user_id"`
 	CreatedAt   time.Time
 	UpdatedAt   time.Time
 }
 
 type UpdateStore struct {
-	ID int `json:"id" binding:"required"`
+	ID int `form:"id" binding:"required"`
 	CreateStore
 }
 
@@ -22,18 +21,17 @@ type DeleteStore struct {
 }
 
 type CreateBranch struct {
-	Name        string `json:"name" binding:"required"`
-	Description string `json:"description"`
-	Address     string `json:"address"`
-	UserId      int    `json:"user_id"`
-	BranchId    int    `json:"branch_id"`
-	Logo        string `json:"logo"`
+	Name        string `form:"name" binding:"required"`
+	Description string `form:"description"`
+	Address     string `form:"address"`
+	UserId      int    `form:"user_id"`
+	BranchId    int    `form:"branch_id"`
 	CreatedAt   time.Time
 	UpdatedAt   time.Time
 }
 
 type UpdateBranch struct {
-	ID int `json:"id" binding:"required"`
+	ID int `form:"id" binding:"required"`
 	CreateBranch
 }
 

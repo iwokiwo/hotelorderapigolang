@@ -1,7 +1,7 @@
 package storebranch
 
 type Service interface {
-	CreateStore(input CreateStore, userId int) (Store, error)
+	CreateStore(input CreateStore, userId int, filename string) (Store, error)
 	UpdateStore(input UpdateStore) (Store, error)
 	DeleteStore(input DeleteStore) (Store, error)
 	SearchAllStore(userId int) ([]Store, error)
@@ -20,12 +20,13 @@ func NewService(repository Repository) *service {
 	return &service{repository}
 }
 
-func (s *service) CreateStore(input CreateStore, UserId int) (Store, error) {
+func (s *service) CreateStore(input CreateStore, UserId int, filename string) (Store, error) {
 	item := Store{}
 	item.Name = input.Name
 	item.Address = input.Address
 	item.Description = input.Description
 	item.UserId = UserId
+	item.Logo = filename
 
 	newItem, err := s.repository.CreateStore(item)
 	if err != nil {
@@ -50,7 +51,7 @@ func (s *service) UpdateStore(input UpdateStore) (Store, error) {
 	return newItem, nil
 }
 
-func (s *service) DeleteItem(input DeleteStore) (Store, error) {
+func (s *service) DeleteStore(input DeleteStore) (Store, error) {
 	item := Store{}
 	item.ID = input.ID
 
