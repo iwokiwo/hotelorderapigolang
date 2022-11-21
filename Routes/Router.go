@@ -152,6 +152,7 @@ func SetupRouter(db *gorm.DB) *gin.Engine {
 
 	//----------------------- Store api Dasboard --------------------------
 	api.POST("/store/create", middleware.AuthMiddleware(authService, userService), storeHandler.CreateStore)
+	api.PUT("/store/update", middleware.AuthMiddleware(authService, userService), storeHandler.UpdateStore)
 
 	return router
 }
