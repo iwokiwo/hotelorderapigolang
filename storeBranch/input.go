@@ -25,7 +25,7 @@ type CreateBranch struct {
 	Description string `form:"description"`
 	Address     string `form:"address"`
 	UserId      int    `form:"user_id"`
-	BranchId    int    `form:"branch_id"`
+	StoreId     int    `form:"store_id"`
 	CreatedAt   time.Time
 	UpdatedAt   time.Time
 }

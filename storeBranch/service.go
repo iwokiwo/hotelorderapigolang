@@ -6,8 +6,8 @@ type Service interface {
 	DeleteStore(input DeleteStore) (Store, error)
 	SearchAllStore(userId int) ([]Store, error)
 
-	CreateBranch(input CreateBranch, userId int) (Branch, error)
-	UpdateBranch(input UpdateBranch) (Branch, error)
+	CreateBranch(input CreateBranch, userId int, filename string, path string) (Branch, error)
+	UpdateBranch(input UpdateBranch, userId int, filename string, path string) (Branch, error)
 	DeleteBranch(input DeleteBranch) (Branch, error)
 	SearchAllBranch(userId int) ([]Branch, error)
 }
@@ -76,12 +76,15 @@ func (s *service) SearchAllStore(userId int) ([]Store, error) {
 	return items, nil
 }
 
-func (s *service) CreateBranch(input CreateBranch, UserId int) (Branch, error) {
+func (s *service) CreateBranch(input CreateBranch, UserId int, filename string, path string) (Branch, error) {
 	item := Branch{}
 	item.Name = input.Name
 	item.Address = input.Address
 	item.Description = input.Description
+	item.StoreId = input.StoreId
 	item.UserId = UserId
+	item.Logo = filename
+	item.Path = path
 
 	newItem, err := s.repository.CreateBranch(item)
 	if err != nil {
@@ -91,12 +94,15 @@ func (s *service) CreateBranch(input CreateBranch, UserId int) (Branch, error) {
 	return newItem, nil
 }
 
-func (s *service) UpdateBranch(input UpdateBranch) (Branch, error) {
+func (s *service) UpdateBranch(input UpdateBranch, userId int, filename string, path string) (Branch, error) {
 	item := Branch{}
 	item.ID = input.ID
 	item.Name = input.Name
 	item.Address = input.Address
 	item.Description = input.Description
+	item.UserId = userId
+	item.Logo = filename
+	item.Path = path
 
 	newItem, err := s.repository.UpdateBranch(item)
 	if err != nil {

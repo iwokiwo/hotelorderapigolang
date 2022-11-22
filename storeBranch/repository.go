@@ -55,7 +55,7 @@ func (r *repository) DeleteBranch(branch Branch) (Branch, error) {
 func (r *repository) SearchAllBranch(userId int) ([]Branch, error) {
 	var branchs []Branch
 
-	err := r.db.Find(&branchs).Error
+	err := r.db.Where("user_id", userId).Find(&branchs).Error
 
 	if err != nil {
 		return branchs, err
@@ -97,7 +97,7 @@ func (r *repository) DeleteStore(store Store) (Store, error) {
 func (r *repository) SearchAllStore(userId int) ([]Store, error) {
 	var stores []Store
 
-	err := r.db.Find(&stores).Error
+	err := r.db.Where("user_id", userId).Find(&stores, userId).Error
 
 	if err != nil {
 		return stores, err

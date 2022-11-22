@@ -37,7 +37,7 @@ func SetupRouter(db *gorm.DB) *gin.Engine {
 	settingService := settings.NewService(settingRepository)
 	unitService := unit.NewService(unitRepository)
 	itemService := item.NewService(itemRepository)
-	storeService := storebranch.NewService(storeBranchRepository)
+	storeBranchService := storebranch.NewService(storeBranchRepository)
 
 	authService := auth.NewService()
 
@@ -48,7 +48,8 @@ func SetupRouter(db *gorm.DB) *gin.Engine {
 	settingHandler := handler.NewSettingHandler(settingService)
 	unitHandler := handler.NewUnitHandler(unitService, authService)
 	itemHandler := handler.NewItemHandler(itemService, authService)
-	storeHandler := handler.NewStoreHandler(storeService, authService)
+	storeHandler := handler.NewStoreHandler(storeBranchService, authService)
+	branchHandler := handler.NewBranchHandler(storeBranchService, authService)
 
 	router := gin.Default()
 
@@ -154,6 +155,11 @@ func SetupRouter(db *gorm.DB) *gin.Engine {
 	api.GET("/store/searchAll", middleware.AuthMiddleware(authService, userService), storeHandler.SeachAll)
 	api.POST("/store/create", middleware.AuthMiddleware(authService, userService), storeHandler.CreateStore)
 	api.PUT("/store/update", middleware.AuthMiddleware(authService, userService), storeHandler.UpdateStore)
+
+	//----------------------- Branch api Dasboard --------------------------
+	api.GET("/branch/searchAll", middleware.AuthMiddleware(authService, userService), branchHandler.SeachAll)
+	api.POST("/branch/create", middleware.AuthMiddleware(authService, userService), branchHandler.CreateBranch)
+	api.PUT("/branch/update", middleware.AuthMiddleware(authService, userService), branchHandler.UpdateBranch)
 
 	return router
 }

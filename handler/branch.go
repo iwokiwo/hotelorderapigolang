@@ -12,18 +12,18 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-type storeHandler struct {
-	storeService storebranch.Service
-	authService  auth.Service
+type branchHandler struct {
+	branchService storebranch.Service
+	authService   auth.Service
 }
 
-func NewStoreHandler(store storebranch.Service, authService auth.Service) *storeHandler {
-	return &storeHandler{store, authService}
+func NewBranchHandler(store storebranch.Service, authService auth.Service) *branchHandler {
+	return &branchHandler{store, authService}
 }
 
-func (h *storeHandler) CreateStore(c *gin.Context) {
+func (h *branchHandler) CreateBranch(c *gin.Context) {
 	//fmt.Println(c.PostForm("name"))
-	var input storebranch.CreateStore
+	var input storebranch.CreateBranch
 	errs := c.Bind(&input)
 
 	file, err := c.FormFile("logo")
@@ -49,22 +49,22 @@ func (h *storeHandler) CreateStore(c *gin.Context) {
 	}
 	//os.Remove(path)
 
-	data, err := h.storeService.CreateStore(input, c.MustGet("currentUser").(user.User).ID, file.Filename, os.Getenv("APP_URL")+"storage/")
+	data, err := h.branchService.CreateBranch(input, c.MustGet("currentUser").(user.User).ID, file.Filename, os.Getenv("APP_URL")+"storage/")
 	if err != nil {
 		os.Remove(path)
-		response := helper.APIResponse("Created Store Failed", http.StatusBadRequest, "error", err)
+		response := helper.APIResponse("Created Branch Failed", http.StatusBadRequest, "error", err)
 		c.JSON(http.StatusBadRequest, response)
 		return
 	}
 
-	response := helper.APIResponse("Store Created", http.StatusOK, "success", data)
+	response := helper.APIResponse("Branch Created", http.StatusOK, "success", data)
 	c.JSON(http.StatusOK, response)
 
 }
 
-func (h *storeHandler) UpdateStore(c *gin.Context) {
+func (h *branchHandler) UpdateBranch(c *gin.Context) {
 
-	var input storebranch.UpdateStore
+	var input storebranch.UpdateBranch
 	errs := c.Bind(&input)
 
 	file, err := c.FormFile("logo")
@@ -97,28 +97,27 @@ func (h *storeHandler) UpdateStore(c *gin.Context) {
 	}
 	//os.Remove(path)
 	fmt.Println("id", c.MustGet("currentUser").(user.User).ID)
-	data, err := h.storeService.UpdateStore(input, c.MustGet("currentUser").(user.User).ID, file.Filename, os.Getenv("APP_URL")+"storage/")
+	data, err := h.branchService.UpdateBranch(input, c.MustGet("currentUser").(user.User).ID, file.Filename, os.Getenv("APP_URL")+"storage/")
 	if err != nil {
-		response := helper.APIResponse("Update Store Failed", http.StatusBadRequest, "error", err)
+		response := helper.APIResponse("Update Branch Failed", http.StatusBadRequest, "error", err)
 		c.JSON(http.StatusBadRequest, response)
 		return
 	}
 
-	response := helper.APIResponse("Store Update", http.StatusOK, "success", data)
+	response := helper.APIResponse("Branch Update", http.StatusOK, "success", data)
 	c.JSON(http.StatusOK, response)
 
 }
 
-func (h *storeHandler) SeachAll(c *gin.Context) {
+func (h *branchHandler) SeachAll(c *gin.Context) {
 
-	items, err := h.storeService.SearchAllStore(c.MustGet("currentUser").(user.User).ID)
+	items, err := h.branchService.SearchAllBranch(c.MustGet("currentUser").(user.User).ID)
 
 	if err != nil {
-		response := helper.APIResponse("Search All Products failed", http.StatusBadRequest, "error", err)
+		response := helper.APIResponse("Search All Branch failed", http.StatusBadRequest, "error", err)
 		c.JSON(http.StatusBadRequest, response)
 		return
 	}
-	formatter := storebranch.FormatStores(items)
-	response := helper.APIResponse("Store detail", http.StatusOK, "success", formatter)
+	response := helper.APIResponse("Store detail", http.StatusOK, "success", items)
 	c.JSON(http.StatusOK, response)
 }

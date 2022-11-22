@@ -12,7 +12,7 @@ type Branch struct {
 	Description string `json:"description"`
 	Address     string `json:"address"`
 	UserId      int    `json:"user_id"`
-	BranchId    int    `json:"branch_id"`
+	StoreId     int    `json:"store_id"`
 	Logo        string `json:"logo"`
 	Path        string `json:"path"`
 	CreatedAt   time.Time
