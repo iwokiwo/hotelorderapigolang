@@ -107,3 +107,17 @@ func (h *storeHandler) UpdateStore(c *gin.Context) {
 	c.JSON(http.StatusOK, response)
 
 }
+
+func (h *storeHandler) SeachAll(c *gin.Context) {
+
+	items, err := h.storeService.SearchAllStore(c.MustGet("currentUser").(user.User).ID)
+
+	if err != nil {
+		response := helper.APIResponse("Search All Products failed", http.StatusBadRequest, "error", err)
+		c.JSON(http.StatusBadRequest, response)
+		return
+	}
+	formatter := storebranch.FormatStores(items)
+	response := helper.APIResponse("Store detail", http.StatusOK, "success", formatter)
+	c.JSON(http.StatusOK, response)
+}
