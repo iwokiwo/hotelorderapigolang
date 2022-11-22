@@ -1,6 +1,7 @@
 package handler
 
 import (
+	"fmt"
 	"iwogo/auth"
 	"iwogo/helper"
 	storebranch "iwogo/storeBranch"
@@ -48,14 +49,14 @@ func (h *storeHandler) CreateStore(c *gin.Context) {
 	}
 	//os.Remove(path)
 
-	_, err = h.storeService.CreateStore(input, c.MustGet("currentUser").(user.User).ID, file.Filename)
+	data, err := h.storeService.CreateStore(input, c.MustGet("currentUser").(user.User).ID, file.Filename, os.Getenv("APP_URL")+"storage/")
 	if err != nil {
 		response := helper.APIResponse("Created Store Failed", http.StatusBadRequest, "error", err)
 		c.JSON(http.StatusBadRequest, response)
 		return
 	}
 
-	response := helper.APIResponse("Store Created", http.StatusOK, "success", nil)
+	response := helper.APIResponse("Store Created", http.StatusOK, "success", data)
 	c.JSON(http.StatusOK, response)
 
 }
@@ -94,15 +95,15 @@ func (h *storeHandler) UpdateStore(c *gin.Context) {
 		return
 	}
 	//os.Remove(path)
-
-	_, err = h.storeService.UpdateStore(input, c.MustGet("currentUser").(user.User).ID, file.Filename)
+	fmt.Println("id", c.MustGet("currentUser").(user.User).ID)
+	data, err := h.storeService.UpdateStore(input, c.MustGet("currentUser").(user.User).ID, file.Filename, os.Getenv("APP_URL")+"storage/")
 	if err != nil {
 		response := helper.APIResponse("Update Store Failed", http.StatusBadRequest, "error", err)
 		c.JSON(http.StatusBadRequest, response)
 		return
 	}
 
-	response := helper.APIResponse("Store Update", http.StatusOK, "success", nil)
+	response := helper.APIResponse("Store Update", http.StatusOK, "success", data)
 	c.JSON(http.StatusOK, response)
 
 }

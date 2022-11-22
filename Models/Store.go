@@ -13,6 +13,7 @@ type Store struct {
 	Address     string `json:"address"`
 	UserId      int    `json:"user_id"`
 	Logo        string `json:"logo"`
+	Path        string `json:"path"`
 	CreatedAt   time.Time
 	UpdatedAt   time.Time
 	DeletedAt   gorm.DeletedAt
