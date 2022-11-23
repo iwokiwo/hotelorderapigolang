@@ -20,6 +20,6 @@ type Branch struct {
 	DeletedAt   gorm.DeletedAt
 }
 
-func (b *Branch) TableName() string {
-	return "branchs"
-}
+// func (b *Branch) TableName() string {
+// 	return "branchs"
+// }

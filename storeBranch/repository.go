@@ -1,6 +1,8 @@
 package storebranch
 
-import "gorm.io/gorm"
+import (
+	"gorm.io/gorm"
+)
 
 type Repository interface {
 	CreateStore(store Store) (Store, error)
@@ -23,6 +25,8 @@ func NewRepository(db *gorm.DB) *repository {
 }
 
 func (r *repository) CreateBranch(branch Branch) (Branch, error) {
+
+	//err := r.db.Omit("StoreId").Create(&branch).Error
 	err := r.db.Create(&branch).Error
 
 	if err != nil {

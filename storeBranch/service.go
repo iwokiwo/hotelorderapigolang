@@ -100,6 +100,7 @@ func (s *service) UpdateBranch(input UpdateBranch, userId int, filename string, 
 	item.Name = input.Name
 	item.Address = input.Address
 	item.Description = input.Description
+	item.StoreId = input.StoreId
 	item.UserId = userId
 	item.Logo = filename
 	item.Path = path

@@ -1,7 +1,6 @@
 package handler
 
 import (
-	"fmt"
 	"iwogo/auth"
 	"iwogo/helper"
 	storebranch "iwogo/storeBranch"
@@ -41,15 +40,16 @@ func (h *branchHandler) CreateBranch(c *gin.Context) {
 	}
 
 	// Set Folder untuk menyimpan filenya
-	path := "storage/" + file.Filename
+	path := os.Getenv("IMG_BRANCHES") + "" + file.Filename
 	if err := c.SaveUploadedFile(file, path); err != nil {
 		response := helper.APIResponse("Upload Logo Failed", http.StatusBadRequest, "error", err)
 		c.JSON(http.StatusBadRequest, response)
 		return
 	}
+	//fmt.Println(path)
 	//os.Remove(path)
 
-	data, err := h.branchService.CreateBranch(input, c.MustGet("currentUser").(user.User).ID, file.Filename, os.Getenv("APP_URL")+"storage/")
+	data, err := h.branchService.CreateBranch(input, c.MustGet("currentUser").(user.User).ID, file.Filename, os.Getenv("IMG_BRANCHES"))
 	if err != nil {
 		os.Remove(path)
 		response := helper.APIResponse("Created Branch Failed", http.StatusBadRequest, "error", err)
@@ -75,37 +75,43 @@ func (h *branchHandler) UpdateBranch(c *gin.Context) {
 		return
 	}
 
-	if err != nil {
-		response := helper.APIResponse("Upload Logo Failed", http.StatusBadRequest, "error", err)
-		c.JSON(http.StatusBadRequest, response)
-		return
-	}
-
-	pathOld := "storage/" + c.PostForm("logoOld")
-	// os.Remove(pathOld)
-	if err := os.Remove(pathOld); err != nil {
-		response := helper.APIResponse("Upload Logo Failed", http.StatusBadRequest, "error", err)
-		c.JSON(http.StatusBadRequest, response)
-		return
-	}
-
-	path := "storage/" + file.Filename
-	if err := c.SaveUploadedFile(file, path); err != nil {
-		response := helper.APIResponse("Upload Logo Failed", http.StatusBadRequest, "error", err)
-		c.JSON(http.StatusBadRequest, response)
-		return
-	}
 	//os.Remove(path)
-	fmt.Println("id", c.MustGet("currentUser").(user.User).ID)
-	data, err := h.branchService.UpdateBranch(input, c.MustGet("currentUser").(user.User).ID, file.Filename, os.Getenv("APP_URL")+"storage/")
 	if err != nil {
-		response := helper.APIResponse("Update Branch Failed", http.StatusBadRequest, "error", err)
-		c.JSON(http.StatusBadRequest, response)
-		return
-	}
+		data, err := h.branchService.UpdateBranch(input, c.MustGet("currentUser").(user.User).ID, c.PostForm("logoOld"), os.Getenv("IMG_BRANCHES"))
+		if err != nil {
+			response := helper.APIResponse("Update Branch Failed", http.StatusBadRequest, "error", err)
+			c.JSON(http.StatusBadRequest, response)
+			return
+		}
 
-	response := helper.APIResponse("Branch Update", http.StatusOK, "success", data)
-	c.JSON(http.StatusOK, response)
+		response := helper.APIResponse("Branch Update", http.StatusOK, "success", data)
+		c.JSON(http.StatusOK, response)
+
+	} else {
+		pathOld := os.Getenv("IMG_BRANCHES") + "" + c.PostForm("logoOld")
+		// os.Remove(pathOld)
+		if err := os.Remove(pathOld); err != nil {
+			response := helper.APIResponse("Upload Logo Failed", http.StatusBadRequest, "error", err)
+			c.JSON(http.StatusBadRequest, response)
+			return
+		}
+
+		path := os.Getenv("IMG_BRANCHES") + "" + file.Filename
+		if err := c.SaveUploadedFile(file, path); err != nil {
+			response := helper.APIResponse("Upload Logo Failed", http.StatusBadRequest, "error", err)
+			c.JSON(http.StatusBadRequest, response)
+			return
+		}
+		data, err := h.branchService.UpdateBranch(input, c.MustGet("currentUser").(user.User).ID, file.Filename, os.Getenv("IMG_BRANCHES"))
+		if err != nil {
+			response := helper.APIResponse("Update Branch Failed", http.StatusBadRequest, "error", err)
+			c.JSON(http.StatusBadRequest, response)
+			return
+		}
+
+		response := helper.APIResponse("Branch Update", http.StatusOK, "success", data)
+		c.JSON(http.StatusOK, response)
+	}
 
 }
 
