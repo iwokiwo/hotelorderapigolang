@@ -82,6 +82,8 @@ func (s *service) CreateBranch(input CreateBranch, UserId int, filename string, 
 	item.Address = input.Address
 	item.Description = input.Description
 	item.StoreId = input.StoreId
+	item.Phone = input.Phone
+	item.Email = input.Email
 	item.UserId = UserId
 	item.Logo = filename
 	item.Path = path
@@ -101,6 +103,8 @@ func (s *service) UpdateBranch(input UpdateBranch, userId int, filename string, 
 	item.Address = input.Address
 	item.Description = input.Description
 	item.StoreId = input.StoreId
+	item.Phone = input.Phone
+	item.Email = input.Email
 	item.UserId = userId
 	item.Logo = filename
 	item.Path = path

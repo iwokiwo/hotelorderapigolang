@@ -14,6 +14,8 @@ type Branch struct {
 	UserId      int    `json:"user_id"`
 	StoreId     int    `json:"store_id"`
 	Logo        string `json:"logo"`
+	Phone       string `json:"phone"`
+	Email       string `json:"email"`
 	Path        string `json:"path"`
 	CreatedAt   time.Time
 	UpdatedAt   time.Time

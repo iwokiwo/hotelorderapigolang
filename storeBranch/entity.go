@@ -29,6 +29,8 @@ type Branch struct {
 	StoreId     int    `json:"store_id"`
 	Logo        string `json:"logo"`
 	Path        string `json:"path"`
+	Phone       string `json:"phone"`
+	Email       string `json:"email"`
 	CreatedAt   time.Time
 	UpdatedAt   time.Time
 	DeletedAt   gorm.DeletedAt

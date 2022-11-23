@@ -26,6 +26,8 @@ type CreateBranch struct {
 	Address     string `form:"address"`
 	UserId      int    `form:"user_id"`
 	StoreId     int    `form:"store_id"`
+	Phone       string `form:"phone"`
+	Email       string `form:"email"`
 	CreatedAt   time.Time
 	UpdatedAt   time.Time
 }
