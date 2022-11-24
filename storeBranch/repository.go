@@ -101,7 +101,7 @@ func (r *repository) DeleteStore(store Store) (Store, error) {
 func (r *repository) SearchAllStore(userId int) ([]Store, error) {
 	var stores []Store
 
-	err := r.db.Where("user_id", userId).Find(&stores, userId).Error
+	err := r.db.Where("user_id", userId).Find(&stores).Error
 
 	if err != nil {
 		return stores, err
