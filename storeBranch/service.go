@@ -1,7 +1,5 @@
 package storebranch
 
-import "fmt"
-
 type Service interface {
 	CreateStore(input CreateStore, userId int, filename string, path string) (Store, error)
 	UpdateStore(input UpdateStore, userId int, filename string, path string) (Store, error)
@@ -70,7 +68,6 @@ func (s *service) DeleteStore(input DeleteStore) (Store, error) {
 }
 
 func (s *service) SearchAllStore(userId int) ([]Store, error) {
-	fmt.Printf("user id", userId)
 	items, err := s.repository.SearchAllStore(userId)
 	if err != nil {
 		return items, err
