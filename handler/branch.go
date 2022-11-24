@@ -1,6 +1,7 @@
 package handler
 
 import (
+	"fmt"
 	"iwogo/auth"
 	"iwogo/helper"
 	storebranch "iwogo/storeBranch"
@@ -21,7 +22,7 @@ func NewBranchHandler(store storebranch.Service, authService auth.Service) *bran
 }
 
 func (h *branchHandler) CreateBranch(c *gin.Context) {
-	//fmt.Println(c.PostForm("name"))
+	fmt.Println(c.PostForm("logo"))
 	var input storebranch.CreateBranch
 	errs := c.Bind(&input)
 

@@ -22,21 +22,21 @@ func NewStoreHandler(store storebranch.Service, authService auth.Service) *store
 }
 
 func (h *storeHandler) CreateStore(c *gin.Context) {
-	//fmt.Println(c.PostForm("name"))
+
 	var input storebranch.CreateStore
-	errs := c.Bind(&input)
+	errs := c.ShouldBind(&input)
 
 	file, err := c.FormFile("logo")
 
 	if errs != nil {
 		response := helper.APIResponse("Upload Data Failed", http.StatusBadRequest, "error", err)
-		c.JSON(http.StatusBadRequest, response)
+		c.JSON(http.StatusOK, response)
 		return
 	}
 
 	if err != nil {
 		response := helper.APIResponse("Upload Logo Failed", http.StatusBadRequest, "error", err)
-		c.JSON(http.StatusBadRequest, response)
+		c.JSON(http.StatusOK, response)
 		return
 	}
 
@@ -44,7 +44,7 @@ func (h *storeHandler) CreateStore(c *gin.Context) {
 	path := os.Getenv("IMG_STORE") + "" + file.Filename
 	if err := c.SaveUploadedFile(file, path); err != nil {
 		response := helper.APIResponse("Upload Logo Failed", http.StatusBadRequest, "error", err)
-		c.JSON(http.StatusBadRequest, response)
+		c.JSON(http.StatusOK, response)
 		return
 	}
 	//os.Remove(path)
@@ -53,7 +53,7 @@ func (h *storeHandler) CreateStore(c *gin.Context) {
 	if err != nil {
 		os.Remove(path)
 		response := helper.APIResponse("Created Store Failed", http.StatusBadRequest, "error", err)
-		c.JSON(http.StatusBadRequest, response)
+		c.JSON(http.StatusOK, response)
 		return
 	}
 
@@ -112,7 +112,6 @@ func (h *storeHandler) UpdateStore(c *gin.Context) {
 		response := helper.APIResponse("Store Update", http.StatusOK, "success", data)
 		c.JSON(http.StatusOK, response)
 	}
-
 }
 
 func (h *storeHandler) SeachAll(c *gin.Context) {

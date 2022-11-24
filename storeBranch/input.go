@@ -3,9 +3,9 @@ package storebranch
 import "time"
 
 type CreateStore struct {
-	Name        string `form:"name" binding:"required"`
-	Description string `form:"description"`
-	Address     string `form:"address"`
+	Name        string `form:"name" json:"name" binding:"required"`
+	Description string `form:"description" json:"description"`
+	Address     string `form:"address" json:"address"`
 	UserId      int    `form:"user_id"`
 	CreatedAt   time.Time
 	UpdatedAt   time.Time
