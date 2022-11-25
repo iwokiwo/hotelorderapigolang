@@ -30,7 +30,7 @@
   <component name="ChangeListManager">
     <list default="true" id="a7a054ca-db51-4e15-82e5-d99f15da3ae1" name="Default Changelist" comment="perbaikan select service">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/handler/Store.go" beforeDir="false" afterPath="$PROJECT_DIR$/handler/Store.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/storeBranch/formatter.go" beforeDir="false" afterPath="$PROJECT_DIR$/storeBranch/formatter.go" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -144,7 +144,7 @@
                   <entry key="branch">
                     <value>
                       <list>
-                        <option value="master" />
+                        <option value="origin/golang" />
                       </list>
                     </value>
                   </entry>
