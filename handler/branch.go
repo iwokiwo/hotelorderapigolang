@@ -125,6 +125,9 @@ func (h *branchHandler) SeachAll(c *gin.Context) {
 		c.JSON(http.StatusBadRequest, response)
 		return
 	}
-	response := helper.APIResponse("Store detail", http.StatusOK, "success", items)
+	//response := helper.APIResponse("Branch detail", http.StatusOK, "success", items)
+	//c.JSON(http.StatusOK, response)
+	formatter := storebranch.FormatBranchs(items)
+	response := helper.APIResponse("Branch detail", http.StatusOK, "success", formatter)
 	c.JSON(http.StatusOK, response)
 }
