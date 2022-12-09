@@ -89,13 +89,6 @@ func (h *branchHandler) UpdateBranch(c *gin.Context) {
 		c.JSON(http.StatusOK, response)
 
 	} else {
-		pathOld := os.Getenv("IMG_BRANCHES") + "" + c.PostForm("logoOld")
-		// os.Remove(pathOld)
-		if err := os.Remove(pathOld); err != nil {
-			response := helper.APIResponse("Upload Logo Failed", http.StatusBadRequest, "error", err)
-			c.JSON(http.StatusBadRequest, response)
-			return
-		}
 
 		path := os.Getenv("IMG_BRANCHES") + "" + file.Filename
 		if err := c.SaveUploadedFile(file, path); err != nil {
@@ -106,6 +99,14 @@ func (h *branchHandler) UpdateBranch(c *gin.Context) {
 		data, err := h.branchService.UpdateBranch(input, c.MustGet("currentUser").(user.User).ID, file.Filename, os.Getenv("IMG_BRANCHES"))
 		if err != nil {
 			response := helper.APIResponse("Update Branch Failed", http.StatusBadRequest, "error", err)
+			c.JSON(http.StatusBadRequest, response)
+			return
+		}
+
+		pathOld := os.Getenv("IMG_BRANCHES") + "" + c.PostForm("logoOld")
+		// os.Remove(pathOld)
+		if err := os.Remove(pathOld); err != nil {
+			response := helper.APIResponse("Upload Logo Failed", http.StatusBadRequest, "error", err)
 			c.JSON(http.StatusBadRequest, response)
 			return
 		}

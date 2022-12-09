@@ -7,6 +7,7 @@ import (
 	"iwogo/item"
 	"iwogo/user"
 	"net/http"
+	"os"
 
 	"github.com/gin-gonic/gin"
 )
@@ -47,27 +48,40 @@ func (h *itemHandler) SeachAll(c *gin.Context) {
 }
 
 func (h *itemHandler) CreateItem(c *gin.Context) {
+	fmt.Println(c.PostForm("logo"))
 	var input item.CreateItem
-	err := c.ShouldBindJSON(&input)
-	fmt.Println("err", err)
-	if err != nil {
-		errors := helper.FormatValidationError(err)
-		errorMessage := gin.H{"errors": errors}
-		response := helper.APIResponse("Create item failed", http.StatusUnprocessableEntity, "error", errorMessage)
-		c.JSON(http.StatusUnprocessableEntity, response)
+	errs := c.Bind(&input)
 
-		return
-	}
+	file, err := c.FormFile("logo")
 
-	_, err = h.itemService.CreateItem(input, c.MustGet("currentUser").(user.User).ID)
-
-	if err != nil {
-		response := helper.APIResponse("Create item failed", http.StatusBadRequest, "error", err)
+	if errs != nil {
+		response := helper.APIResponse("Upload Data Failed", http.StatusBadRequest, "error", err)
 		c.JSON(http.StatusBadRequest, response)
 		return
 	}
 
-	response := helper.APIResponse("Item has been Create", http.StatusOK, "success", input)
+	if err != nil {
+		response := helper.APIResponse("Upload Logo Failed", http.StatusBadRequest, "error", err)
+		c.JSON(http.StatusBadRequest, response)
+		return
+	}
+
+	path := os.Getenv("IMG_ITEMS") + "" + file.Filename
+	if err := c.SaveUploadedFile(file, path); err != nil {
+		response := helper.APIResponse("Upload Logo Failed", http.StatusBadRequest, "error", err)
+		c.JSON(http.StatusBadRequest, response)
+		return
+	}
+
+	data, err := h.itemService.CreateItem(input, c.MustGet("currentUser").(user.User).ID, file.Filename, os.Getenv("IMG_BRANCHES"))
+	if err != nil {
+		os.Remove(path)
+		response := helper.APIResponse("Created Item Failed", http.StatusBadRequest, "error", err)
+		c.JSON(http.StatusBadRequest, response)
+		return
+	}
+
+	response := helper.APIResponse("Branch Created", http.StatusOK, "success", data)
 	c.JSON(http.StatusOK, response)
 }
 

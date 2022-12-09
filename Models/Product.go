@@ -29,6 +29,7 @@ type Product struct {
 	Description    string `json:"description"`
 	UserId         int    `json:"user_id"`
 	BranchId       int    `json:"branch_id"`
+	Path           string `json:"path"`
 	CreatedAt      time.Time
 	UpdatedAt      time.Time
 	DeletedAt      gorm.DeletedAt

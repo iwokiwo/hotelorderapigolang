@@ -24,19 +24,19 @@ type SearchInput struct {
 }
 
 type CreateItem struct {
-	Name           string `json:"name" binding:"required"`
-	Dimensi        string `json:"dimensi"`
-	Hpp            int    `json:"hpp"`
-	Price          int    `json:"price"`
-	AvailableColor int    `json:"available_color"`
-	AvailableSize  int    `json:"available_size"`
-	Color          string `json:"color"`
-	Size           string `json:"size"`
-	Stock          int    `json:"stock"`
-	Active         int    `json:"active"`
-	CategoryId     int    `json:"category_id"`
-	UnitId         int    `json:"unit_id"`
-	Description    string `json:"description"`
+	Name           string `form:"name" binding:"required"`
+	Dimensi        string `form:"dimensi"`
+	Hpp            int    `form:"hpp"`
+	Price          int    `form:"price"`
+	AvailableColor int    `form:"available_color"`
+	AvailableSize  int    `form:"available_size"`
+	Color          string `form:"color"`
+	Size           string `form:"size"`
+	Stock          int    `form:"stock"`
+	Active         int    `form:"active"`
+	CategoryId     int    `form:"category_id"`
+	UnitId         int    `form:"unit_id"`
+	Description    string `form:"description"`
 	CreatedAt      time.Time
 	UpdatedAt      time.Time
 }

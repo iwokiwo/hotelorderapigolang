@@ -1,7 +1,7 @@
 package item
 
 type Service interface {
-	CreateItem(input CreateItem, userId int) (Product, error)
+	CreateItem(input CreateItem, userId int, filename string, path string) (Product, error)
 	UpdateItem(input UpdateItem) (Product, error)
 	DeleteItem(input DeleteItem) (Product, error)
 	SearchAll(input SearchInput, userId int) ([]Product, int64, error)
@@ -15,7 +15,7 @@ func NewService(repository Repository) *service {
 	return &service{repository}
 }
 
-func (s *service) CreateItem(input CreateItem, UserId int) (Product, error) {
+func (s *service) CreateItem(input CreateItem, UserId int, filename string, path string) (Product, error) {
 	item := Product{}
 	item.Name = input.Name
 	item.Hpp = input.Hpp
@@ -26,6 +26,8 @@ func (s *service) CreateItem(input CreateItem, UserId int) (Product, error) {
 	item.UnitId = input.UnitId
 	item.Description = input.Description
 	item.UserId = UserId
+	item.Thumbnail = filename
+	item.Path = path
 
 	newItem, err := s.repository.CreateItem(item)
 	if err != nil {

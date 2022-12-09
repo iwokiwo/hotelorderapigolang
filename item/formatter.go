@@ -1,5 +1,7 @@
 package item
 
+import "os"
+
 type ItemFormatter struct {
 	ID             int      `json:"id"`
 	Name           string   `json:"name"`
@@ -18,6 +20,8 @@ type ItemFormatter struct {
 	Views          int      `json:"views"`
 	Description    string   `json:"description"`
 	CategoryId     int      `json:"category_id"`
+	Url            string   `json:"url"`
+	Path           string   `json:"path"`
 	Category       Category `json:"category"`
 	Unit           Unit     `json:"unit"`
 	Img            []Img    `json:"img"`
@@ -45,6 +49,8 @@ func FormatItem(product Product) ItemFormatter {
 		CategoryId:     product.CategoryId,
 		Unit:           product.Unit,
 		Img:            product.Img,
+		Path:           product.Path,
+		Url:            os.Getenv("APP_URL"),
 	}
 	return formatter
 }

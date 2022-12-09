@@ -27,6 +27,7 @@ type Product struct {
 	Description    string   `json:"description"`
 	UserId         int      `json:"user_id"`
 	BranchId       int      `json:"branch_id"`
+	Path           string   `json:"path"`
 	Category       Category `gorm:"foreignkey:CategoryId"`
 	Unit           Unit     `gorm:"foreignkey:UnitId"`
 	Img            []Img    `gorm:"foreignkey:ProductId"`
