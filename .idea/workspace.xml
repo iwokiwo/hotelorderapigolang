@@ -28,15 +28,8 @@
     </select>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="a7a054ca-db51-4e15-82e5-d99f15da3ae1" name="Default Changelist" comment="modif formater">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Models/Product.go" beforeDir="false" afterPath="$PROJECT_DIR$/Models/Product.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/handler/branch.go" beforeDir="false" afterPath="$PROJECT_DIR$/handler/branch.go" afterDir="false" />
+    <list default="true" id="a7a054ca-db51-4e15-82e5-d99f15da3ae1" name="Default Changelist" comment="item">
       <change beforePath="$PROJECT_DIR$/handler/item.go" beforeDir="false" afterPath="$PROJECT_DIR$/handler/item.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/item/entity.go" beforeDir="false" afterPath="$PROJECT_DIR$/item/entity.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/item/formatter.go" beforeDir="false" afterPath="$PROJECT_DIR$/item/formatter.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/item/input.go" beforeDir="false" afterPath="$PROJECT_DIR$/item/input.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/item/service.go" beforeDir="false" afterPath="$PROJECT_DIR$/item/service.go" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -172,7 +165,8 @@
     <MESSAGE value="perbaikan select store" />
     <MESSAGE value="perbaikan select service" />
     <MESSAGE value="modif formater" />
-    <option name="LAST_COMMIT_MESSAGE" value="modif formater" />
+    <MESSAGE value="item" />
+    <option name="LAST_COMMIT_MESSAGE" value="item" />
   </component>
   <component name="VgoProject">
     <settings-migrated>true</settings-migrated>

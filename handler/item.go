@@ -73,7 +73,7 @@ func (h *itemHandler) CreateItem(c *gin.Context) {
 		return
 	}
 
-	data, err := h.itemService.CreateItem(input, c.MustGet("currentUser").(user.User).ID, file.Filename, os.Getenv("IMG_BRANCHES"))
+	data, err := h.itemService.CreateItem(input, c.MustGet("currentUser").(user.User).ID, file.Filename, os.Getenv("IMG_ITEMS"))
 	if err != nil {
 		os.Remove(path)
 		response := helper.APIResponse("Created Item Failed", http.StatusBadRequest, "error", err)
