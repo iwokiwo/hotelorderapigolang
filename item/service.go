@@ -2,7 +2,7 @@ package item
 
 type Service interface {
 	CreateItem(input CreateItem, userId int, filename string, path string) (Product, error)
-	UpdateItem(input UpdateItem) (Product, error)
+	UpdateItem(input UpdateItem, userId int, filename string, path string) (Product, error)
 	DeleteItem(input DeleteItem) (Product, error)
 	SearchAll(input SearchInput, userId int) ([]Product, int64, error)
 }
@@ -37,7 +37,7 @@ func (s *service) CreateItem(input CreateItem, UserId int, filename string, path
 	return newItem, nil
 }
 
-func (s *service) UpdateItem(input UpdateItem) (Product, error) {
+func (s *service) UpdateItem(input UpdateItem, UserId int, filename string, path string) (Product, error) {
 	item := Product{}
 	item.ID = input.ID
 	item.Name = input.Name
@@ -48,6 +48,9 @@ func (s *service) UpdateItem(input UpdateItem) (Product, error) {
 	item.CategoryId = input.CategoryId
 	item.UnitId = input.UnitId
 	item.Description = input.Description
+	item.Thumbnail = filename
+	item.Path = path
+	item.UserId = UserId
 
 	newItem, err := s.repository.UpdateItem(item)
 	if err != nil {

@@ -55,29 +55,29 @@ func (h *itemHandler) CreateItem(c *gin.Context) {
 	file, err := c.FormFile("thumbnail")
 
 	if errs != nil {
-		response := helper.APIResponse("Upload Data Failed", http.StatusOK, "error", err)
-		c.JSON(http.StatusBadRequest, response)
+		response := helper.APIResponse("Upload Data Failed", http.StatusBadRequest, "error", err)
+		c.JSON(http.StatusOK, response)
 		return
 	}
 
 	if err != nil {
-		response := helper.APIResponse("Upload Logo Failed", http.StatusOK, "error", err)
-		c.JSON(http.StatusBadRequest, response)
+		response := helper.APIResponse("Upload Logo Failed", http.StatusBadRequest, "error", err)
+		c.JSON(http.StatusOK, response)
 		return
 	}
 
 	path := os.Getenv("IMG_ITEMS") + "" + file.Filename
 	if err := c.SaveUploadedFile(file, path); err != nil {
-		response := helper.APIResponse("Upload Logo Failed", http.StatusOK, "error", err)
-		c.JSON(http.StatusBadRequest, response)
+		response := helper.APIResponse("Upload Logo Failed", http.StatusBadRequest, "error", err)
+		c.JSON(http.StatusOK, response)
 		return
 	}
 
 	data, err := h.itemService.CreateItem(input, c.MustGet("currentUser").(user.User).ID, file.Filename, os.Getenv("IMG_ITEMS"))
 	if err != nil {
 		os.Remove(path)
-		response := helper.APIResponse("Created Item Failed", http.StatusOK, "error", err)
-		c.JSON(http.StatusBadRequest, response)
+		response := helper.APIResponse("Created Item Failed", http.StatusBadRequest, "error", err)
+		c.JSON(http.StatusOK, response)
 		return
 	}
 
@@ -87,27 +87,52 @@ func (h *itemHandler) CreateItem(c *gin.Context) {
 
 func (h *itemHandler) UpdateItem(c *gin.Context) {
 	var input item.UpdateItem
-	err := c.ShouldBindJSON(&input)
+	errs := c.Bind(&input)
+	file, err := c.FormFile("thumbnail")
 
-	if err != nil {
-		errors := helper.FormatValidationError(err)
-		errorMessage := gin.H{"errors": errors}
-		response := helper.APIResponse("Update item failed", http.StatusUnprocessableEntity, "error", errorMessage)
-		c.JSON(http.StatusUnprocessableEntity, response)
-
+	if errs != nil {
+		response := helper.APIResponse("Upload Data Failed", http.StatusBadRequest, "error", err)
+		c.JSON(http.StatusOK, response)
 		return
 	}
 
-	_, err = h.itemService.UpdateItem(input)
-
 	if err != nil {
-		response := helper.APIResponse("Update item failed", http.StatusBadRequest, "error", err)
-		c.JSON(http.StatusBadRequest, response)
-		return
-	}
+		data, err := h.itemService.UpdateItem(input, c.MustGet("currentUser").(user.User).ID, c.PostForm("thumbnailOld"), os.Getenv("IMG_ITEMS"))
+		if err != nil {
+			response := helper.APIResponse("Update Branch Failed", http.StatusBadRequest, "error", err)
+			c.JSON(http.StatusOK, response)
+			return
+		}
 
-	response := helper.APIResponse("Item has been Update", http.StatusOK, "success", input)
-	c.JSON(http.StatusOK, response)
+		response := helper.APIResponse("Item Update", http.StatusOK, "success", data)
+		c.JSON(http.StatusOK, response)
+
+	} else {
+
+		path := os.Getenv("IMG_ITEMS") + "" + file.Filename
+		if err := c.SaveUploadedFile(file, path); err != nil {
+			response := helper.APIResponse("Upload Logo Failed", http.StatusBadRequest, "error", err)
+			c.JSON(http.StatusOK, response)
+			return
+		}
+		data, err := h.itemService.UpdateItem(input, c.MustGet("currentUser").(user.User).ID, file.Filename, os.Getenv("IMG_ITEMS"))
+		if err != nil {
+			response := helper.APIResponse("Update Item Failed", http.StatusBadRequest, "error", err)
+			c.JSON(http.StatusOK, response)
+			return
+		}
+
+		pathOld := os.Getenv("IMG_ITEMS") + "" + c.PostForm("thumbnailOld")
+		// os.Remove(pathOld)
+		if err := os.Remove(pathOld); err != nil {
+			response := helper.APIResponse("Upload Logo Failed", http.StatusBadRequest, "error", err)
+			c.JSON(http.StatusOK, response)
+			return
+		}
+
+		response := helper.APIResponse("Item Update", http.StatusOK, "success", data)
+		c.JSON(http.StatusOK, response)
+	}
 }
 
 func (h *itemHandler) DeleteItem(c *gin.Context) {

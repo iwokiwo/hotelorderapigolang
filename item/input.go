@@ -42,7 +42,7 @@ type CreateItem struct {
 }
 
 type UpdateItem struct {
-	ID int `json:"id" binding:"required"`
+	ID int `form:"id" binding:"required"`
 	CreateItem
 }
 
