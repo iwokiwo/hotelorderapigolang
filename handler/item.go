@@ -81,7 +81,7 @@ func (h *itemHandler) CreateItem(c *gin.Context) {
 		return
 	}
 
-	response := helper.APIResponse("Branch Created", http.StatusOK, "success", data)
+	response := helper.APIResponse("Item Created", http.StatusOK, "success", data)
 	c.JSON(http.StatusOK, response)
 }
 
