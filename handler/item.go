@@ -48,27 +48,27 @@ func (h *itemHandler) SeachAll(c *gin.Context) {
 }
 
 func (h *itemHandler) CreateItem(c *gin.Context) {
-	fmt.Println(c.PostForm("logo"))
+	fmt.Println(c.PostForm("thumbnail"))
 	var input item.CreateItem
 	errs := c.Bind(&input)
 
-	file, err := c.FormFile("logo")
+	file, err := c.FormFile("thumbnail")
 
 	if errs != nil {
-		response := helper.APIResponse("Upload Data Failed", http.StatusBadRequest, "error", err)
+		response := helper.APIResponse("Upload Data Failed", http.StatusOK, "error", err)
 		c.JSON(http.StatusBadRequest, response)
 		return
 	}
 
 	if err != nil {
-		response := helper.APIResponse("Upload Logo Failed", http.StatusBadRequest, "error", err)
+		response := helper.APIResponse("Upload Logo Failed", http.StatusOK, "error", err)
 		c.JSON(http.StatusBadRequest, response)
 		return
 	}
 
 	path := os.Getenv("IMG_ITEMS") + "" + file.Filename
 	if err := c.SaveUploadedFile(file, path); err != nil {
-		response := helper.APIResponse("Upload Logo Failed", http.StatusBadRequest, "error", err)
+		response := helper.APIResponse("Upload Logo Failed", http.StatusOK, "error", err)
 		c.JSON(http.StatusBadRequest, response)
 		return
 	}
@@ -76,7 +76,7 @@ func (h *itemHandler) CreateItem(c *gin.Context) {
 	data, err := h.itemService.CreateItem(input, c.MustGet("currentUser").(user.User).ID, file.Filename, os.Getenv("IMG_ITEMS"))
 	if err != nil {
 		os.Remove(path)
-		response := helper.APIResponse("Created Item Failed", http.StatusBadRequest, "error", err)
+		response := helper.APIResponse("Created Item Failed", http.StatusOK, "error", err)
 		c.JSON(http.StatusBadRequest, response)
 		return
 	}
