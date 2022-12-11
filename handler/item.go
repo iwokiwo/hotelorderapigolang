@@ -26,6 +26,7 @@ func (h *itemHandler) SeachAll(c *gin.Context) {
 	fmt.Println("get user", userID.ID)
 	var input item.SearchInput
 	err := c.ShouldBindJSON(&input)
+	fmt.Println("input", &input)
 	if err != nil {
 		errors := helper.FormatValidationError(err)
 		errorMessage := gin.H{"errors": errors}
