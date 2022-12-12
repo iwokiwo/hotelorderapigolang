@@ -1,7 +1,6 @@
 package item
 
 import (
-	"fmt"
 	"gorm.io/gorm"
 	"strings"
 )
@@ -91,7 +90,7 @@ func (r *repository) SearchAll(input SearchInput, userId int) ([]Product, int64,
 			Find(&items)
 	}
 	if input.CategoryID == 0 {
-		fmt.Println("search", input.Search)
+		//fmt.Println("search", input.Search)
 		find = find.Where("active = ?", input.Active).
 			Where("user_id = ?", userId).
 			Where("stock > ?", 0).
