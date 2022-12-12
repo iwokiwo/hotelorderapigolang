@@ -1,7 +1,9 @@
 package item
 
 import (
+	"fmt"
 	"gorm.io/gorm"
+	"strings"
 )
 
 type Repository interface {
@@ -89,11 +91,11 @@ func (r *repository) SearchAll(input SearchInput, userId int) ([]Product, int64,
 			Find(&items)
 	}
 	if input.CategoryID == 0 {
-
+		fmt.Println("search", input.Search)
 		find = find.Where("active = ?", input.Active).
 			Where("user_id = ?", userId).
 			Where("stock > ?", 0).
-			Where("name LIKE ?", "%"+input.Search+"%").
+			Where("LOWER(name) LIKE ?", "%"+strings.ToLower(input.Search)+"%").
 			Preload("Category").
 			Preload("Unit").
 			Preload("Img").
