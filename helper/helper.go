@@ -2,6 +2,8 @@ package helper
 
 import (
 	"github.com/go-playground/validator/v10"
+	"github.com/sirupsen/logrus"
+	"os"
 )
 
 type Response struct {
@@ -59,6 +61,26 @@ func APIPagination(message string, code int, status string, total int64, data in
 	}
 
 	return jsonResponsePagination
+}
+
+func LoggerFile(message string, types string, idUser int, errors interface{}) {
+	logger := logrus.New()
+	logger.SetFormatter(&logrus.JSONFormatter{})
+
+	//--------------------------setting file log from .env---------------------------
+	path := os.Getenv("LOGFILE") + "application.log"
+	file, _ := os.OpenFile(path, os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0666)
+	logger.SetOutput(file)
+
+	//-------------------------switch type logger------------------------------------
+	switch types {
+	case "info":
+		logger.WithField("userId", idUser).WithField("Errors", errors).Info(message)
+	case "Warn":
+		logger.WithField("userId", idUser).WithField("Errors", errors).Warnf(message)
+	case "Error":
+		logger.WithField("userId", idUser).WithField("Errors", errors).Error(message)
+	}
 }
 
 func APIResponse(message string, code int, status string, data interface{}) ResponseV2 {

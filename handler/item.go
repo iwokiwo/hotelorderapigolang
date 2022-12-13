@@ -57,12 +57,14 @@ func (h *itemHandler) CreateItem(c *gin.Context) {
 
 	if errs != nil {
 		response := helper.APIResponse("Upload Data Failed", http.StatusBadRequest, "error", err)
+		helper.LoggerFile("Upload Data Failed", "Warn", c.MustGet("currentUser").(user.User).ID, err)
 		c.JSON(http.StatusOK, response)
 		return
 	}
 
 	if err != nil {
 		response := helper.APIResponse("Upload Logo Failed", http.StatusBadRequest, "error", err)
+		helper.LoggerFile("Upload Logo Failed", "Warn", c.MustGet("currentUser").(user.User).ID, err)
 		c.JSON(http.StatusOK, response)
 		return
 	}
