@@ -95,6 +95,7 @@ func (h *itemHandler) UpdateItem(c *gin.Context) {
 
 	if errs != nil {
 		response := helper.APIResponse("Upload Data Failed", http.StatusBadRequest, "error", err)
+		helper.LoggerFile("Update data : Upload Data Failed", "Warn", c.MustGet("currentUser").(user.User).ID, err)
 		c.JSON(http.StatusOK, response)
 		return
 	}
@@ -102,7 +103,8 @@ func (h *itemHandler) UpdateItem(c *gin.Context) {
 	if err != nil {
 		data, err := h.itemService.UpdateItem(input, c.MustGet("currentUser").(user.User).ID, c.PostForm("thumbnailOld"), os.Getenv("IMG_ITEMS"))
 		if err != nil {
-			response := helper.APIResponse("Update Branch Failed", http.StatusBadRequest, "error", err)
+			response := helper.APIResponse("Update Data Failed", http.StatusBadRequest, "error", err)
+			helper.LoggerFile("Update data : Upload Data Failed", "Warn", c.MustGet("currentUser").(user.User).ID, err)
 			c.JSON(http.StatusOK, response)
 			return
 		}
@@ -115,12 +117,14 @@ func (h *itemHandler) UpdateItem(c *gin.Context) {
 		path := os.Getenv("IMG_ITEMS") + "" + file.Filename
 		if err := c.SaveUploadedFile(file, path); err != nil {
 			response := helper.APIResponse("Upload Logo Failed", http.StatusBadRequest, "error", err)
+			helper.LoggerFile("Update data : Upload :Logo Failed", "Warn", c.MustGet("currentUser").(user.User).ID, err)
 			c.JSON(http.StatusOK, response)
 			return
 		}
 		data, err := h.itemService.UpdateItem(input, c.MustGet("currentUser").(user.User).ID, file.Filename, os.Getenv("IMG_ITEMS"))
 		if err != nil {
 			response := helper.APIResponse("Update Item Failed", http.StatusBadRequest, "error", err)
+			helper.LoggerFile("Update data : Upload Item Failed", "Warn", c.MustGet("currentUser").(user.User).ID, err)
 			c.JSON(http.StatusOK, response)
 			return
 		}
@@ -129,6 +133,7 @@ func (h *itemHandler) UpdateItem(c *gin.Context) {
 		// os.Remove(pathOld)
 		if err := os.Remove(pathOld); err != nil {
 			response := helper.APIResponse("Upload Logo Failed", http.StatusBadRequest, "error", err)
+			helper.LoggerFile("Update data : Upload Logo Failed", "Warn", c.MustGet("currentUser").(user.User).ID, err)
 			c.JSON(http.StatusOK, response)
 			return
 		}

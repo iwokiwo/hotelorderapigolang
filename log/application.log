@@ -1,1 +1,5 @@
 {"Errors":"request Content-Type isn't multipart/form-data","level":"warning","msg":"Upload Logo Failed","time":"2022-12-13T17:02:34+08:00","userId":1}
+{"Errors":"request Content-Type isn't multipart/form-data","level":"warning","msg":"Upload Logo Failed","time":"2022-12-14T12:00:35+08:00","userId":1}
+{"Errors":"remove storage/item/: The directory is not empty.","level":"warning","msg":"Update data : Upload Logo Failed","time":"2022-12-14T12:18:44+08:00","userId":1}
+{"Errors":"remove storage/item/: The directory is not empty.","level":"warning","msg":"Update data : Upload Logo Failed","time":"2022-12-14T12:24:07+08:00","userId":1}
+{"Errors":"remove storage/item/: The directory is not empty.","level":"warning","msg":"Update data : Upload Logo Failed","time":"2022-12-14T12:29:15+08:00","userId":1}
