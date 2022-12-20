@@ -1,6 +1,9 @@
 package item
 
-import "os"
+import (
+	"github.com/gosimple/slug"
+	"os"
+)
 
 type ItemFormatter struct {
 	ID             int      `json:"id"`
@@ -9,13 +12,13 @@ type ItemFormatter struct {
 	Bahan          string   `json:"bahan"`
 	Thumbnail      string   `json:"thumbnail"`
 	Dimensi        string   `json:"dimensi"`
-	Hpp            int      `json:"hpp"`
-	Price          int      `json:"price"`
+	Hpp            int      `json:"price"`
+	Price          int      `json:"sale_price"`
 	AvailableColor int      `json:"available_color"`
 	AvailableSize  int      `json:"available_size"`
 	Color          string   `json:"color"`
 	Size           string   `json:"size"`
-	Stock          int      `json:"stock"`
+	Stock          int      `json:"quantity"`
 	Active         int      `json:"active"`
 	Views          int      `json:"views"`
 	Description    string   `json:"description"`
@@ -24,14 +27,14 @@ type ItemFormatter struct {
 	Path           string   `json:"path"`
 	Category       Category `json:"category"`
 	Unit           Unit     `json:"unit"`
-	Img            []Img    `json:"img"`
+	Img            []Img    `json:"gallery"`
 }
 
 func FormatItem(product Product) ItemFormatter {
 	formatter := ItemFormatter{
 		ID:             product.ID,
 		Name:           product.Name,
-		Slug:           product.Slug,
+		Slug:           slug.Make(product.Name),
 		Bahan:          product.Bahan,
 		Thumbnail:      product.Thumbnail,
 		Dimensi:        product.Dimensi,
