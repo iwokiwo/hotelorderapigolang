@@ -30,6 +30,19 @@ type ItemFormatter struct {
 	Img            []Img    `json:"gallery"`
 }
 
+type ItemFormatterFrontEnd struct {
+	ID          int    `json:"id"`
+	Name        string `json:"name"`
+	Slug        string `json:"slug"`
+	Price       int    `json:"price"`
+	SalePrice   int    `json:"sale_price"`
+	Quantity    int    `json:"quantity"`
+	Description string `json:"description"`
+	Unit        Unit   `json:"unit"`
+	Gallery     []Img  `json:"gallery"`
+	Image       string `json:"image"`
+}
+
 func FormatItem(product Product) ItemFormatter {
 	formatter := ItemFormatter{
 		ID:             product.ID,
@@ -58,12 +71,40 @@ func FormatItem(product Product) ItemFormatter {
 	return formatter
 }
 
+func FormatItemFrontEnd(product Product) ItemFormatterFrontEnd {
+	formatter := ItemFormatterFrontEnd{
+		ID:          product.ID,
+		Name:        product.Name,
+		Slug:        slug.Make(product.Name),
+		Gallery:     product.Img,
+		SalePrice:   product.Price,
+		Price:       product.Hpp,
+		Unit:        product.Unit,
+		Description: product.Description,
+		Image:       os.Getenv("APP_URL") + "" + product.Path + "" + product.Thumbnail,
+	}
+
+	return formatter
+}
+
 func FormatItems(items []Product) []ItemFormatter {
 
 	itemFormatter := []ItemFormatter{}
 
 	for _, item := range items {
 		formatter := FormatItem(item)
+		itemFormatter = append(itemFormatter, formatter)
+	}
+
+	return itemFormatter
+}
+
+func FormatItemsFrontEnds(items []Product) []ItemFormatterFrontEnd {
+
+	itemFormatter := []ItemFormatterFrontEnd{}
+
+	for _, item := range items {
+		formatter := FormatItemFrontEnd(item)
 		itemFormatter = append(itemFormatter, formatter)
 	}
 

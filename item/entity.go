@@ -54,3 +54,7 @@ type Img struct {
 	Filename  string
 	ProductId int
 }
+
+type Image struct {
+	Thumbnail string
+}

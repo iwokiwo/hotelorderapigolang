@@ -48,6 +48,33 @@ func (h *itemHandler) SeachAll(c *gin.Context) {
 	c.JSON(http.StatusOK, response)
 }
 
+func (h *itemHandler) SeachAllFrontEnd(c *gin.Context) {
+	userID := c.MustGet("currentUser").(user.User)
+	fmt.Println("get user", userID.ID)
+	var input item.SearchInput
+	err := c.ShouldBindJSON(&input)
+	fmt.Println("input", &input)
+	if err != nil {
+		errors := helper.FormatValidationError(err)
+		errorMessage := gin.H{"errors": errors}
+		response := helper.APIResponse("Validation Pagination Failed", http.StatusUnprocessableEntity, "error", errorMessage)
+		c.JSON(http.StatusUnprocessableEntity, response)
+		return
+	}
+
+	items, total, err := h.itemService.SearchAll(input, c.MustGet("currentUser").(user.User).ID)
+
+	if err != nil {
+		response := helper.APIResponse("Search All Products failed", http.StatusBadRequest, "error", err)
+		c.JSON(http.StatusBadRequest, response)
+		return
+	}
+
+	formatter := item.FormatItemsFrontEnds(items)
+	response := helper.APIPagination("Search All Products", http.StatusOK, "success", total, formatter)
+	c.JSON(http.StatusOK, response)
+}
+
 func (h *itemHandler) CreateItem(c *gin.Context) {
 	fmt.Println(c.PostForm("thumbnail"))
 	var input item.CreateItem

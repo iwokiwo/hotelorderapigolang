@@ -28,10 +28,12 @@
     </select>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="a7a054ca-db51-4e15-82e5-d99f15da3ae1" name="Default Changelist" comment="logger">
+    <list default="true" id="a7a054ca-db51-4e15-82e5-d99f15da3ae1" name="Default Changelist" comment="slug">
+      <change beforePath="$PROJECT_DIR$/.idea/dataSources/ddd41665-e427-4da5-85b9-32ff89a005f7.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources/ddd41665-e427-4da5-85b9-32ff89a005f7.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/go.mod" beforeDir="false" afterPath="$PROJECT_DIR$/go.mod" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/go.sum" beforeDir="false" afterPath="$PROJECT_DIR$/go.sum" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Routes/Router.go" beforeDir="false" afterPath="$PROJECT_DIR$/Routes/Router.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/handler/item.go" beforeDir="false" afterPath="$PROJECT_DIR$/handler/item.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/item/entity.go" beforeDir="false" afterPath="$PROJECT_DIR$/item/entity.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/item/formatter.go" beforeDir="false" afterPath="$PROJECT_DIR$/item/formatter.go" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -108,10 +110,10 @@
       <filePath value="$PROJECT_DIR$" />
       <method v="2" />
     </configuration>
-    <configuration name="go build iwogo" type="GoApplicationRunConfiguration" factoryName="Go Application" temporary="true" nameIsGenerated="true">
+    <configuration name="go build backendGo/" type="GoApplicationRunConfiguration" factoryName="Go Application" temporary="true" nameIsGenerated="true">
       <module name="exhotel" />
       <working_directory value="$PROJECT_DIR$" />
-      <kind value="PACKAGE" />
+      <kind value="DIRECTORY" />
       <package value="iwogo" />
       <directory value="$PROJECT_DIR$" />
       <filePath value="$PROJECT_DIR$/main.go" />
@@ -129,7 +131,7 @@
     </configuration>
     <recent_temporary>
       <list>
-        <item itemvalue="Go Build.go build iwogo" />
+        <item itemvalue="Go Build.go build backendGo/" />
       </list>
     </recent_temporary>
   </component>
@@ -170,7 +172,8 @@
     <MESSAGE value="modif formater" />
     <MESSAGE value="item" />
     <MESSAGE value="logger" />
-    <option name="LAST_COMMIT_MESSAGE" value="logger" />
+    <MESSAGE value="slug" />
+    <option name="LAST_COMMIT_MESSAGE" value="slug" />
   </component>
   <component name="VgoProject">
     <settings-migrated>true</settings-migrated>
