@@ -26,13 +26,13 @@ type SearchInput struct {
 type CreateItem struct {
 	Name           string `form:"name" binding:"required"`
 	Dimensi        string `form:"dimensi"`
-	Hpp            int    `form:"hpp"`
-	Price          int    `form:"price"`
+	Hpp            int    `form:"price"`
+	Price          int    `form:"sale_price"`
 	AvailableColor int    `form:"available_color"`
 	AvailableSize  int    `form:"available_size"`
 	Color          string `form:"color"`
 	Size           string `form:"size"`
-	Stock          int    `form:"stock"`
+	Stock          int    `form:"quantity"`
 	Active         int    `form:"active"`
 	CategoryId     int    `form:"category_id"`
 	UnitId         int    `form:"unit_id"`

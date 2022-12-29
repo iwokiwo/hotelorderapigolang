@@ -157,13 +157,13 @@ func (h *itemHandler) UpdateItem(c *gin.Context) {
 		}
 
 		pathOld := os.Getenv("IMG_ITEMS") + "" + c.PostForm("thumbnailOld")
-		// os.Remove(pathOld)
-		if err := os.Remove(pathOld); err != nil {
-			response := helper.APIResponse("Upload Logo Failed", http.StatusBadRequest, "error", err)
-			helper.LoggerFile("Update data : Upload Logo Failed", "Warn", c.MustGet("currentUser").(user.User).ID, err)
-			c.JSON(http.StatusOK, response)
-			return
-		}
+		os.Remove(pathOld)
+		// if err := os.Remove(pathOld); err != nil {
+		// 	response := helper.APIResponse("Upload Logo Failed", http.StatusBadRequest, "error", err)
+		// 	helper.LoggerFile("Update data : Upload Logo Failed", "Warn", c.MustGet("currentUser").(user.User).ID, err)
+		// 	c.JSON(http.StatusOK, response)
+		// 	return
+		// }
 
 		response := helper.APIResponse("Item Update", http.StatusOK, "success", data)
 		c.JSON(http.StatusOK, response)

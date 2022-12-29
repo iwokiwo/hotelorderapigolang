@@ -1,8 +1,10 @@
 package item
 
 import (
-	"gorm.io/gorm"
+	"fmt"
 	"strings"
+
+	"gorm.io/gorm"
 )
 
 type Repository interface {
@@ -53,63 +55,85 @@ func (r *repository) SearchAll(input SearchInput, userId int) ([]Product, int64,
 
 	//fmt.Println("userId", userId)
 	var items []Product
-	totalRows := 0
-	total := int64(totalRows)
+	var totalItems []Product
 
 	page := input.Page
 
 	if page == 0 {
 		page = 1
+	} else {
+		page = page + 1
 	}
 
 	//query
 	offset := (page - 1) * input.Size
+
 	find := r.db.Limit(input.Size).Offset(offset).Order(input.Sort + " " + input.Direction)
 
 	if input.Id > 0 {
 		find = find.Where("active = ?", input.Active).
-			Where("stock > ?", 0).
 			Where("id = ?", input.Id).
 			Where("user_id = ?", userId).
 			Preload("Category").
 			Preload("Unit").
 			Preload("Img").
 			Find(&items)
+
+		r.db.Where("active = ?", input.Active).
+			Where("id = ?", input.Id).
+			Where("user_id = ?", userId).
+			Preload("Category").
+			Preload("Unit").
+			Preload("Img").
+			Find(&totalItems)
+
 	}
 
 	if input.CategoryID > 0 {
 
 		find = find.Where("active = ?", input.Active).
 			Where("category_id = ?", input.CategoryID).
-			Where("stock > ?", 0).
 			Where("name LIKE ?", "%"+input.Search+"%").
 			Where("user_id = ?", userId).
 			Preload("Category").
 			Preload("Unit").
 			Preload("Img").
 			Find(&items)
+
+		r.db.Where("active = ?", input.Active).
+			Where("category_id = ?", input.CategoryID).
+			Where("name LIKE ?", "%"+input.Search+"%").
+			Where("user_id = ?", userId).
+			Preload("Category").
+			Preload("Unit").
+			Preload("Img").
+			Find(&totalItems)
 	}
 	if input.CategoryID == 0 {
 		//fmt.Println("search", input.Search)
 		find = find.Where("active = ?", input.Active).
 			Where("user_id = ?", userId).
-			Where("stock > ?", 0).
 			Where("LOWER(name) LIKE ?", "%"+strings.ToLower(input.Search)+"%").
 			Preload("Category").
 			Preload("Unit").
 			Preload("Img").
 			Find(&items)
 
-	}
+		r.db.Where("active = ?", input.Active).
+			Where("user_id = ?", userId).
+			Where("LOWER(name) LIKE ?", "%"+strings.ToLower(input.Search)+"%").
+			Preload("Category").
+			Preload("Unit").
+			Preload("Img").
+			Find(&totalItems)
 
+	}
+	fmt.Println("page", len(totalItems))
+
+	total := int64(len(totalItems))
 	err := find.Error
 	if err != nil {
 		return items, total, err
-	}
-
-	for i := range items {
-		total = total + 1
-		i++
 	}
 
 	data := items
