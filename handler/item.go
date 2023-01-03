@@ -76,11 +76,15 @@ func (h *itemHandler) SeachAllFrontEnd(c *gin.Context) {
 }
 
 func (h *itemHandler) CreateItem(c *gin.Context) {
-	fmt.Println(c.PostForm("thumbnail"))
+	// fmt.Println(c.PostForm("thumbnail"))
 	var input item.CreateItem
 	errs := c.Bind(&input)
 
 	file, err := c.FormFile("thumbnail")
+
+	// //--------------multi image upload--------------------
+	// form, err := c.MultipartForm()
+	// files := form.File["gallery"]
 
 	if errs != nil {
 		response := helper.APIResponse("Upload Data Failed", http.StatusBadRequest, "error", err)
@@ -120,6 +124,10 @@ func (h *itemHandler) UpdateItem(c *gin.Context) {
 	errs := c.Bind(&input)
 	file, err := c.FormFile("thumbnail")
 
+	//--------------multi image upload--------------------
+	form, errs := c.MultipartForm()
+	files := form.File["multiFile"]
+
 	if errs != nil {
 		response := helper.APIResponse("Upload Data Failed", http.StatusBadRequest, "error", err)
 		helper.LoggerFile("Update data : Upload Data Failed", "Warn", c.MustGet("currentUser").(user.User).ID, err)
@@ -141,6 +149,18 @@ func (h *itemHandler) UpdateItem(c *gin.Context) {
 
 	} else {
 
+		for _, ss := range files {
+			fmt.Println("file", ss)
+
+			path := os.Getenv("IMG_GALLERY") + "" + ss.Filename
+			if err := c.SaveUploadedFile(ss, path); err != nil {
+				response := helper.APIResponse("Upload Image Gallery Failed", http.StatusBadRequest, "error", err)
+				helper.LoggerFile("Update Image : Upload Image Gallery Failed", "Warn", c.MustGet("currentUser").(user.User).ID, err)
+				c.JSON(http.StatusOK, response)
+				return
+			}
+		}
+
 		path := os.Getenv("IMG_ITEMS") + "" + file.Filename
 		if err := c.SaveUploadedFile(file, path); err != nil {
 			response := helper.APIResponse("Upload Logo Failed", http.StatusBadRequest, "error", err)
@@ -148,6 +168,7 @@ func (h *itemHandler) UpdateItem(c *gin.Context) {
 			c.JSON(http.StatusOK, response)
 			return
 		}
+
 		data, err := h.itemService.UpdateItem(input, c.MustGet("currentUser").(user.User).ID, file.Filename, os.Getenv("IMG_ITEMS"))
 		if err != nil {
 			response := helper.APIResponse("Update Item Failed", http.StatusBadRequest, "error", err)
