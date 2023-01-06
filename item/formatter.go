@@ -1,8 +1,9 @@
 package item
 
 import (
-	"github.com/gosimple/slug"
 	"os"
+
+	"github.com/gosimple/slug"
 )
 
 type ItemFormatter struct {
@@ -31,16 +32,49 @@ type ItemFormatter struct {
 }
 
 type ItemFormatterFrontEnd struct {
-	ID          int    `json:"id"`
-	Name        string `json:"name"`
-	Slug        string `json:"slug"`
-	Price       int    `json:"price"`
-	SalePrice   int    `json:"sale_price"`
-	Quantity    int    `json:"quantity"`
-	Description string `json:"description"`
-	Unit        Unit   `json:"unit"`
-	Gallery     []Img  `json:"gallery"`
-	Image       string `json:"image"`
+	ID          int      `json:"id"`
+	Name        string   `json:"name"`
+	Slug        string   `json:"slug"`
+	Price       int      `json:"price"`
+	SalePrice   int      `json:"sale_price"`
+	Quantity    int      `json:"quantity"`
+	Description string   `json:"description"`
+	Category    Category `json:"category"`
+	Unit        Unit     `json:"unit"`
+	Gallery     []Img    `json:"gallery"`
+	Image       string   `json:"image"`
+}
+
+// type ImgFormatter struct {
+// 	ID        int
+// 	Filename  string
+// 	ProductId int
+// 	Path      string
+// 	Url       string
+// }
+
+func FormatGallery(img Img) Img {
+	formatter := Img{
+		ID:        img.ID,
+		Filename:  img.Filename,
+		Path:      img.Path,
+		ProductId: img.ProductId,
+		Url:       os.Getenv("APP_URL"),
+	}
+
+	return formatter
+}
+
+func FormatGallerys(items []Img) []Img {
+
+	itemFormatter := []Img{}
+
+	for _, item := range items {
+		formatter := FormatGallery(item)
+		itemFormatter = append(itemFormatter, formatter)
+	}
+
+	return itemFormatter
 }
 
 func FormatItem(product Product) ItemFormatter {
@@ -64,7 +98,7 @@ func FormatItem(product Product) ItemFormatter {
 		Category:       product.Category,
 		CategoryId:     product.CategoryId,
 		Unit:           product.Unit,
-		Img:            product.Img,
+		Img:            FormatGallerys(product.Img),
 		Path:           product.Path,
 		Url:            os.Getenv("APP_URL"),
 	}
@@ -76,9 +110,10 @@ func FormatItemFrontEnd(product Product) ItemFormatterFrontEnd {
 		ID:          product.ID,
 		Name:        product.Name,
 		Slug:        slug.Make(product.Name),
-		Gallery:     product.Img,
+		Gallery:     FormatGallerys(product.Img),
 		SalePrice:   product.Price,
 		Price:       product.Hpp,
+		Category:    product.Category,
 		Unit:        product.Unit,
 		Description: product.Description,
 		Image:       os.Getenv("APP_URL") + "" + product.Path + "" + product.Thumbnail,

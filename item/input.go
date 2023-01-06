@@ -1,6 +1,9 @@
 package item
 
-import "time"
+import (
+	"mime/multipart"
+	"time"
+)
 
 type PaginationInput struct {
 	Page      int    `json:"page"`
@@ -37,8 +40,9 @@ type CreateItem struct {
 	CategoryId     int    `form:"category_id"`
 	UnitId         int    `form:"unit_id"`
 	Description    string `form:"description"`
-	CreatedAt      time.Time
-	UpdatedAt      time.Time
+	//Gallery        []Img  `form:"gallery"`
+	CreatedAt time.Time
+	UpdatedAt time.Time
 }
 
 type UpdateItem struct {
@@ -50,7 +54,28 @@ type DeleteItem struct {
 	ID int `json:"id" binding:"required"`
 }
 
-type Imgs struct {
-	Filename  string
-	ProductId int
+// type Imgs struct {
+// 	Filename string
+// 	Path     string
+// }
+
+func FormatInputImg(filename string, path string, producId int) Img {
+	formatter := Img{
+		Filename:  filename,
+		Path:      path,
+		ProductId: producId,
+	}
+
+	return formatter
+}
+
+func FormatInputImgs(imgs []*multipart.FileHeader, path string, productId int) []Img {
+	imgFormatter := []Img{}
+
+	for _, img := range imgs {
+		formatter := FormatInputImg(img.Filename, path, productId)
+		imgFormatter = append(imgFormatter, formatter)
+	}
+
+	return imgFormatter
 }

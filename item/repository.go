@@ -9,7 +9,7 @@ import (
 
 type Repository interface {
 	CreateItem(item Product) (Product, error)
-	UpdateItem(item Product) (Product, error)
+	UpdateItem(item Product, img []Img) (Product, error)
 	DeleteItem(item Product) (Product, error)
 	SearchAll(input SearchInput, userId int) ([]Product, int64, error)
 }
@@ -32,9 +32,10 @@ func (r *repository) CreateItem(item Product) (Product, error) {
 	return item, nil
 }
 
-func (r *repository) UpdateItem(item Product) (Product, error) {
+func (r *repository) UpdateItem(item Product, img []Img) (Product, error) {
 	err := r.db.Save(&item).Error
-
+	errs := r.db.Create(&img).Error
+	fmt.Println("image save", errs)
 	if err != nil {
 		return item, err
 	}

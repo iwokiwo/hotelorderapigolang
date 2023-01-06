@@ -53,6 +53,8 @@ type Img struct {
 	ID        int
 	Filename  string
 	ProductId int
+	Path      string
+	Url       string
 }
 
 type Image struct {
