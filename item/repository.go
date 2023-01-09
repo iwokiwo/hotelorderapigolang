@@ -33,13 +33,27 @@ func (r *repository) CreateItem(item Product) (Product, error) {
 }
 
 func (r *repository) UpdateItem(item Product, img []Img) (Product, error) {
-	err := r.db.Save(&item).Error
-	errs := r.db.Create(&img).Error
-	fmt.Println("image save", errs)
+	tx := r.db.Begin()
+
+	err := tx.Save(&item).Error
 	if err != nil {
+		tx.Rollback()
 		return item, err
 	}
+	fmt.Println("item id", item.ID)
+	errd := tx.Where("product_id = ?", item.ID).Delete(&img).Error
+	if errd != nil {
+		tx.Rollback()
+		return item, errd
+	}
+	errs := tx.Create(&img).Error
+	fmt.Println("image save", errs)
 
+	if errs != nil {
+		tx.Rollback()
+		return item, errs
+	}
+	tx.Commit()
 	return item, nil
 }
 

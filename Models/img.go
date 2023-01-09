@@ -12,6 +12,7 @@ type Img struct {
 	Filename  string `json:"filename"`
 	Path      string `json:"path"`
 	ProductId string `json:"product_id"`
+	Url       string `json:"url"`
 	CreatedAt time.Time
 	UpdatedAt time.Time
 	DeletedAt gorm.DeletedAt
