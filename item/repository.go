@@ -40,13 +40,13 @@ func (r *repository) UpdateItem(item Product, img []Img) (Product, error) {
 		tx.Rollback()
 		return item, err
 	}
-	fmt.Println("item id", item.ID)
+
 	errd := tx.Where("product_id = ?", item.ID).Delete(&img).Error
 	if errd != nil {
 		tx.Rollback()
 		return item, errd
 	}
-	errs := tx.Create(&img).Error
+	errs := tx.Omit("url").Create(&img).Error
 	fmt.Println("image save", errs)
 
 	if errs != nil {

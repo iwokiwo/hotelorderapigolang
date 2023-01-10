@@ -128,7 +128,8 @@ func (h *itemHandler) UpdateItem(c *gin.Context) {
 	form, errs := c.MultipartForm()
 	files := form.File["multiFile"]
 
-	//Filenames := c.PostFormArray("gallery")
+	galleryOld := c.PostFormArray("galleryOld")
+	fmt.Println("Filenames", galleryOld)
 
 	for _, ss := range files {
 		//fmt.Println("file", ss)

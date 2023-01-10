@@ -2,6 +2,7 @@ package item
 
 import (
 	"mime/multipart"
+	"os"
 	"time"
 )
 
@@ -59,21 +60,21 @@ type DeleteItem struct {
 // 	Path     string
 // }
 
-func FormatInputImg(filename string, path string, producId int) Img {
+func FormatInputImg(filename string, producId int) Img {
 	formatter := Img{
 		Filename:  filename,
-		Path:      path,
+		Path:      os.Getenv("IMG_GALLERY"),
 		ProductId: producId,
 	}
 
 	return formatter
 }
 
-func FormatInputImgs(imgs []*multipart.FileHeader, path string, productId int) []Img {
+func FormatInputImgs(imgs []*multipart.FileHeader, productId int) []Img {
 	imgFormatter := []Img{}
 
 	for _, img := range imgs {
-		formatter := FormatInputImg(img.Filename, path, productId)
+		formatter := FormatInputImg(img.Filename, productId)
 		imgFormatter = append(imgFormatter, formatter)
 	}
 

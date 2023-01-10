@@ -58,7 +58,7 @@ func (s *service) UpdateItem(input UpdateItem, UserId int, filename string, path
 
 	//fmt.Println("img", FormatInputImgs(File, path, input.ID))
 
-	newItem, err := s.repository.UpdateItem(item, FormatInputImgs(File, path, input.ID))
+	newItem, err := s.repository.UpdateItem(item, FormatInputImgs(File, input.ID))
 	if err != nil {
 		return newItem, err
 	}
