@@ -5,7 +5,7 @@ import (
 )
 
 type Service interface {
-	CreateItem(input CreateItem, userId int, filename string, path string) (Product, error)
+	CreateItem(input CreateItem, userId int, filename string, path string, File []*multipart.FileHeader) (Product, error)
 	UpdateItem(input UpdateItem, userId int, filename string, path string, File []*multipart.FileHeader, deleteFile []string) (Product, error)
 	DeleteItem(input DeleteItem) (Product, error)
 	SearchAll(input SearchInput, userId int) ([]Product, int64, error)
@@ -19,7 +19,7 @@ func NewService(repository Repository) *service {
 	return &service{repository}
 }
 
-func (s *service) CreateItem(input CreateItem, UserId int, filename string, path string) (Product, error) {
+func (s *service) CreateItem(input CreateItem, UserId int, filename string, path string, File []*multipart.FileHeader) (Product, error) {
 	item := Product{}
 	item.Name = input.Name
 	item.Hpp = input.Hpp
@@ -33,7 +33,7 @@ func (s *service) CreateItem(input CreateItem, UserId int, filename string, path
 	item.Thumbnail = filename
 	item.Path = path
 
-	newItem, err := s.repository.CreateItem(item)
+	newItem, err := s.repository.CreateItem(item, File)
 	if err != nil {
 		return newItem, err
 	}

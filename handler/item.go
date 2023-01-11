@@ -82,9 +82,19 @@ func (h *itemHandler) CreateItem(c *gin.Context) {
 
 	file, err := c.FormFile("thumbnail")
 
-	// //--------------multi image upload--------------------
-	// form, err := c.MultipartForm()
-	// files := form.File["gallery"]
+	//--------------multi image upload--------------------
+	form, errs := c.MultipartForm()
+	files := form.File["multiFile"]
+
+	for _, ss := range files {
+		path := os.Getenv("IMG_GALLERY") + "" + ss.Filename
+		if err := c.SaveUploadedFile(ss, path); err != nil {
+			response := helper.APIResponse("Upload Image Gallery Failed", http.StatusBadRequest, "error", err)
+			helper.LoggerFile("Update Image : Upload Image Gallery Failed", "Warn", c.MustGet("currentUser").(user.User).ID, err)
+			c.JSON(http.StatusOK, response)
+			return
+		}
+	}
 
 	if errs != nil {
 		response := helper.APIResponse("Upload Data Failed", http.StatusBadRequest, "error", err)
@@ -107,7 +117,7 @@ func (h *itemHandler) CreateItem(c *gin.Context) {
 		return
 	}
 
-	data, err := h.itemService.CreateItem(input, c.MustGet("currentUser").(user.User).ID, file.Filename, os.Getenv("IMG_ITEMS"))
+	data, err := h.itemService.CreateItem(input, c.MustGet("currentUser").(user.User).ID, file.Filename, os.Getenv("IMG_ITEMS"), files)
 	if err != nil {
 		os.Remove(path)
 		response := helper.APIResponse("Created Item Failed", http.StatusBadRequest, "error", err)
@@ -129,6 +139,8 @@ func (h *itemHandler) UpdateItem(c *gin.Context) {
 	files := form.File["multiFile"]
 
 	multiFileDeletes := c.PostFormArray("multiFileDelete")
+
+	fmt.Println("file", files)
 
 	for _, dataDelete := range multiFileDeletes {
 		pathOld := os.Getenv("IMG_GALLERY") + "" + dataDelete

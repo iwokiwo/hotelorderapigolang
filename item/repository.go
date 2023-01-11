@@ -2,13 +2,14 @@ package item
 
 import (
 	"fmt"
+	"mime/multipart"
 	"strings"
 
 	"gorm.io/gorm"
 )
 
 type Repository interface {
-	CreateItem(item Product) (Product, error)
+	CreateItem(item Product, File []*multipart.FileHeader) (Product, error)
 	UpdateItem(item Product, img []Img, deleteFile []string) (Product, error)
 	DeleteItem(item Product) (Product, error)
 	SearchAll(input SearchInput, userId int) ([]Product, int64, error)
@@ -22,18 +23,29 @@ func NewRepository(db *gorm.DB) *repository {
 	return &repository{db}
 }
 
-func (r *repository) CreateItem(item Product) (Product, error) {
-	err := r.db.Create(&item).Error
+func (r *repository) CreateItem(item Product, File []*multipart.FileHeader) (Product, error) {
+	tx := r.db.Begin()
 
+	err := tx.Create(&item).Error
 	if err != nil {
+		tx.Rollback()
 		return item, err
 	}
 
+	if len(FormatInputImgs(File, item.ID)) != 0 {
+		errs := tx.Omit("url").Create(FormatInputImgs(File, item.ID)).Error
+		if errs != nil {
+			tx.Rollback()
+			return item, errs
+		}
+	}
+
+	tx.Commit()
 	return item, nil
 }
 
 func (r *repository) UpdateItem(item Product, img []Img, deleteFile []string) (Product, error) {
-	//fmt.Println("image save", len(img))
+
 	tx := r.db.Begin()
 
 	err := tx.Save(&item).Error
@@ -43,12 +55,6 @@ func (r *repository) UpdateItem(item Product, img []Img, deleteFile []string) (P
 	}
 
 	if len(img) != 0 {
-
-		// errd := tx.Where("product_id = ?", item.ID).Delete(&img).Error
-		// if errd != nil {
-		// 	tx.Rollback()
-		// 	return item, errd
-		// }
 		errs := tx.Omit("url").Create(&img).Error
 		if errs != nil {
 			tx.Rollback()
