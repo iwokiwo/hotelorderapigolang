@@ -9,7 +9,7 @@ import (
 
 type Repository interface {
 	CreateItem(item Product) (Product, error)
-	UpdateItem(item Product, img []Img) (Product, error)
+	UpdateItem(item Product, img []Img, deleteFile []string) (Product, error)
 	DeleteItem(item Product) (Product, error)
 	SearchAll(input SearchInput, userId int) ([]Product, int64, error)
 }
@@ -32,7 +32,8 @@ func (r *repository) CreateItem(item Product) (Product, error) {
 	return item, nil
 }
 
-func (r *repository) UpdateItem(item Product, img []Img) (Product, error) {
+func (r *repository) UpdateItem(item Product, img []Img, deleteFile []string) (Product, error) {
+	//fmt.Println("image save", len(img))
 	tx := r.db.Begin()
 
 	err := tx.Save(&item).Error
@@ -41,18 +42,29 @@ func (r *repository) UpdateItem(item Product, img []Img) (Product, error) {
 		return item, err
 	}
 
-	errd := tx.Where("product_id = ?", item.ID).Delete(&img).Error
-	if errd != nil {
-		tx.Rollback()
-		return item, errd
-	}
-	errs := tx.Omit("url").Create(&img).Error
-	fmt.Println("image save", errs)
+	if len(img) != 0 {
 
-	if errs != nil {
-		tx.Rollback()
-		return item, errs
+		// errd := tx.Where("product_id = ?", item.ID).Delete(&img).Error
+		// if errd != nil {
+		// 	tx.Rollback()
+		// 	return item, errd
+		// }
+		errs := tx.Omit("url").Create(&img).Error
+		if errs != nil {
+			tx.Rollback()
+			return item, errs
+		}
 	}
+
+	//-------delete img-----------
+	for _, deleteFiles := range deleteFile {
+		errd := tx.Where("filename = ?", deleteFiles).Delete(&img).Error
+		if errd != nil {
+			tx.Rollback()
+			return item, errd
+		}
+	}
+
 	tx.Commit()
 	return item, nil
 }

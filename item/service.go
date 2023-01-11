@@ -6,7 +6,7 @@ import (
 
 type Service interface {
 	CreateItem(input CreateItem, userId int, filename string, path string) (Product, error)
-	UpdateItem(input UpdateItem, userId int, filename string, path string, File []*multipart.FileHeader) (Product, error)
+	UpdateItem(input UpdateItem, userId int, filename string, path string, File []*multipart.FileHeader, deleteFile []string) (Product, error)
 	DeleteItem(input DeleteItem) (Product, error)
 	SearchAll(input SearchInput, userId int) ([]Product, int64, error)
 }
@@ -41,7 +41,7 @@ func (s *service) CreateItem(input CreateItem, UserId int, filename string, path
 	return newItem, nil
 }
 
-func (s *service) UpdateItem(input UpdateItem, UserId int, filename string, path string, File []*multipart.FileHeader) (Product, error) {
+func (s *service) UpdateItem(input UpdateItem, UserId int, filename string, path string, File []*multipart.FileHeader, deleteFile []string) (Product, error) {
 	item := Product{}
 	item.ID = input.ID
 	item.Name = input.Name
@@ -58,7 +58,7 @@ func (s *service) UpdateItem(input UpdateItem, UserId int, filename string, path
 
 	//fmt.Println("img", FormatInputImgs(File, path, input.ID))
 
-	newItem, err := s.repository.UpdateItem(item, FormatInputImgs(File, input.ID))
+	newItem, err := s.repository.UpdateItem(item, FormatInputImgs(File, input.ID), deleteFile)
 	if err != nil {
 		return newItem, err
 	}
