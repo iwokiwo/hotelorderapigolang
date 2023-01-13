@@ -52,7 +52,7 @@ type UpdateItem struct {
 }
 
 type DeleteItem struct {
-	ID int `json:"id" binding:"required"`
+	ID int `uri:"id" binding:"required"`
 }
 
 // type Imgs struct {

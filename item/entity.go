@@ -55,6 +55,9 @@ type Img struct {
 	ProductId int
 	Path      string
 	Url       string
+	CreatedAt time.Time
+	UpdatedAt time.Time
+	DeletedAt gorm.DeletedAt
 }
 
 type Image struct {

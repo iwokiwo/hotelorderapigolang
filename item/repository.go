@@ -2,6 +2,7 @@ package item
 
 import (
 	"fmt"
+	"iwogo/Models"
 	"mime/multipart"
 	"strings"
 
@@ -76,11 +77,23 @@ func (r *repository) UpdateItem(item Product, img []Img, deleteFile []string) (P
 }
 
 func (r *repository) DeleteItem(item Product) (Product, error) {
-	//err := r.db.Where("id = ?", item.ID).Delete(&item).Error
-	err := r.db.Delete(&item, item.ID).Error
+	tx := r.db.Begin()
+
+	Imgs := []Models.Img{}
+	err := tx.Delete(&item, item.ID).Error
 	if err != nil {
+		tx.Rollback()
 		return item, err
 	}
+
+	errd := tx.Where("product_id = ?", item.ID).Delete(&Imgs).Error
+
+	if errd != nil {
+		tx.Rollback()
+		return item, errd
+	}
+
+	tx.Commit()
 	return item, nil
 }
 

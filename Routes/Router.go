@@ -149,7 +149,7 @@ func SetupRouter(db *gorm.DB) *gin.Engine {
 	api.POST("/item/searchAll", middleware.AuthMiddleware(authService, userService), itemHandler.SeachAll)
 	api.POST("/item/create", middleware.AuthMiddleware(authService, userService), itemHandler.CreateItem)
 	api.PUT("/item/update", middleware.AuthMiddleware(authService, userService), itemHandler.UpdateItem)
-	api.DELETE("/item/delete", middleware.AuthMiddleware(authService, userService), itemHandler.DeleteItem)
+	api.DELETE("/item/delete/:id", middleware.AuthMiddleware(authService, userService), itemHandler.DeleteItem)
 
 	//----------------------item api Frontend-----------------------------
 	api.POST("/item-font-end/searchAll", middleware.AuthMiddleware(authService, userService), itemHandler.SeachAllFrontEnd)

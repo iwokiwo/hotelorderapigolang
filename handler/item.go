@@ -210,8 +210,9 @@ func (h *itemHandler) UpdateItem(c *gin.Context) {
 
 func (h *itemHandler) DeleteItem(c *gin.Context) {
 	var input item.DeleteItem
-	err := c.ShouldBindJSON(&input)
+	err := c.ShouldBindUri(&input)
 
+	fmt.Println("id", input)
 	if err != nil {
 		errors := helper.FormatValidationError(err)
 		errorMessage := gin.H{"errors": errors}
