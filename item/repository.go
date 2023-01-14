@@ -123,6 +123,7 @@ func (r *repository) SearchAll(input SearchInput, userId int) ([]Product, int64,
 			Preload("Category").
 			Preload("Unit").
 			Preload("Img").
+			Preload("Branch").
 			Find(&items)
 
 		r.db.Where("active = ?", input.Active).
@@ -131,6 +132,7 @@ func (r *repository) SearchAll(input SearchInput, userId int) ([]Product, int64,
 			Preload("Category").
 			Preload("Unit").
 			Preload("Img").
+			Preload("Branch").
 			Find(&totalItems)
 
 	}
@@ -144,6 +146,7 @@ func (r *repository) SearchAll(input SearchInput, userId int) ([]Product, int64,
 			Preload("Category").
 			Preload("Unit").
 			Preload("Img").
+			Preload("Branch").
 			Find(&items)
 
 		r.db.Where("active = ?", input.Active).
@@ -153,6 +156,7 @@ func (r *repository) SearchAll(input SearchInput, userId int) ([]Product, int64,
 			Preload("Category").
 			Preload("Unit").
 			Preload("Img").
+			Preload("Branch").
 			Find(&totalItems)
 	}
 	if input.CategoryID == 0 {
@@ -163,6 +167,7 @@ func (r *repository) SearchAll(input SearchInput, userId int) ([]Product, int64,
 			Preload("Category").
 			Preload("Unit").
 			Preload("Img").
+			Preload("Branch").
 			Find(&items)
 
 		r.db.Where("active = ?", input.Active).
@@ -171,6 +176,7 @@ func (r *repository) SearchAll(input SearchInput, userId int) ([]Product, int64,
 			Preload("Category").
 			Preload("Unit").
 			Preload("Img").
+			Preload("Branch").
 			Find(&totalItems)
 
 	}

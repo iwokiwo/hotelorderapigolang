@@ -29,6 +29,7 @@ type ItemFormatter struct {
 	Category       Category `json:"category"`
 	Unit           Unit     `json:"unit"`
 	Img            []Img    `json:"gallery"`
+	Branch         Branch   `json:"branch"`
 }
 
 type ItemFormatterFrontEnd struct {
@@ -43,6 +44,7 @@ type ItemFormatterFrontEnd struct {
 	Unit        Unit     `json:"unit"`
 	Gallery     []Img    `json:"gallery"`
 	Image       string   `json:"image"`
+	Branch      Branch   `json:"branch"`
 }
 
 // type ImgFormatter struct {
@@ -101,6 +103,7 @@ func FormatItem(product Product) ItemFormatter {
 		Img:            FormatGallerys(product.Img),
 		Path:           product.Path,
 		Url:            os.Getenv("APP_URL"),
+		Branch:         product.Branch,
 	}
 	return formatter
 }
@@ -117,6 +120,7 @@ func FormatItemFrontEnd(product Product) ItemFormatterFrontEnd {
 		Unit:        product.Unit,
 		Description: product.Description,
 		Image:       os.Getenv("APP_URL") + "" + product.Path + "" + product.Thumbnail,
+		Branch:      product.Branch,
 	}
 
 	return formatter

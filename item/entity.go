@@ -30,6 +30,7 @@ type Product struct {
 	Path           string   `json:"path"`
 	Category       Category `gorm:"foreignkey:CategoryId"`
 	Unit           Unit     `gorm:"foreignkey:UnitId"`
+	Branch         Branch   `gorm:"foreignkey:BranchId"`
 	Img            []Img    `gorm:"foreignkey:ProductId"`
 	CreatedAt      time.Time
 	UpdatedAt      time.Time
@@ -62,4 +63,20 @@ type Img struct {
 
 type Image struct {
 	Thumbnail string
+}
+
+type Branch struct {
+	ID          int
+	Name        string
+	Description string
+	Address     string
+	UserId      int
+	StoreId     int
+	Logo        string
+	Path        string
+	Phone       string
+	Email       string
+	CreatedAt   time.Time
+	UpdatedAt   time.Time
+	DeletedAt   gorm.DeletedAt
 }
