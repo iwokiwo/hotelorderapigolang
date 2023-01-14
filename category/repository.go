@@ -42,7 +42,7 @@ func (r *repository) Update(category Category) (Category, error) {
 func (r *repository) FindAll() ([]Category, error) {
 	var categories []Category
 
-	err := r.db.Find(&categories).Error
+	err := r.db.Preload("Branch").Find(&categories).Error
 
 	if err != nil {
 		return categories, err

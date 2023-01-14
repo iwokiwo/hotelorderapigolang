@@ -1,16 +1,18 @@
 package category
 
 type CategoryFormatter struct {
-	ID   int    `json:"id"`
-	Name string `json:"name"`
-	Slug string `json:"slug"`
+	ID     int    `json:"id"`
+	Name   string `json:"name"`
+	Slug   string `json:"slug"`
+	Branch Branch `json:"branch"`
 }
 
 func FormatCategory(category Category) CategoryFormatter {
 	formatter := CategoryFormatter{
-		ID:   category.ID,
-		Name: category.Name,
-		Slug: category.Slug,
+		ID:     category.ID,
+		Name:   category.Name,
+		Slug:   category.Slug,
+		Branch: category.Branch,
 	}
 
 	return formatter
