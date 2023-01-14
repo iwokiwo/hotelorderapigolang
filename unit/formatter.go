@@ -1,16 +1,18 @@
 package unit
 
 type UnitFormatter struct {
-	ID   int    `json:"id"`
-	Name string `json:"name"`
-	Slug string `json:"slug"`
+	ID     int    `json:"id"`
+	Name   string `json:"name"`
+	Slug   string `json:"slug"`
+	Branch Branch `json:"branch"`
 }
 
 func FormatCategory(unit Unit) UnitFormatter {
 	formatter := UnitFormatter{
-		ID:   unit.ID,
-		Name: unit.Name,
-		Slug: unit.Slug,
+		ID:     unit.ID,
+		Name:   unit.Name,
+		Slug:   unit.Slug,
+		Branch: unit.Branch,
 	}
 
 	return formatter

@@ -41,6 +41,7 @@ type CreateItem struct {
 	CategoryId     int    `form:"category_id"`
 	UnitId         int    `form:"unit_id"`
 	Description    string `form:"description"`
+	BranchId       int    `form:"branch_id"`
 	//Gallery        []Img  `form:"gallery"`
 	CreatedAt time.Time
 	UpdatedAt time.Time

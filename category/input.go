@@ -1,12 +1,14 @@
 package category
 
 type RegisterCategoryInput struct {
-	Name string `json:"name" binding:"required"`
+	Name     string `json:"name" binding:"required"`
+	BranchId int    `json:"branch_id"`
 }
 
 type UpdateCategoryInput struct {
-	Id   int    `json:"id" binding:"required"`
-	Name string `json:"name" binding:"required"`
+	Id       int    `json:"id" binding:"required"`
+	Name     string `json:"name" binding:"required"`
+	BranchId int    `json:"branch_id"`
 }
 
 type DeleteCategoryInput struct {

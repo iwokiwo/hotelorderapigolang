@@ -41,7 +41,7 @@ func (r *repository) Update(unit Unit) (Unit, error) {
 func (r *repository) FindAll() ([]Unit, error) {
 	var units []Unit
 
-	err := r.db.Find(&units).Error
+	err := r.db.Preload("Branch").Find(&units).Error
 
 	if err != nil {
 		return units, err
