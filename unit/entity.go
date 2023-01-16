@@ -2,8 +2,6 @@ package unit
 
 import (
 	"time"
-
-	"gorm.io/gorm"
 )
 
 type Unit struct {
@@ -17,17 +15,14 @@ type Unit struct {
 }
 
 type Branch struct {
-	ID          int
-	Name        string
-	Description string
-	Address     string
-	UserId      int
-	StoreId     int
-	Logo        string
-	Path        string
-	Phone       string
-	Email       string
-	CreatedAt   time.Time
-	UpdatedAt   time.Time
-	DeletedAt   gorm.DeletedAt
+	ID          int    `json:"id" gorm:"size:36;not null;uniqueIndex;primary_key"`
+	Name        string `json:"name"`
+	Description string `json:"description"`
+	Address     string `json:"address"`
+	UserId      int    `json:"user_id"`
+	Logo        string `json:"logo"`
+	Url         string `json:"url"`
+	Path        string `json:"path"`
+	Phone       string `json:"phone"`
+	Email       string `json:"email"`
 }

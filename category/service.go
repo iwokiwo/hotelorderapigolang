@@ -52,6 +52,7 @@ func (s *service) GetCategoryBySlug(input GetCategorySlugInput) (Category, error
 func (s *service) RegisterCategory(input RegisterCategoryInput) (Category, error) {
 	category := Category{}
 	category.Name = input.Name
+	category.BranchId = input.BranchId
 	category.Slug = strings.ReplaceAll(strings.ToLower(input.Name), " ", "-")
 
 	find, err := s.repository.FindBySlug(category.Slug)
@@ -75,6 +76,7 @@ func (s *service) UpdateCategory(input UpdateCategoryInput) (Category, error) {
 	}
 
 	category.Name = input.Name
+	category.BranchId = input.BranchId
 	update, err := s.repository.Update(category)
 	if err != nil {
 		return update, err

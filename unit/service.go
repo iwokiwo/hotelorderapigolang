@@ -41,6 +41,7 @@ func (s *service) FindAllUnit() ([]Unit, error) {
 func (s *service) RegisterUnit(input RegisterUnitInput) (Unit, error) {
 	unit := Unit{}
 	unit.Name = input.Name
+	unit.BranchId = input.BranchId
 	unit.Slug = strings.ReplaceAll(strings.ToLower(input.Name), " ", "-")
 
 	newUnit, err := s.repository.Save(unit)
@@ -59,6 +60,7 @@ func (s *service) UpdateUnit(input UpdateUnitInput) (Unit, error) {
 	}
 
 	unit.Name = input.Name
+	unit.BranchId = input.BranchId
 	update, err := s.repository.Update(unit)
 	if err != nil {
 		return update, err

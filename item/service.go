@@ -32,6 +32,7 @@ func (s *service) CreateItem(input CreateItem, UserId int, filename string, path
 	item.UserId = UserId
 	item.Thumbnail = filename
 	item.Path = path
+	item.BranchId = input.BranchId
 
 	newItem, err := s.repository.CreateItem(item, File)
 	if err != nil {
@@ -55,6 +56,7 @@ func (s *service) UpdateItem(input UpdateItem, UserId int, filename string, path
 	item.Thumbnail = filename
 	item.Path = path
 	item.UserId = UserId
+	item.BranchId = input.BranchId
 
 	//fmt.Println("img", FormatInputImgs(File, path, input.ID))
 
