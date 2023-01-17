@@ -9,6 +9,7 @@ type Repository interface {
 	FindBySlug(slug string) (Category, error)
 	Delete(id int, category Category) (bool, error)
 	FindAll() ([]Category, error)
+	FindAllCategoryByBranch(input SearchInput) ([]Category, error)
 }
 
 type repository struct {
@@ -37,6 +38,18 @@ func (r *repository) Update(category Category) (Category, error) {
 	}
 
 	return category, nil
+}
+
+func (r *repository) FindAllCategoryByBranch(input SearchInput) ([]Category, error) {
+	var categories []Category
+
+	err := r.db.Where("branch_id = ?", input.BranchID).Preload("Branch").Find(&categories).Error
+
+	if err != nil {
+		return categories, err
+	}
+
+	return categories, nil
 }
 
 func (r *repository) FindAll() ([]Category, error) {

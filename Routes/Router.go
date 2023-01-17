@@ -125,7 +125,7 @@ func SetupRouter(db *gorm.DB) *gin.Engine {
 
 	api.POST("/slider/create", middleware.AuthMiddleware(authService, userService), productHandler.CreateSlider)
 
-	// FRONTEND
+	//--------------------------------- FRONTEND--------------------------------------------------
 	api.POST("/front/products", productHandler.GetAllProduct)
 	api.POST("/front/search", productHandler.SearchProductHanlder)
 	api.POST("/front/products/best", productHandler.GetAllProduct)
@@ -139,6 +139,10 @@ func SetupRouter(db *gorm.DB) *gin.Engine {
 	api.POST("/front/settings", settingHandler.FindByid)
 	// api.GET("/pagination", productHandler.Pagination)
 
+	api.POST("/item-font-end/searchAll", middleware.AuthMiddleware(authService, userService), itemHandler.SeachAllFrontEnd)
+	api.GET("/front/unit-branch/:branch_id", middleware.AuthMiddleware(authService, userService), unitHandler.GetAllUnitBYBranch)
+	api.GET("/front/category-branch/:branch_id", middleware.AuthMiddleware(authService, userService), categoryHandler.GetAllCategoryByBranch)
+
 	//----------------------unit api Dasboard----------------------------
 	api.GET("/front/unit", middleware.AuthMiddleware(authService, userService), unitHandler.GetAllUnit)
 	api.POST("/unit/create", middleware.AuthMiddleware(authService, userService), unitHandler.CreateUnit)
@@ -150,9 +154,6 @@ func SetupRouter(db *gorm.DB) *gin.Engine {
 	api.POST("/item/create", middleware.AuthMiddleware(authService, userService), itemHandler.CreateItem)
 	api.PUT("/item/update", middleware.AuthMiddleware(authService, userService), itemHandler.UpdateItem)
 	api.DELETE("/item/delete/:id", middleware.AuthMiddleware(authService, userService), itemHandler.DeleteItem)
-
-	//----------------------item api Frontend-----------------------------
-	api.POST("/item-font-end/searchAll", middleware.AuthMiddleware(authService, userService), itemHandler.SeachAllFrontEnd)
 
 	//----------------------- Store api Dasboard --------------------------
 	api.GET("/store/searchAll", middleware.AuthMiddleware(authService, userService), storeHandler.SeachAll)

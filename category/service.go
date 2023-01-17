@@ -9,6 +9,7 @@ type Service interface {
 	GetCategoryBySlug(input GetCategorySlugInput) (Category, error)
 	DeleteCategory(input DeleteCategoryInput) (bool, error)
 	FindAllCategory() ([]Category, error)
+	FindAllCategoryByBranch(input SearchInput) ([]Category, error)
 }
 
 type service struct {
@@ -27,6 +28,16 @@ func (s *service) GetCategoryById(input GetCategoryDetailInput) (Category, error
 	}
 
 	return category, nil
+}
+
+func (s *service) FindAllCategoryByBranch(input SearchInput) ([]Category, error) {
+	categories, err := s.repository.FindAllCategoryByBranch(input)
+
+	if err != nil {
+		return categories, err
+	}
+
+	return categories, nil
 }
 
 func (s *service) FindAllCategory() ([]Category, error) {

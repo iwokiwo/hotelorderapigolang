@@ -24,6 +24,7 @@ type SearchInput struct {
 	Stock      int    `json:"stock"`
 	Id         int    `json:"id"`
 	CategoryID int    `json:"category_id"`
+	BranchID   int    `json:"branch_id"`
 	Search     string `json:"search"`
 }
 

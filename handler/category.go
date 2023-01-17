@@ -166,3 +166,26 @@ func (h *categoryHandler) GetAllCategory(c *gin.Context) {
 	c.JSON(http.StatusOK, response)
 
 }
+
+func (h *categoryHandler) GetAllCategoryByBranch(c *gin.Context) {
+
+	var input category.SearchInput
+	errs := c.ShouldBindUri(&input)
+
+	if errs != nil {
+		response := helper.APIResponse("Failed to get detail of category", http.StatusBadRequest, "error", nil)
+		c.JSON(http.StatusBadRequest, response)
+		return
+	}
+	categories, err := h.categoryService.FindAllCategoryByBranch(input)
+
+	if err != nil {
+		response := helper.APIResponse("Failed to get detail of category", http.StatusBadRequest, "error", nil)
+		c.JSON(http.StatusBadRequest, response)
+		return
+	}
+
+	response := helper.APIResponse("Category detail", http.StatusOK, "success", categories)
+	c.JSON(http.StatusOK, response)
+
+}

@@ -18,3 +18,7 @@ type DeleteUnitInput struct {
 type GetUnitDetailInput struct {
 	ID int `uri:"id" binding:"required"`
 }
+
+type SearchInput struct {
+	BranchID int `uri:"branch_id"`
+}

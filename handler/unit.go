@@ -58,6 +58,30 @@ func (h *unitHandler) GetAllUnit(c *gin.Context) {
 
 }
 
+func (h *unitHandler) GetAllUnitBYBranch(c *gin.Context) {
+
+	var input unit.SearchInput
+	errs := c.ShouldBindUri(&input)
+
+	if errs != nil {
+		response := helper.APIResponse("Failed to get detail of unit", http.StatusBadRequest, "error", nil)
+		c.JSON(http.StatusBadRequest, response)
+		return
+	}
+
+	unit, err := h.unitService.FindAllUnitByBranch(input)
+
+	if err != nil {
+		response := helper.APIResponse("Failed to get detail of unit", http.StatusBadRequest, "error", nil)
+		c.JSON(http.StatusBadRequest, response)
+		return
+	}
+
+	response := helper.APIResponse("Unit detail", http.StatusOK, "success", unit)
+	c.JSON(http.StatusOK, response)
+
+}
+
 func (h *unitHandler) UpdateUnit(c *gin.Context) {
 	var input unit.UpdateUnitInput
 	err := c.ShouldBindJSON(&input)

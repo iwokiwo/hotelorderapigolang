@@ -1,6 +1,8 @@
 package unit
 
-import "gorm.io/gorm"
+import (
+	"gorm.io/gorm"
+)
 
 type Repository interface {
 	Save(unit Unit) (Unit, error)
@@ -8,6 +10,7 @@ type Repository interface {
 	FindById(id int) (Unit, error)
 	Delete(id int, unit Unit) (bool, error)
 	FindAll() ([]Unit, error)
+	FindAllByBranch(branch_id SearchInput) ([]Unit, error)
 }
 
 type repository struct {
@@ -36,6 +39,18 @@ func (r *repository) Update(unit Unit) (Unit, error) {
 	}
 
 	return unit, nil
+}
+
+func (r *repository) FindAllByBranch(branch_id SearchInput) ([]Unit, error) {
+	var units []Unit
+
+	err := r.db.Where("branch_id = ?", branch_id.BranchID).Preload("Branch").Find(&units).Error
+
+	if err != nil {
+		return units, err
+	}
+
+	return units, nil
 }
 
 func (r *repository) FindAll() ([]Unit, error) {

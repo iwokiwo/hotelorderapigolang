@@ -8,6 +8,7 @@ type Service interface {
 	GetUnitById(input GetUnitDetailInput) (Unit, error)
 	DeleteUnit(input DeleteUnitInput) (bool, error)
 	FindAllUnit() ([]Unit, error)
+	FindAllUnitByBranch(branch_id SearchInput) ([]Unit, error)
 }
 
 type service struct {
@@ -20,6 +21,16 @@ func NewService(repository Repository) *service {
 
 func (s *service) GetUnitById(input GetUnitDetailInput) (Unit, error) {
 	unit, err := s.repository.FindById(input.ID)
+
+	if err != nil {
+		return unit, err
+	}
+
+	return unit, nil
+}
+
+func (s *service) FindAllUnitByBranch(baranch_id SearchInput) ([]Unit, error) {
+	unit, err := s.repository.FindAllByBranch(baranch_id)
 
 	if err != nil {
 		return unit, err

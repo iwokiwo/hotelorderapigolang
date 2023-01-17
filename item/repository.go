@@ -99,7 +99,7 @@ func (r *repository) DeleteItem(item Product) (Product, error) {
 
 func (r *repository) SearchAll(input SearchInput, userId int) ([]Product, int64, error) {
 
-	//fmt.Println("userId", userId)
+	fmt.Println("userId", input.BranchID)
 	var items []Product
 	var totalItems []Product
 
@@ -116,71 +116,145 @@ func (r *repository) SearchAll(input SearchInput, userId int) ([]Product, int64,
 
 	find := r.db.Limit(input.Size).Offset(offset).Order(input.Sort + " " + input.Direction)
 
-	if input.Id > 0 {
-		find = find.Where("active = ?", input.Active).
-			Where("id = ?", input.Id).
-			Where("user_id = ?", userId).
-			Preload("Category").
-			Preload("Unit").
-			Preload("Img").
-			Preload("Branch").
-			Find(&items)
+	if input.BranchID == 0 {
+		if input.Id > 0 {
+			find = find.Where("active = ?", input.Active).
+				Where("id = ?", input.Id).
+				Where("user_id = ?", userId).
+				Preload("Category").
+				Preload("Unit").
+				Preload("Img").
+				Preload("Branch").
+				Find(&items)
 
-		r.db.Where("active = ?", input.Active).
-			Where("id = ?", input.Id).
-			Where("user_id = ?", userId).
-			Preload("Category").
-			Preload("Unit").
-			Preload("Img").
-			Preload("Branch").
-			Find(&totalItems)
+			r.db.Where("active = ?", input.Active).
+				Where("id = ?", input.Id).
+				Where("user_id = ?", userId).
+				Preload("Category").
+				Preload("Unit").
+				Preload("Img").
+				Preload("Branch").
+				Find(&totalItems)
 
+		}
+
+		if input.CategoryID > 0 {
+
+			find = find.Where("active = ?", input.Active).
+				Where("category_id = ?", input.CategoryID).
+				Where("name LIKE ?", "%"+input.Search+"%").
+				Where("user_id = ?", userId).
+				Preload("Category").
+				Preload("Unit").
+				Preload("Img").
+				Preload("Branch").
+				Find(&items)
+
+			r.db.Where("active = ?", input.Active).
+				Where("category_id = ?", input.CategoryID).
+				Where("name LIKE ?", "%"+input.Search+"%").
+				Where("user_id = ?", userId).
+				Preload("Category").
+				Preload("Unit").
+				Preload("Img").
+				Preload("Branch").
+				Find(&totalItems)
+		}
+		if input.CategoryID == 0 {
+			//fmt.Println("search", input.Search)
+			find = find.Where("active = ?", input.Active).
+				Where("user_id = ?", userId).
+				Where("LOWER(name) LIKE ?", "%"+strings.ToLower(input.Search)+"%").
+				Preload("Category").
+				Preload("Unit").
+				Preload("Img").
+				Preload("Branch").
+				Find(&items)
+
+			r.db.Where("active = ?", input.Active).
+				Where("user_id = ?", userId).
+				Where("LOWER(name) LIKE ?", "%"+strings.ToLower(input.Search)+"%").
+				Preload("Category").
+				Preload("Unit").
+				Preload("Img").
+				Preload("Branch").
+				Find(&totalItems)
+
+		}
+	} else {
+		if input.Id > 0 {
+			find = find.Where("active = ?", input.Active).
+				Where("id = ?", input.Id).
+				Where("user_id = ?", userId).
+				Where("branch_id = ?", input.BranchID).
+				Preload("Category").
+				Preload("Unit").
+				Preload("Img").
+				Preload("Branch").
+				Find(&items)
+
+			r.db.Where("active = ?", input.Active).
+				Where("id = ?", input.Id).
+				Where("user_id = ?", userId).
+				Where("branch_id = ?", input.BranchID).
+				Preload("Category").
+				Preload("Unit").
+				Preload("Img").
+				Preload("Branch").
+				Find(&totalItems)
+
+		}
+
+		if input.CategoryID > 0 {
+
+			find = find.Where("active = ?", input.Active).
+				Where("category_id = ?", input.CategoryID).
+				Where("name LIKE ?", "%"+input.Search+"%").
+				Where("user_id = ?", userId).
+				Where("branch_id = ?", input.BranchID).
+				Preload("Category").
+				Preload("Unit").
+				Preload("Img").
+				Preload("Branch").
+				Find(&items)
+
+			r.db.Where("active = ?", input.Active).
+				Where("category_id = ?", input.CategoryID).
+				Where("name LIKE ?", "%"+input.Search+"%").
+				Where("user_id = ?", userId).
+				Where("branch_id = ?", input.BranchID).
+				Preload("Category").
+				Preload("Unit").
+				Preload("Img").
+				Preload("Branch").
+				Find(&totalItems)
+		}
+		if input.CategoryID == 0 {
+			//fmt.Println("search", input.Search)
+			find = find.Where("active = ?", input.Active).
+				Where("user_id = ?", userId).
+				Where("branch_id = ?", input.BranchID).
+				Where("LOWER(name) LIKE ?", "%"+strings.ToLower(input.Search)+"%").
+				Preload("Category").
+				Preload("Unit").
+				Preload("Img").
+				Preload("Branch").
+				Find(&items)
+
+			r.db.Where("active = ?", input.Active).
+				Where("user_id = ?", userId).
+				Where("branch_id = ?", input.BranchID).
+				Where("LOWER(name) LIKE ?", "%"+strings.ToLower(input.Search)+"%").
+				Preload("Category").
+				Preload("Unit").
+				Preload("Img").
+				Preload("Branch").
+				Find(&totalItems)
+
+		}
 	}
 
-	if input.CategoryID > 0 {
-
-		find = find.Where("active = ?", input.Active).
-			Where("category_id = ?", input.CategoryID).
-			Where("name LIKE ?", "%"+input.Search+"%").
-			Where("user_id = ?", userId).
-			Preload("Category").
-			Preload("Unit").
-			Preload("Img").
-			Preload("Branch").
-			Find(&items)
-
-		r.db.Where("active = ?", input.Active).
-			Where("category_id = ?", input.CategoryID).
-			Where("name LIKE ?", "%"+input.Search+"%").
-			Where("user_id = ?", userId).
-			Preload("Category").
-			Preload("Unit").
-			Preload("Img").
-			Preload("Branch").
-			Find(&totalItems)
-	}
-	if input.CategoryID == 0 {
-		//fmt.Println("search", input.Search)
-		find = find.Where("active = ?", input.Active).
-			Where("user_id = ?", userId).
-			Where("LOWER(name) LIKE ?", "%"+strings.ToLower(input.Search)+"%").
-			Preload("Category").
-			Preload("Unit").
-			Preload("Img").
-			Preload("Branch").
-			Find(&items)
-
-		r.db.Where("active = ?", input.Active).
-			Where("user_id = ?", userId).
-			Where("LOWER(name) LIKE ?", "%"+strings.ToLower(input.Search)+"%").
-			Preload("Category").
-			Preload("Unit").
-			Preload("Img").
-			Preload("Branch").
-			Find(&totalItems)
-
-	}
-	fmt.Println("page", len(totalItems))
+	//	fmt.Println("page", len(totalItems))
 
 	total := int64(len(totalItems))
 	err := find.Error

@@ -22,3 +22,7 @@ type GetCategoryDetailInput struct {
 type GetCategorySlugInput struct {
 	Slug string `uri:"slug" binding:"required"`
 }
+
+type SearchInput struct {
+	BranchID int `uri:"branch_id"`
+}
