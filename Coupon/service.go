@@ -2,7 +2,7 @@ package coupon
 
 type Service interface {
 	CreateService(input CreateCouponInput, user_id int) (Coupon, error)
-	UpdateService(input UpdateCouponInput) (Coupon, error)
+	UpdateService(input UpdateCouponInput, user_id int) (Coupon, error)
 	DeleteService(input DeleteCouponInput) (bool, error)
 	FindAllService(id int) ([]Coupon, error)
 	FindAllByBranchService(input SearchInput) ([]Coupon, error)
@@ -31,6 +31,8 @@ func (s *service) CreateService(input CreateCouponInput, user_id int) (Coupon, e
 	coupon.BranchID = input.BranchID
 	coupon.Description = input.Description
 	coupon.UserId = user_id
+	coupon.Limit = input.Limit
+	coupon.UseLimit = input.UseLimit
 
 	newCoupon, err := s.repository.Create(coupon)
 
@@ -41,7 +43,7 @@ func (s *service) CreateService(input CreateCouponInput, user_id int) (Coupon, e
 	return newCoupon, nil
 }
 
-func (s *service) UpdateService(input UpdateCouponInput) (Coupon, error) {
+func (s *service) UpdateService(input UpdateCouponInput, user_id int) (Coupon, error) {
 	coupon := Coupon{}
 	coupon.ID = uint(input.ID)
 	coupon.Name = input.Name
@@ -56,7 +58,9 @@ func (s *service) UpdateService(input UpdateCouponInput) (Coupon, error) {
 	coupon.Active = input.Active
 	coupon.BranchID = input.BranchID
 	coupon.Description = input.Description
-	coupon.UserId = input.UserId
+	coupon.UserId = user_id
+	coupon.Limit = input.Limit
+	coupon.UseLimit = input.UseLimit
 
 	newCoupon, err := s.repository.Update(coupon)
 

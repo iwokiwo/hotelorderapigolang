@@ -16,6 +16,8 @@ type Coupon struct {
 	MaxItem      int       `json:"max_item"`
 	MinItem      int       `json:"min_item"`
 	BranchID     int       `json:"branch_id"`
+	Limit        int       `json:"limit"`
+	UseLimit     int       `json:"use_limit"`
 	Description  string    `json:"description"`
 	ValidFrom    time.Time `json:"valid_from"`
 	ValidUntil   time.Time `json:"valid_until"`

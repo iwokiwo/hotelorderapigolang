@@ -16,6 +16,8 @@ type CreateCouponInput struct {
 	ValidUntil   time.Time `json:"valid_until"`
 	Active       int       `json:"active"`
 	UserId       int       `json:"user_id"`
+	Limit        int       `json:"limit"`
+	UseLimit     int       `json:"use_limit"`
 }
 
 type UpdateCouponInput struct {

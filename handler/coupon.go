@@ -60,7 +60,7 @@ func (h *couponHandler) UpdateCoupon(c *gin.Context) {
 		return
 	}
 
-	_, err = h.couponService.UpdateService(input)
+	_, err = h.couponService.UpdateService(input, c.MustGet("currentUser").(user.User).ID)
 
 	if err != nil {
 

@@ -23,6 +23,8 @@ type Coupon struct {
 	Path         string    `json:"path"`
 	Active       int       `json:"active"`
 	UserId       int       `json:"user_id"`
+	Limit        int       `json:"limit"`
+	UseLimit     int       `json:"use_limit"`
 	Branch       Branch    `gorm:"foreignkey:BranchID"`
 	CreatedAt    time.Time
 	UpdatedAt    time.Time

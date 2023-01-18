@@ -17,6 +17,8 @@ type CouponFormatter struct {
 	Active       int       `json:"active"`
 	Branch       Branch    `json:"branch"`
 	UserId       int       `json:"user_id"`
+	Limit        int       `json:"limit"`
+	UseLimit     int       `json:"use_limit"`
 }
 
 func FormatCoupon(coupon Coupon) CouponFormatter {
@@ -34,6 +36,8 @@ func FormatCoupon(coupon Coupon) CouponFormatter {
 		ValidUntil:   coupon.ValidUntil,
 		Active:       coupon.Active,
 		Branch:       coupon.Branch,
+		Limit:        coupon.Limit,
+		UseLimit:     coupon.UseLimit,
 	}
 
 	return formatter
