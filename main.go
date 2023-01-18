@@ -54,7 +54,8 @@ func main() {
 		&Models.Setting{},
 		&Models.Branch{},
 		&Models.Store{},
-		&Models.Img{})
+		&Models.Img{},
+		&Models.Coupon{})
 
 	//Routes.SubscribeMessage(ch, "go-queue_order")
 	router := Routes.SetupRouter(db)

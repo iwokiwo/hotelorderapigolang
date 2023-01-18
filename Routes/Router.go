@@ -1,6 +1,7 @@
 package Routes
 
 import (
+	coupon "iwogo/Coupon"
 	"iwogo/auth"
 	"iwogo/category"
 	"iwogo/handler"
@@ -28,6 +29,7 @@ func SetupRouter(db *gorm.DB) *gin.Engine {
 	unitRepository := unit.NewRepository(db)
 	itemRepository := item.NewRepository(db)
 	storeBranchRepository := storebranch.NewRepository(db)
+	couponRepository := coupon.NewRepository(db)
 
 	// SERVICE
 	userService := user.NewService(userRepository)
@@ -38,6 +40,7 @@ func SetupRouter(db *gorm.DB) *gin.Engine {
 	unitService := unit.NewService(unitRepository)
 	itemService := item.NewService(itemRepository)
 	storeBranchService := storebranch.NewService(storeBranchRepository)
+	couponService := coupon.NewService(couponRepository)
 
 	authService := auth.NewService()
 
@@ -50,7 +53,7 @@ func SetupRouter(db *gorm.DB) *gin.Engine {
 	itemHandler := handler.NewItemHandler(itemService, authService)
 	storeHandler := handler.NewStoreHandler(storeBranchService, authService)
 	branchHandler := handler.NewBranchHandler(storeBranchService, authService)
-
+	couponHandler := handler.NewCouponHandler(couponService, authService)
 	router := gin.Default()
 
 	config := cors.DefaultConfig()
@@ -165,5 +168,9 @@ func SetupRouter(db *gorm.DB) *gin.Engine {
 	api.POST("/branch/create", middleware.AuthMiddleware(authService, userService), branchHandler.CreateBranch)
 	api.PUT("/branch/update", middleware.AuthMiddleware(authService, userService), branchHandler.UpdateBranch)
 
+	//----------------------- Coupon api Dasboard --------------------------
+	api.POST("/coupon/create", middleware.AuthMiddleware(authService, userService), couponHandler.CreateCoupon)
+	api.PUT("/coupon/update", middleware.AuthMiddleware(authService, userService), couponHandler.UpdateCoupon)
+	api.GET("/coupon/searchAll", middleware.AuthMiddleware(authService, userService), couponHandler.FindAllCoupon)
 	return router
 }
