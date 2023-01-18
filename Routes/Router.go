@@ -172,5 +172,6 @@ func SetupRouter(db *gorm.DB) *gin.Engine {
 	api.POST("/coupon/create", middleware.AuthMiddleware(authService, userService), couponHandler.CreateCoupon)
 	api.PUT("/coupon/update", middleware.AuthMiddleware(authService, userService), couponHandler.UpdateCoupon)
 	api.GET("/coupon/searchAll", middleware.AuthMiddleware(authService, userService), couponHandler.FindAllCoupon)
+	api.DELETE("/coupon/delete/:id", middleware.AuthMiddleware(authService, userService), couponHandler.DeleteCoupon)
 	return router
 }

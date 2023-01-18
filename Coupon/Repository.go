@@ -7,7 +7,7 @@ import (
 type Repository interface {
 	Create(coupon Coupon) (Coupon, error)
 	Update(coupon Coupon) (Coupon, error)
-	Delete(id int, input Coupon) (bool, error)
+	Delete(coupon Coupon) (bool, error)
 	FindAll(id int) ([]Coupon, error)
 	FindAllByBranch(id SearchInput) ([]Coupon, error)
 }
@@ -63,8 +63,8 @@ func (r *repository) FindAllByBranch(input SearchInput) ([]Coupon, error) {
 	return coupons, nil
 }
 
-func (r *repository) Delete(id int, coupon Coupon) (bool, error) {
-	err := r.db.Where("id = ?", id).Delete(&coupon).Error
+func (r *repository) Delete(coupon Coupon) (bool, error) {
+	err := r.db.Delete(&coupon, coupon.ID).Error
 
 	if err != nil {
 		return false, err

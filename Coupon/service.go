@@ -3,7 +3,7 @@ package coupon
 type Service interface {
 	CreateService(input CreateCouponInput, user_id int) (Coupon, error)
 	UpdateService(input UpdateCouponInput) (Coupon, error)
-	//DeleteService(input DeleteCouponInput) (bool, error)
+	DeleteService(input DeleteCouponInput) (bool, error)
 	FindAllService(id int) ([]Coupon, error)
 	FindAllByBranchService(input SearchInput) ([]Coupon, error)
 }
@@ -87,4 +87,16 @@ func (s *service) FindAllByBranchService(input SearchInput) ([]Coupon, error) {
 	}
 
 	return coupon, nil
+}
+
+func (s *service) DeleteService(input DeleteCouponInput) (bool, error) {
+	coupon := Coupon{}
+	coupon.ID = uint(input.ID)
+
+	newItem, err := s.repository.Delete(coupon)
+	if err != nil {
+		return newItem, err
+	}
+
+	return newItem, nil
 }

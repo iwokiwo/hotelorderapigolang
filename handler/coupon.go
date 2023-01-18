@@ -67,7 +67,7 @@ func (h *couponHandler) UpdateCoupon(c *gin.Context) {
 		return
 	}
 
-	response := helper.APIResponse("Coupon has been registered", http.StatusOK, "success", nil)
+	response := helper.APIResponse("Coupon has been registered", http.StatusOK, "success", input)
 	c.JSON(http.StatusOK, response)
 }
 
@@ -83,5 +83,30 @@ func (h *couponHandler) FindAllCoupon(c *gin.Context) {
 
 	formatter := coupon.FormatCoupons(items)
 	response := helper.APIResponse("Coupon detail", http.StatusOK, "success", formatter)
+	c.JSON(http.StatusOK, response)
+}
+
+func (h *couponHandler) DeleteCoupon(c *gin.Context) {
+	var input coupon.DeleteCouponInput
+	err := c.ShouldBindUri(&input)
+
+	if err != nil {
+		errors := helper.FormatValidationError(err)
+		errorMessage := gin.H{"errors": errors}
+		response := helper.APIResponse("Delete coupon failed", http.StatusUnprocessableEntity, "error", errorMessage)
+		c.JSON(http.StatusUnprocessableEntity, response)
+
+		return
+	}
+
+	responseServer, err := h.couponService.DeleteService(input)
+
+	if err != nil {
+		response := helper.APIResponse("Delete coupon failed", http.StatusBadRequest, "error", err)
+		c.JSON(http.StatusBadRequest, response)
+		return
+	}
+
+	response := helper.APIResponse("Coupon has been Delete", http.StatusOK, "success", responseServer)
 	c.JSON(http.StatusOK, response)
 }

@@ -24,7 +24,7 @@ type UpdateCouponInput struct {
 }
 
 type DeleteCouponInput struct {
-	ID int `json:"id" binding:"required"`
+	ID int `uri:"id" binding:"required"`
 }
 
 type SearchInput struct {
