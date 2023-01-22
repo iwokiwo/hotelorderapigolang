@@ -1,6 +1,7 @@
 package handler
 
 import (
+	"fmt"
 	coupon "iwogo/Coupon"
 	"iwogo/auth"
 	"iwogo/helper"
@@ -24,6 +25,7 @@ func (h *couponHandler) CreateCoupon(c *gin.Context) {
 	var input coupon.CreateCouponInput
 
 	err := c.ShouldBindJSON(&input)
+	fmt.Println(input)
 	if err != nil {
 		errors := helper.FormatValidationError(err)
 		errorMessage := gin.H{"errors": errors}
