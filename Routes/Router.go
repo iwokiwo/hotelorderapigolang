@@ -8,6 +8,7 @@ import (
 	"iwogo/item"
 	"iwogo/middleware"
 	"iwogo/pages"
+	"iwogo/payment"
 	"iwogo/product"
 	"iwogo/settings"
 	storebranch "iwogo/storeBranch"
@@ -30,6 +31,7 @@ func SetupRouter(db *gorm.DB) *gin.Engine {
 	itemRepository := item.NewRepository(db)
 	storeBranchRepository := storebranch.NewRepository(db)
 	couponRepository := coupon.NewRepository(db)
+	paymentRepository := payment.NewRepository(db)
 
 	// SERVICE
 	userService := user.NewService(userRepository)
@@ -41,6 +43,7 @@ func SetupRouter(db *gorm.DB) *gin.Engine {
 	itemService := item.NewService(itemRepository)
 	storeBranchService := storebranch.NewService(storeBranchRepository)
 	couponService := coupon.NewService(couponRepository)
+	paymentService := payment.NewService(paymentRepository)
 
 	authService := auth.NewService()
 
@@ -54,6 +57,7 @@ func SetupRouter(db *gorm.DB) *gin.Engine {
 	storeHandler := handler.NewStoreHandler(storeBranchService, authService)
 	branchHandler := handler.NewBranchHandler(storeBranchService, authService)
 	couponHandler := handler.NewCouponHandler(couponService, authService)
+	paymentHandler := handler.NewPaymentHandler(paymentService, authService)
 	router := gin.Default()
 
 	config := cors.DefaultConfig()
@@ -174,5 +178,9 @@ func SetupRouter(db *gorm.DB) *gin.Engine {
 	api.PUT("/coupon/update", middleware.AuthMiddleware(authService, userService), couponHandler.UpdateCoupon)
 	api.GET("/coupon/searchAll", middleware.AuthMiddleware(authService, userService), couponHandler.FindAllCoupon)
 	api.DELETE("/coupon/delete/:id", middleware.AuthMiddleware(authService, userService), couponHandler.DeleteCoupon)
+
+	//----------------------- Payment Type ---------------------------------
+	api.POST("/payment-type/create", middleware.AuthMiddleware(authService, userService), paymentHandler.CreatePaymentType)
+
 	return router
 }
