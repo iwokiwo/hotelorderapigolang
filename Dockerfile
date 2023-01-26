@@ -1,12 +1,13 @@
 # Dockerfile References: https://docs.docker.com/engine/reference/builder/
 
 # Start from golang:1.12-alpine base image
-FROM golang:1.12-alpine
+FROM golang:alpine
 
 # The latest alpine images don't have some tools like (`git` and `bash`).
 # Adding git, bash and openssh to the image
-RUN apk update && apk upgrade && \
-    apk add --no-cache bash git openssh
+# RUN apk update && apk upgrade && \
+#     apk add --no-cache bash git openssh
+RUN apk update && apk add --no-cache git
 
 # Add Maintainer Info
 LABEL maintainer="iwokiwo <bayuiwo@gmail.com>"
