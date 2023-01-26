@@ -52,7 +52,7 @@ func main() {
 		&Models.SliderRelation{},
 		&Models.CategoryRelation{},
 		&Models.Setting{},
-		&Models.Branch{},
+		&Models.Branche{},
 		&Models.Store{},
 		&Models.Img{},
 		&Models.Coupon{},
