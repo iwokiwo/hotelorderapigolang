@@ -6,7 +6,7 @@ import (
 	"gorm.io/gorm"
 )
 
-type Branch struct {
+type Branche struct {
 	ID          uint   `json:"id" gorm:"size:36;not null;uniqueIndex;primary_key"`
 	Name        string `json:"name"`
 	Description string `json:"description"`
@@ -22,6 +22,6 @@ type Branch struct {
 	DeletedAt   gorm.DeletedAt
 }
 
-func (b *Branch) TableName() string {
-	return "branchs"
+func (b *Branche) TableName() string {
+	return "branches"
 }
