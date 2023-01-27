@@ -24,11 +24,11 @@ WORKDIR /app
 # Copy the source from the current directory to the Working Directory inside the container
 COPY . .
 
-RUN mkdir -p log
+RUN mkdir -p storage/branches
 # RUN touch storage/logs/swoole_http.log
 # RUN touch storage/logs/laravel.log
 # RUN touch storage/logs/crontab.log
-RUN chmod -R 777 log
+RUN chmod -R 777 storage
 
 RUN go mod tidy
 
