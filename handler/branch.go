@@ -43,9 +43,11 @@ func (h *branchHandler) CreateBranch(c *gin.Context) {
 	// Set Folder untuk menyimpan filenya
 	path := os.Getenv("IMG_BRANCHES") + "" + file.Filename
 	if err := c.SaveUploadedFile(file, path); err != nil {
-		response := helper.APIResponse("Upload Logo Failed", http.StatusBadRequest, "error", err)
-		c.JSON(http.StatusBadRequest, response)
-		return
+		helper.APIResponse("Upload Logo Failed", http.StatusBadRequest, "error", err)
+
+		// response := helper.APIResponse("Upload Logo Failed", http.StatusBadRequest, "error", err)
+		// c.JSON(http.StatusBadRequest, response)
+		// return
 	}
 	//fmt.Println(path)
 	//os.Remove(path)
@@ -92,9 +94,10 @@ func (h *branchHandler) UpdateBranch(c *gin.Context) {
 
 		path := os.Getenv("IMG_BRANCHES") + "" + file.Filename
 		if err := c.SaveUploadedFile(file, path); err != nil {
-			response := helper.APIResponse("Upload Logo Failed", http.StatusBadRequest, "error", err)
-			c.JSON(http.StatusBadRequest, response)
-			return
+			helper.APIResponse("Upload Logo Failed", http.StatusBadRequest, "error", err)
+			// response := helper.APIResponse("Upload Logo Failed", http.StatusBadRequest, "error", err)
+			// c.JSON(http.StatusBadRequest, response)
+			// return
 		}
 		data, err := h.branchService.UpdateBranch(input, c.MustGet("currentUser").(user.User).ID, file.Filename, os.Getenv("IMG_BRANCHES"))
 		if err != nil {
@@ -106,9 +109,10 @@ func (h *branchHandler) UpdateBranch(c *gin.Context) {
 		pathOld := os.Getenv("IMG_BRANCHES") + "" + c.PostForm("logoOld")
 		// os.Remove(pathOld)
 		if err := os.Remove(pathOld); err != nil {
-			response := helper.APIResponse("Upload Logo Failed", http.StatusBadRequest, "error", err)
-			c.JSON(http.StatusBadRequest, response)
-			return
+			helper.APIResponse("Upload Logo Failed", http.StatusBadRequest, "error", err)
+			// response := helper.APIResponse("Upload Logo Failed", http.StatusBadRequest, "error", err)
+			// c.JSON(http.StatusBadRequest, response)
+			// return
 		}
 
 		response := helper.APIResponse("Branch Update", http.StatusOK, "success", data)

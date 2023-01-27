@@ -43,18 +43,20 @@ func (h *storeHandler) CreateStore(c *gin.Context) {
 	// Set Folder untuk menyimpan filenya
 	path := os.Getenv("IMG_STORE") + "" + file.Filename
 	if err := c.SaveUploadedFile(file, path); err != nil {
-		response := helper.APIResponse("Upload Logo Failed", http.StatusBadRequest, "error", err)
-		c.JSON(http.StatusOK, response)
-		return
+		helper.APIResponse("Upload Logo Failed", http.StatusBadRequest, "error", err)
+		// response := helper.APIResponse("Upload Logo Failed", http.StatusBadRequest, "error", err)
+		// c.JSON(http.StatusOK, response)
+		// return
 	}
 	//os.Remove(path)
 
 	data, err := h.storeService.CreateStore(input, c.MustGet("currentUser").(user.User).ID, file.Filename, os.Getenv("IMG_STORE"))
 	if err != nil {
 		os.Remove(path)
-		response := helper.APIResponse("Created Store Failed", http.StatusBadRequest, "error", err)
-		c.JSON(http.StatusOK, response)
-		return
+		helper.APIResponse("Created Store Failed", http.StatusBadRequest, "error", err)
+		// response := helper.APIResponse("Created Store Failed", http.StatusBadRequest, "error", err)
+		// c.JSON(http.StatusOK, response)
+		// return
 	}
 
 	response := helper.APIResponse("Store Created", http.StatusOK, "success", data)
@@ -70,9 +72,10 @@ func (h *storeHandler) UpdateStore(c *gin.Context) {
 	file, err := c.FormFile("logo")
 	fmt.Println("lokasi file", os.Getenv("IMG_STORE"))
 	if errs != nil {
-		response := helper.APIResponse("Upload Data Failed", http.StatusBadRequest, "error", err)
-		c.JSON(http.StatusBadRequest, response)
-		return
+		helper.APIResponse("Upload Data Failed", http.StatusBadRequest, "error", err)
+		// response := helper.APIResponse("Upload Data Failed", http.StatusBadRequest, "error", err)
+		// c.JSON(http.StatusBadRequest, response)
+		// return
 	}
 
 	if err != nil {
@@ -89,16 +92,18 @@ func (h *storeHandler) UpdateStore(c *gin.Context) {
 		pathOld := os.Getenv("IMG_STORE") + "" + c.PostForm("logoOld")
 		// os.Remove(pathOld)
 		if err := os.Remove(pathOld); err != nil {
-			response := helper.APIResponse("Upload Logo Failed", http.StatusBadRequest, "error", err)
-			c.JSON(http.StatusBadRequest, response)
-			return
+			helper.APIResponse("Upload Logo Failed", http.StatusBadRequest, "error", err)
+			// response := helper.APIResponse("Upload Logo Failed", http.StatusBadRequest, "error", err)
+			// c.JSON(http.StatusBadRequest, response)
+			// return
 		}
 
 		path := os.Getenv("IMG_STORE") + "" + file.Filename
 		if err := c.SaveUploadedFile(file, path); err != nil {
-			response := helper.APIResponse("Upload Logo Failed", http.StatusBadRequest, "error", err)
-			c.JSON(http.StatusBadRequest, response)
-			return
+			// response := helper.APIResponse("Upload Logo Failed", http.StatusBadRequest, "error", err)
+			// c.JSON(http.StatusBadRequest, response)
+			// return
+			helper.APIResponse("Upload Logo Failed", http.StatusBadRequest, "error", err)
 		}
 		//os.Remove(path)
 		fmt.Println("id", c.MustGet("currentUser").(user.User).ID)
