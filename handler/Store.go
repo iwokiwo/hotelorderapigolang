@@ -68,7 +68,7 @@ func (h *storeHandler) UpdateStore(c *gin.Context) {
 	errs := c.Bind(&input)
 
 	file, err := c.FormFile("logo")
-
+	fmt.Println("lokasi file", os.Getenv("IMG_STORE"))
 	if errs != nil {
 		response := helper.APIResponse("Upload Data Failed", http.StatusBadRequest, "error", err)
 		c.JSON(http.StatusBadRequest, response)

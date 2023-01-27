@@ -4,3 +4,4 @@
 /storage/gallery
 
 *.exe
+.env
