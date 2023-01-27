@@ -100,7 +100,7 @@ func SetupRouter(db *gorm.DB) *gin.Engine {
 	api.POST("/product/del", middleware.AuthMiddleware(authService, userService), productHandler.DelProduct)
 	api.POST("/product/detail", middleware.AuthMiddleware(authService, userService), productHandler.FindProductByIDHandler)
 
-	// SLIDER
+	//SLIDER
 	api.POST("/slider/all", middleware.AuthMiddleware(authService, userService), productHandler.GetAllSliderHanlder)
 
 	api.POST("/slider/del", middleware.AuthMiddleware(authService, userService), productHandler.DelSlider)
