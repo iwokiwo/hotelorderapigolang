@@ -24,7 +24,10 @@ WORKDIR /app
 # Copy the source from the current directory to the Working Directory inside the container
 COPY . .
 
-RUN mkdir -p storage/{branches,store, item, gallery}
+RUN mkdir -p storage/branches
+RUN mkdir -p storage/store
+RUN mkdir -p storage/item
+RUN mkdir -p storage/gallery
 # RUN touch storage/logs/swoole_http.log
 # RUN touch storage/logs/laravel.log
 # RUN touch storage/logs/crontab.log
