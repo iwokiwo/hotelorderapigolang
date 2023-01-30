@@ -18,6 +18,13 @@ services:
     #   - redis # This service depends on redis. Start that first.
     # environment: # Pass environment variables to the service
     #   REDIS_URL: redis:6379    
+    volumes:
+      # - img-data: /app/storage
+      - img-data: /app/storage/branches
+      - img-data: /app/storage/store
+      - img-data: /app/storage/item
+      - img-data: /app/storage/gallery
+
     networks: # Networks to join (Services on the same network can communicate with each other using their name)
       - backend
 
@@ -28,5 +35,8 @@ services:
   #   networks:
   #     - backend
 
+volumes:
+  img-data:
+    driver: local
 networks:
   backend:    
