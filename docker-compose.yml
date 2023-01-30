@@ -20,10 +20,10 @@ services:
     #   REDIS_URL: redis:6379    
     volumes:
       # - img-data: /app/storage
-      - img-data: /app/storage/branches
-      - img-data: /app/storage/store
-      - img-data: /app/storage/item
-      - img-data: /app/storage/gallery
+      - img-data:/app/storage/branches
+      - img-data:/app/storage/store
+      - img-data:/app/storage/item
+      - img-data:/app/storage/gallery
 
     networks: # Networks to join (Services on the same network can communicate with each other using their name)
       - backend
