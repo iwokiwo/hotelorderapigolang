@@ -17,7 +17,7 @@ func FormatPaymentType(paymentType PaymentType) PaymentTypeFormatter {
 	return formatter
 }
 
-func FormatCategories(category []PaymentType) []PaymentTypeFormatter {
+func FormatPaymentTypes(category []PaymentType) []PaymentTypeFormatter {
 	PaymentTypeFormatter := []PaymentTypeFormatter{}
 	for _, category := range category {
 		formatter := FormatPaymentType(category)

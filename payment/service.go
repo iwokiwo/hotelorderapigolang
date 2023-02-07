@@ -3,11 +3,11 @@ package payment
 import "strings"
 
 type Service interface {
-	CreatePaymentType(input CreatePaymentTypeInput) (PaymentType, error)
+	CreatePaymentType(input CreatePaymentTypeInput, user_id int) (PaymentType, error)
 	UpdatePaymentType(input UpdatePaymentTypeInput) (PaymentType, error)
 	GetPaymentTypeById(input GetPaymentType) (PaymentType, error)
 	DeletePaymentType(input DeletePaymentTypeInput) (bool, error)
-	FindAllPaymentType() ([]PaymentType, error)
+	FindAllServicePaymentType(id int) ([]PaymentType, error)
 	FindAllPaymentTypeByBranch(branch_id GetPaymentTypeByBranch) ([]PaymentType, error)
 }
 
@@ -39,21 +39,22 @@ func (s *service) FindAllPaymentTypeByBranch(baranch_id GetPaymentTypeByBranch) 
 	return item, nil
 }
 
-func (s *service) FindAllPaymentType() ([]PaymentType, error) {
-	unit, err := s.repository.FindAll()
+func (s *service) FindAllServicePaymentType(id int) ([]PaymentType, error) {
+	item, err := s.repository.FindAll(id)
 
 	if err != nil {
-		return unit, err
+		return item, err
 	}
 
-	return unit, nil
+	return item, nil
 }
 
-func (s *service) CreatePaymentType(input CreatePaymentTypeInput) (PaymentType, error) {
+func (s *service) CreatePaymentType(input CreatePaymentTypeInput, user_id int) (PaymentType, error) {
 	item := PaymentType{}
 	item.Name = input.Name
 	item.BranchId = input.BranchId
 	item.Slug = strings.ReplaceAll(strings.ToLower(input.Name), " ", "-")
+	item.UserId = user_id
 
 	newItem, err := s.repository.Save(item)
 	if err != nil {
@@ -82,14 +83,12 @@ func (s *service) UpdatePaymentType(input UpdatePaymentTypeInput) (PaymentType, 
 }
 
 func (s *service) DeletePaymentType(input DeletePaymentTypeInput) (bool, error) {
-	item, err := s.repository.FindById(input.ID)
-	if err != nil {
-		return false, err
-	}
+	item := PaymentType{}
+	item.ID = int(input.ID)
 
-	_, err = s.repository.Delete(input.ID, item)
+	newItem, err := s.repository.Delete(item)
 	if err != nil {
-		return false, err
+		return newItem, err
 	}
 	return true, nil
 }

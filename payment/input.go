@@ -12,7 +12,7 @@ type UpdatePaymentTypeInput struct {
 }
 
 type DeletePaymentTypeInput struct {
-	ID int `json:"id" binding:"required"`
+	ID int `uri:"id" binding:"required"`
 }
 
 type GetPaymentType struct {

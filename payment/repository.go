@@ -6,8 +6,8 @@ type Repository interface {
 	Save(item PaymentType) (PaymentType, error)
 	Update(item PaymentType) (PaymentType, error)
 	FindById(id int) (PaymentType, error)
-	Delete(id int, item PaymentType) (bool, error)
-	FindAll() ([]PaymentType, error)
+	Delete(item PaymentType) (bool, error)
+	FindAll(id int) ([]PaymentType, error)
 	FindAllByBranch(branch_id GetPaymentTypeByBranch) ([]PaymentType, error)
 }
 
@@ -51,10 +51,10 @@ func (r *repository) FindAllByBranch(branch_id GetPaymentTypeByBranch) ([]Paymen
 	return items, nil
 }
 
-func (r *repository) FindAll() ([]PaymentType, error) {
+func (r *repository) FindAll(id int) ([]PaymentType, error) {
 	var items []PaymentType
 
-	err := r.db.Preload("Branch").Find(&items).Error
+	err := r.db.Where("user_id = ?", id).Preload("Branch").Find(&items).Error
 
 	if err != nil {
 		return items, err
@@ -86,10 +86,12 @@ func (r *repository) FindBySlug(slug string) (PaymentType, error) {
 
 }
 
-func (r *repository) Delete(id int, item PaymentType) (bool, error) {
-	err := r.db.Where("id = ?", id).Delete(&item).Error
+func (r *repository) Delete(item PaymentType) (bool, error) {
+	err := r.db.Delete(&item, item.ID).Error
+
 	if err != nil {
 		return false, err
 	}
-	return true, nil
+
+	return true, err
 }
