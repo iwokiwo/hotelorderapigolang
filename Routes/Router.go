@@ -181,6 +181,8 @@ func SetupRouter(db *gorm.DB) *gin.Engine {
 
 	//----------------------- Payment Type ---------------------------------
 	api.POST("/payment-type/create", middleware.AuthMiddleware(authService, userService), paymentHandler.CreatePaymentType)
-
+	api.PUT("/payment-type/update", middleware.AuthMiddleware(authService, userService), paymentHandler.UpdatePayment)
+	api.GET("/payment-type/searchAll", middleware.AuthMiddleware(authService, userService), paymentHandler.FindAllPaymentType)
+	api.DELETE("/payment-type/delete/:id", middleware.AuthMiddleware(authService, userService), paymentHandler.DeletePaymentType)
 	return router
 }
